@@ -6,17 +6,11 @@ import TopNavBar from "@/components/TopNavBar";
 import MessageBubble from "@/components/MessageBubble";
 import ActionChips from "@/components/ActionChips";
 import MessageComposer from "@/components/MessageComposer";
-
-interface Message {
-  id: number;
-  text: string;
-  sender: "user" | "assistant";
-  timestamp: Date;
-}
+import { IMessage } from "@/types/chat";
 
 export default function Home() {
   const router = useRouter();
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<IMessage[]>([
     {
       id: 1,
       text: "¡Hola! ¿Cómo estás? Soy tu Asistente Digital. ¿En qué te puedo ayudar hoy?",
@@ -35,7 +29,7 @@ export default function Home() {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleSendMessage = (message: string) => {
-    const newMessage: Message = {
+    const newMessage: IMessage = {
       id: messages.length + 1,
       text: message,
       sender: "user",
@@ -45,7 +39,7 @@ export default function Home() {
 
     // Simular respuesta del asistente después de un breve delay
     setTimeout(() => {
-      const assistantResponse: Message = {
+      const assistantResponse: IMessage = {
         id: messages.length + 2,
         text: "Gracias por tu mensaje. Te mostraré el menú digital para que puedas elegir.",
         sender: "assistant",

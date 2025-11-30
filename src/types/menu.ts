@@ -1,18 +1,18 @@
-export interface ModifierOption {
+export interface IModifierOption {
   name: string;
   priceAdjustment: number;
   imageUrl?: string;
 }
 
-export interface Modifier {
+export interface IModifier {
   modifierId: string;
   name: string;
-  options: ModifierOption[];
+  options: IModifierOption[];
   isRequired: boolean;
   maxOptions: number;
 }
 
-export interface MenuItem {
+export interface IMenuItem {
   id: string;
   name: string;
   price: number;
@@ -20,9 +20,9 @@ export interface MenuItem {
   category: string;
   isAvailable: boolean;
   imageUrl?: string;
-  modifiers?: Modifier[];
+  modifiers?: IModifier[];
 }
 
-export interface MenuData {
-  items: MenuItem[];
+export interface IMenuData {
+  items: IMenuItem[];
 }

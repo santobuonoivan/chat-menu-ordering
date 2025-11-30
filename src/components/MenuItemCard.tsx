@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { MenuItem } from "@/types/menu";
+import { IMenuItem } from "@/types/menu";
 import ProductModal from "./ProductModal";
 
 interface MenuItemCardProps {
-  item: MenuItem;
+  item: IMenuItem;
 }
 
 export default function MenuItemCard({ item }: MenuItemCardProps) {

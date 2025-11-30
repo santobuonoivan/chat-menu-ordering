@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { MenuItem, Modifier, ModifierOption } from "@/types/menu";
-import { CartModifier } from "@/types/cart";
+import { IMenuItem, IModifier, IModifierOption } from "@/types/menu";
+import { ICartModifier } from "@/types/cart";
 import { useCartStore } from "@/stores/cartStore";
 
 interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: MenuItem;
+  item: IMenuItem;
 }
 
 export default function ProductModal({
@@ -80,8 +80,8 @@ export default function ProductModal({
   };
 
   const handleAddToCart = () => {
-    // Convertir selectedModifiers al formato CartModifier
-    const cartModifiers: CartModifier[] = [];
+    // Convertir selectedModifiers al formato ICartModifier
+    const cartModifiers: ICartModifier[] = [];
 
     item.modifiers?.forEach((modifier) => {
       const selected = selectedModifiers[modifier.modifierId];

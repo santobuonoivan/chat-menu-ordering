@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { CartStore, CartItem, CartModifier } from "@/types/cart";
-import { MenuItem } from "@/types/menu";
+import { ICartStore, ICartItem, ICartModifier } from "@/types/cart";
+import { IMenuItem } from "@/types/menu";
 
 const CART_EXPIRY_MINUTES = 30;
 const STORAGE_KEY = "appio-cart";
 
 const calculateTotalPrice = (
-  menuItem: MenuItem,
-  modifiers: CartModifier[],
+  menuItem: IMenuItem,
+  modifiers: ICartModifier[],
   quantity: number
 ): number => {
   const basePrice = menuItem.price;
@@ -20,8 +20,8 @@ const calculateTotalPrice = (
 };
 
 const generateCartItemId = (
-  menuItem: MenuItem,
-  modifiers: CartModifier[]
+  menuItem: IMenuItem,
+  modifiers: ICartModifier[]
 ): string => {
   const modifierIds = modifiers
     .map((m) => `${m.modifierId}-${m.optionName}`)
@@ -35,7 +35,7 @@ const isCartExpired = (expiresAt: Date | null): boolean => {
   return new Date() > expiresAt;
 };
 
-export const useCartStore = create<CartStore>()(
+export const useCartStore = create<ICartStore>()(
   persist(
     (set, get) => ({
       items: [],
@@ -45,8 +45,8 @@ export const useCartStore = create<CartStore>()(
       expiresAt: null,
 
       addItem: (
-        menuItem: MenuItem,
-        modifiers: CartModifier[] = [],
+        menuItem: IMenuItem,
+        modifiers: ICartModifier[] = [],
         quantity: number = 1
       ) => {
         const state = get();
@@ -99,7 +99,7 @@ export const useCartStore = create<CartStore>()(
           });
         } else {
           // Add new item
-          const newItem: CartItem = {
+          const newItem: ICartItem = {
             id: cartItemId,
             menuItem,
             modifiers,

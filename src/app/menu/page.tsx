@@ -6,18 +6,18 @@ import NavigationHeader from "./../../components/NavigationHeader";
 import CategoryTabs from "./../../components/CategoryTabs";
 import MenuItemCard from "./../../components/MenuItemCard";
 import CartIndicator from "./../../components/CartIndicator";
-import { MenuItem, MenuData } from "./../../types/menu";
+import { IMenuItem, IMenuData } from "./../../types/menu";
 import menuData from "./../../mocks/menu.json";
 
 export default function MenuPage() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] =
     useState<string>("Platos Fuertes");
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [menuItems, setMenuItems] = useState<IMenuItem[]>([]);
 
   // Load menu data
   useEffect(() => {
-    const data = menuData as MenuData;
+    const data = menuData as IMenuData;
     setMenuItems(data.items);
   }, []);
 
