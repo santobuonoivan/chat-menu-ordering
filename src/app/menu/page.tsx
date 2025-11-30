@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import NavigationHeader from "@/components/NavigationHeader";
-import CategoryTabs from "@/components/CategoryTabs";
-import MenuItemCard from "@/components/MenuItemCard";
-import { MenuItem, MenuData } from "@/types/menu";
-import menuData from "@/mocks/menu.json";
+import NavigationHeader from "./../../components/NavigationHeader";
+import CategoryTabs from "./../../components/CategoryTabs";
+import MenuItemCard from "./../../components/MenuItemCard";
+import { MenuItem, MenuData } from "./../../types/menu";
+import menuData from "./../../mocks/menu.json";
 
 export default function MenuPage() {
   const router = useRouter();
@@ -34,8 +34,16 @@ export default function MenuPage() {
     router.push("/");
   };
 
-  const handleAddToCart = (item: MenuItem) => {
-    console.log("Añadir al carrito:", item);
+  const handleAddToCart = (
+    item: MenuItem,
+    modifiers?: any[],
+    quantity?: number
+  ) => {
+    console.log("Añadir al carrito:", {
+      item,
+      modifiers: modifiers || [],
+      quantity: quantity || 1,
+    });
   };
 
   return (
