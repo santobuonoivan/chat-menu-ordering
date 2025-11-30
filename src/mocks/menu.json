@@ -2,12 +2,12 @@
   "items": [
     {
       "id": "f9142e98-7172-4ad2-b41b-25eb8b080d1c",
-      "name": "Salmón a la Parrilla #1",
-      "price": 13.61,
-      "description": "Plato principal servido con guarnición fresca del día.",
+      "name": "Salmón a la Parrilla",
+      "price": 18.5,
+      "description": "Salmón fresco con espárragos y salsa de limón.",
       "category": "Platos Fuertes",
       "isAvailable": true,
-      "imageUrl": "https://placehold.co/400x200/be185d/ffffff?text=Salm%C3%B3n_a_la_Parrilla_%231",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCvYGJAsGSsMXelXCgui7uQzH1JYO1t-LB6YrLR7T3IzYCFp55ZG4GNsUa_2JFa3q_dQyDdEgicei5SZe9U8RmlWBimHudvg2z5zMyXDXR201RVEM7izDJxR2WDRqEek8-OlrAKXIgA_g3Gfay7dOJJkv1aRTZWHhuQmwfbZg7zCbaxU40tON486ptZZn8McWeLke-Vjpn646eEkwBNU4mPEygHJbUcgdxHlcgdxJ2ljMwq7QPlSPNvdo9t5YpOaz-Iq3CmGLU5HUBR",
       "modifiers": [
         {
           "modifierId": "b64ce0cc-fd07-4000-bae3-1e9c13fb8ac8",
@@ -296,6 +296,56 @@
           "maxOptions": 1
         }
       ]
+    },
+    {
+      "id": "filete-res-001",
+      "name": "Filete de Res",
+      "price": 24.0,
+      "description": "Corte de primera con patatas al romero.",
+      "category": "Platos Fuertes",
+      "isAvailable": true,
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCQAQXF4Kz8uOtJEhhjuR0c6rFxD3Ww2StLW50a1VoV3yE1UOAeJ2fva5zOmWX6YDnNlZDBGpoFuoLgfAdQ4fTR5jUNn6ebkWOeudQ9YJkgRtlR0pIcDlBo9lTmiXhDuhTJ0N8kFxwIGSU6ymvdOb3lUrYEjoIANql84_jVNvPYv6pxv17BQ1oy-xMpBqIMWCnUWNx-957xnkgtoUH4njA_rcSYvLLek5Q_jH2pCmr2sqpfhpwj9BXTSeAwha1Hj_ZgSFajr9V86ojS",
+      "modifiers": []
+    },
+    {
+      "id": "pasta-pomodoro-001",
+      "name": "Pasta Pomodoro",
+      "price": 15.75,
+      "description": "Pasta fresca con salsa de tomate y albahaca.",
+      "category": "Platos Fuertes",
+      "isAvailable": true,
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuAjoq8oVVs_VTGttRN6AO2ccSjaQBMECIY0I73tLgt-qv4EstzrwQvX304yhM8VcovkuWzQkOn9GpuKCpNSP9FhuXxdl93WiF1_OBMqoINd4MOQb92-FURPsc1rx7qq2EtoXbKyJ50WNYQANyBiXkFGT5is9It9HXbIosPA5xxyBa_V-Qh3TOl3W_7PzE5KbK7JPgswTziKMmhRfY51RyUvgA4RaNn36gDCM0YmKJyQ-poW255sHzXcdsRXYucSToplYHSWlrShZBjN",
+      "modifiers": []
+    },
+    {
+      "id": "ensalada-cesar-001",
+      "name": "Ensalada César",
+      "price": 12.5,
+      "description": "Lechuga romana, queso parmesano y aderezo césar.",
+      "category": "Ensaladas",
+      "isAvailable": true,
+      "imageUrl": "https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=400&h=300",
+      "modifiers": []
+    },
+    {
+      "id": "coca-cola-001",
+      "name": "Coca Cola",
+      "price": 3.5,
+      "description": "Refresco de cola clásico, lata de 355ml.",
+      "category": "Bebidas",
+      "isAvailable": true,
+      "imageUrl": "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=400&h=300",
+      "modifiers": []
+    },
+    {
+      "id": "tiramisu-001",
+      "name": "Tiramisú",
+      "price": 8.75,
+      "description": "Postre italiano con café y mascarpone.",
+      "category": "Postres",
+      "isAvailable": true,
+      "imageUrl": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&h=300",
+      "modifiers": []
     }
   ],
   "name": "Almuerzo",

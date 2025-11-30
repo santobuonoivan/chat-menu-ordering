@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import TopNavBar from "@/components/TopNavBar";
 import MessageBubble from "@/components/MessageBubble";
 import ActionChips from "@/components/ActionChips";
@@ -14,6 +15,7 @@ interface Message {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -28,6 +30,9 @@ export default function Home() {
       timestamp: new Date(),
     },
   ]);
+
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleSendMessage = (message: string) => {
     const newMessage: Message = {
@@ -52,8 +57,12 @@ export default function Home() {
 
   let afterSender: "user" | "assistant" | null = null;
 
-  const handleChipClick = (chip: string) => {
+  const handleChipClick = async (chip: string) => {
     handleSendMessage(chip);
+    await sleep(2000);
+    if (chip === "Ver Menú Digital") {
+      router.push("/menu");
+    }
   };
 
   const handleClose = () => {
