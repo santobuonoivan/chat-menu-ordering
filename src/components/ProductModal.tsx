@@ -2,29 +2,26 @@
 
 import { useState } from "react";
 import { MenuItem, Modifier, ModifierOption } from "@/types/menu";
+import { CartModifier } from "@/types/cart";
+import { useCartStore } from "@/stores/cartStore";
 
 interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   item: MenuItem;
-  onAddToCart: (
-    item: MenuItem,
-    selectedModifiers: any[],
-    quantity: number
-  ) => void;
 }
 
 export default function ProductModal({
   isOpen,
   onClose,
   item,
-  onAddToCart,
 }: ProductModalProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedModifiers, setSelectedModifiers] = useState<{
     [key: string]: string | string[];
   }>({});
-  const [totalPrice, setTotalPrice] = useState(item.price);
+  
+  const addItem = useCartStore((state) => state.addItem);
 
   // Calcular precio total basado en modificadores seleccionados
   const calculateTotalPrice = () => {
@@ -83,7 +80,41 @@ export default function ProductModal({
   };
 
   const handleAddToCart = () => {
-    onAddToCart(item, Object.entries(selectedModifiers), quantity);
+    // Convertir selectedModifiers al formato CartModifier
+    const cartModifiers: CartModifier[] = [];
+    
+    item.modifiers?.forEach((modifier) => {
+      const selected = selectedModifiers[modifier.modifierId];
+      if (selected) {
+        if (Array.isArray(selected)) {
+          // Para checkboxes (múltiples selecciones)
+          selected.forEach((optionName) => {
+            const option = modifier.options.find(opt => opt.name === optionName);
+            if (option) {
+              cartModifiers.push({
+                modifierId: modifier.modifierId,
+                modifierName: modifier.name,
+                optionName: option.name,
+                priceAdjustment: option.priceAdjustment
+              });
+            }
+          });
+        } else {
+          // Para radio buttons (una sola selección)
+          const option = modifier.options.find(opt => opt.name === selected);
+          if (option) {
+            cartModifiers.push({
+              modifierId: modifier.modifierId,
+              modifierName: modifier.name,
+              optionName: option.name,
+              priceAdjustment: option.priceAdjustment
+            });
+          }
+        }
+      }
+    });
+
+    addItem(item, cartModifiers, quantity);
     onClose();
   };
 

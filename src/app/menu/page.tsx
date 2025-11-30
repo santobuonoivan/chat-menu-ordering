@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import NavigationHeader from "./../../components/NavigationHeader";
 import CategoryTabs from "./../../components/CategoryTabs";
 import MenuItemCard from "./../../components/MenuItemCard";
+import CartIndicator from "./../../components/CartIndicator";
 import { MenuItem, MenuData } from "./../../types/menu";
 import menuData from "./../../mocks/menu.json";
 
@@ -32,18 +33,6 @@ export default function MenuPage() {
 
   const handleBack = () => {
     router.push("/");
-  };
-
-  const handleAddToCart = (
-    item: MenuItem,
-    modifiers?: any[],
-    quantity?: number
-  ) => {
-    console.log("Añadir al carrito:", {
-      item,
-      modifiers: modifiers || [],
-      quantity: quantity || 1,
-    });
   };
 
   return (
@@ -78,12 +67,12 @@ export default function MenuPage() {
               <MenuItemCard
                 key={item.id}
                 item={item}
-                onAddToCart={handleAddToCart}
               />
             ))}
           </div>
         </div>
       </div>
+      <CartIndicator />
     </div>
   );
 }

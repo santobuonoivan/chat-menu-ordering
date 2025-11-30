@@ -10,7 +10,7 @@ export default function MessageBubble({
   afterSender,
   message,
   sender,
-  senderName = sender === "assistant" ? "Asistente Wineture" : "Tú",
+  senderName = sender === "assistant" ? "Asistente Appio" : "Tú",
   avatarUrl,
 }: MessageBubbleProps) {
   const defaultAvatarUrl =

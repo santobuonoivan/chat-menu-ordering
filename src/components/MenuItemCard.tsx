@@ -4,10 +4,9 @@ import ProductModal from "./ProductModal";
 
 interface MenuItemCardProps {
   item: MenuItem;
-  onAddToCart?: (item: MenuItem, modifiers?: any[], quantity?: number) => void;
 }
 
-export default function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
+export default function MenuItemCard({ item }: MenuItemCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCardClick = () => {
@@ -17,14 +16,6 @@ export default function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
   const handleAddClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsModalOpen(true);
-  };
-
-  const handleModalAddToCart = (
-    item: MenuItem,
-    modifiers: any[],
-    quantity: number
-  ) => {
-    onAddToCart?.(item, modifiers, quantity);
   };
 
   // Fallback image if no imageUrl is provided
@@ -85,7 +76,6 @@ export default function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         item={item}
-        onAddToCart={handleModalAddToCart}
       />
     </>
   );
