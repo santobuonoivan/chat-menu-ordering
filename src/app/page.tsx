@@ -28,7 +28,10 @@ export default function Home() {
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const handleSendMessage = (message: string) => {
+  const handleSendMessage = (
+    message: string,
+    messageBody?: IMessage | null
+  ) => {
     const newMessage: IMessage = {
       id: messages.length + 1,
       text: message,
@@ -37,16 +40,23 @@ export default function Home() {
     };
     setMessages((prev) => [...prev, newMessage]);
 
-    // Simular respuesta del asistente después de un breve delay
-    setTimeout(() => {
-      const assistantResponse: IMessage = {
-        id: messages.length + 2,
-        text: "Gracias por tu mensaje. Te mostraré el menú digital para que puedas elegir.",
-        sender: "assistant",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, assistantResponse]);
-    }, 1000);
+    if (message.toLowerCase() == "ver menú digital") {
+      // Simular respuesta del asistente después de un breve delay
+      setTimeout(() => {
+        const assistantResponse: IMessage = {
+          id: messages.length + 2,
+          text: "Gracias por tu mensaje. Te mostraré el menú digital para que puedas elegir.",
+          sender: "assistant",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, assistantResponse]);
+      }, 1000);
+    } else if (messageBody) {
+      // Simular respuesta genérica del asistente
+      setTimeout(() => {
+        setMessages((prev) => [...prev, messageBody]);
+      }, 1000);
+    }
   };
 
   let afterSender: "user" | "assistant" | null = null;
@@ -100,6 +110,7 @@ export default function Home() {
                 message={message.text}
                 sender={message.sender}
                 afterSender={afterSender}
+                data={message.data}
               />
             );
           })}
