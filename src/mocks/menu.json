@@ -1,0 +1,305 @@
+{
+  "items": [
+    {
+      "id": "f9142e98-7172-4ad2-b41b-25eb8b080d1c",
+      "name": "Salmón a la Parrilla #1",
+      "price": 13.61,
+      "description": "Plato principal servido con guarnición fresca del día.",
+      "category": "Platos Fuertes",
+      "isAvailable": true,
+      "imageUrl": "https://placehold.co/400x200/be185d/ffffff?text=Salm%C3%B3n_a_la_Parrilla_%231",
+      "modifiers": [
+        {
+          "modifierId": "b64ce0cc-fd07-4000-bae3-1e9c13fb8ac8",
+          "name": "Adicionales",
+          "options": [
+            {
+              "name": "Extra Queso",
+              "priceAdjustment": 3.08,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Extra_Queso"
+            },
+            {
+              "name": "Aguacate",
+              "priceAdjustment": 0.56,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Aguacate"
+            },
+            {
+              "name": "Tocino",
+              "priceAdjustment": 0.58,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Tocino"
+            },
+            {
+              "name": "Huevo Frito",
+              "priceAdjustment": 0.56,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Huevo_Frito"
+            }
+          ],
+          "isRequired": false,
+          "maxOptions": 2
+        },
+        {
+          "modifierId": "85a95a5c-5b99-4397-b31d-0dfdc7c38991",
+          "name": "Tamaño",
+          "options": [
+            {
+              "name": "Pequeño",
+              "priceAdjustment": 0.81,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Peque%C3%B1o"
+            },
+            {
+              "name": "Mediano",
+              "priceAdjustment": 1.21,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Mediano"
+            },
+            {
+              "name": "Grande",
+              "priceAdjustment": 1.67,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Grande"
+            }
+          ],
+          "isRequired": true,
+          "maxOptions": 1
+        }
+      ]
+    },
+    {
+      "id": "ca0772a8-a41f-4ff7-a599-0a8f24a64ed8",
+      "name": "Aros de Cebolla #2",
+      "price": 5.08,
+      "description": "Aperitivo o acompañamiento ligero.",
+      "category": "Ensaladas",
+      "isAvailable": true,
+      "imageUrl": "https://placehold.co/400x200/2563eb/ffffff?text=Aros_de_Cebolla_%232",
+      "modifiers": [
+        {
+          "modifierId": "1e9e69a5-e808-4f28-9344-27078ec35598",
+          "name": "Adicionales",
+          "options": [
+            {
+              "name": "Extra Queso",
+              "priceAdjustment": 3.02,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Extra_Queso"
+            },
+            {
+              "name": "Aguacate",
+              "priceAdjustment": 0.67,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Aguacate"
+            },
+            {
+              "name": "Tocino",
+              "priceAdjustment": 1.24,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Tocino"
+            },
+            {
+              "name": "Huevo Frito",
+              "priceAdjustment": 1.38,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Huevo_Frito"
+            }
+          ],
+          "isRequired": false,
+          "maxOptions": 2
+        },
+        {
+          "modifierId": "5178e67b-a073-476b-b19c-6756246240af",
+          "name": "Nivel de Picante",
+          "options": [
+            {
+              "name": "Suave",
+              "priceAdjustment": 1.05,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Suave"
+            },
+            {
+              "name": "Medio",
+              "priceAdjustment": 0.61,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Medio"
+            },
+            {
+              "name": "Picante",
+              "priceAdjustment": 1.4,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Picante"
+            },
+            {
+              "name": "Infierno",
+              "priceAdjustment": 0.44,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Infierno"
+            }
+          ],
+          "isRequired": false,
+          "maxOptions": 1
+        }
+      ]
+    },
+    {
+      "id": "8388cd1c-19dd-46f6-8acb-a7006abb076e",
+      "name": "Pasta Alfredo #3",
+      "price": 11.46,
+      "description": "Plato principal servido con guarnición fresca del día.",
+      "category": "Platos Fuertes",
+      "isAvailable": true,
+      "imageUrl": "https://placehold.co/400x200/be185d/ffffff?text=Pasta_Alfredo_%233",
+      "modifiers": [
+        {
+          "modifierId": "caae2b0d-1eff-4cca-975e-2d8ea681d9af",
+          "name": "Salsa",
+          "options": [
+            {
+              "name": "BBQ",
+              "priceAdjustment": 1.18,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=BBQ"
+            },
+            {
+              "name": "Buffalo",
+              "priceAdjustment": 0.09,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Buffalo"
+            },
+            {
+              "name": "Chipotle",
+              "priceAdjustment": 0.65,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Chipotle"
+            },
+            {
+              "name": "Mayonesa",
+              "priceAdjustment": 0.28,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Mayonesa"
+            }
+          ],
+          "isRequired": true,
+          "maxOptions": 1
+        }
+      ]
+    },
+    {
+      "id": "05ab756a-336f-4973-83b6-574989dedf80",
+      "name": "Hamburguesa Clásica #4",
+      "price": 14.61,
+      "description": "Plato principal servido con guarnición fresca del día.",
+      "category": "Platos Fuertes",
+      "isAvailable": true,
+      "imageUrl": "https://placehold.co/400x200/be185d/ffffff?text=Hamburguesa_Cl%C3%A1sica_%234",
+      "modifiers": [
+        {
+          "modifierId": "b7903aa2-b73b-48e4-9b99-249728cb6ea1",
+          "name": "Tamaño",
+          "options": [
+            {
+              "name": "Pequeño",
+              "priceAdjustment": 0.63,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Peque%C3%B1o"
+            },
+            {
+              "name": "Mediano",
+              "priceAdjustment": 0.78,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Mediano"
+            },
+            {
+              "name": "Grande",
+              "priceAdjustment": 2.77,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Grande"
+            }
+          ],
+          "isRequired": true,
+          "maxOptions": 1
+        }
+      ]
+    },
+    {
+      "id": "244b0ae5-f986-4404-b8bd-598fee1d18c1",
+      "name": "Americano #5",
+      "price": 3.44,
+      "description": "Bebida caliente artesanal a base de espresso.",
+      "category": "Bebidas Calientes",
+      "isAvailable": false,
+      "imageUrl": "https://placehold.co/400x200/65a30d/ffffff?text=Americano_%235",
+      "modifiers": [
+        {
+          "modifierId": "a20e7ed9-1b29-4cb0-b153-9e5492b2bdd2",
+          "name": "Salsa",
+          "options": [
+            {
+              "name": "BBQ",
+              "priceAdjustment": 0.47,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=BBQ"
+            },
+            {
+              "name": "Buffalo",
+              "priceAdjustment": 1.45,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Buffalo"
+            },
+            {
+              "name": "Chipotle",
+              "priceAdjustment": 0.18,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Chipotle"
+            },
+            {
+              "name": "Mayonesa",
+              "priceAdjustment": 1.23,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Mayonesa"
+            }
+          ],
+          "isRequired": true,
+          "maxOptions": 1
+        },
+        {
+          "modifierId": "49bd8e74-3ee6-402d-8bd1-20cbc771bf65",
+          "name": "Tipo de Leche",
+          "options": [
+            {
+              "name": "Entera",
+              "priceAdjustment": 0.58,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Entera"
+            },
+            {
+              "name": "Deslactosada",
+              "priceAdjustment": 1.12,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Deslactosada"
+            },
+            {
+              "name": "Almendra",
+              "priceAdjustment": 1.5,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Almendra"
+            },
+            {
+              "name": "Avena",
+              "priceAdjustment": 0.83,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Avena"
+            }
+          ],
+          "isRequired": true,
+          "maxOptions": 1
+        },
+        {
+          "modifierId": "5b880f7a-8151-4db2-8e8e-b7419715e794",
+          "name": "Nivel de Picante",
+          "options": [
+            {
+              "name": "Suave",
+              "priceAdjustment": 1.38,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Suave"
+            },
+            {
+              "name": "Medio",
+              "priceAdjustment": 0.95,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Medio"
+            },
+            {
+              "name": "Picante",
+              "priceAdjustment": 0.63,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Picante"
+            },
+            {
+              "name": "Infierno",
+              "priceAdjustment": 1.36,
+              "imageUrl": "https://placehold.co/100x100/2563eb/ffffff?text=Infierno"
+            }
+          ],
+          "isRequired": false,
+          "maxOptions": 1
+        }
+      ]
+    }
+  ],
+  "name": "Almuerzo",
+  "description": "Opciones rápidas y deliciosas disponibles solo hoy.",
+  "lastUpdated": "2025-11-30T19:29:19.978Z",
+  "uuid": "dcbd1dd9-ba4d-4756-9575-01445a5f3a5b"
+}
