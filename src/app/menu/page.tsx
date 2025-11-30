@@ -64,10 +64,7 @@ export default function MenuPage() {
             </h2>
 
             {filteredItems.map((item) => (
-              <MenuItemCard
-                key={item.id}
-                item={item}
-              />
+              <MenuItemCard key={item.id} item={item} />
             ))}
           </div>
         </div>

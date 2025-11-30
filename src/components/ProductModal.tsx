@@ -20,7 +20,7 @@ export default function ProductModal({
   const [selectedModifiers, setSelectedModifiers] = useState<{
     [key: string]: string | string[];
   }>({});
-  
+
   const addItem = useCartStore((state) => state.addItem);
 
   // Calcular precio total basado en modificadores seleccionados
@@ -82,32 +82,34 @@ export default function ProductModal({
   const handleAddToCart = () => {
     // Convertir selectedModifiers al formato CartModifier
     const cartModifiers: CartModifier[] = [];
-    
+
     item.modifiers?.forEach((modifier) => {
       const selected = selectedModifiers[modifier.modifierId];
       if (selected) {
         if (Array.isArray(selected)) {
           // Para checkboxes (múltiples selecciones)
           selected.forEach((optionName) => {
-            const option = modifier.options.find(opt => opt.name === optionName);
+            const option = modifier.options.find(
+              (opt) => opt.name === optionName
+            );
             if (option) {
               cartModifiers.push({
                 modifierId: modifier.modifierId,
                 modifierName: modifier.name,
                 optionName: option.name,
-                priceAdjustment: option.priceAdjustment
+                priceAdjustment: option.priceAdjustment,
               });
             }
           });
         } else {
           // Para radio buttons (una sola selección)
-          const option = modifier.options.find(opt => opt.name === selected);
+          const option = modifier.options.find((opt) => opt.name === selected);
           if (option) {
             cartModifiers.push({
               modifierId: modifier.modifierId,
               modifierName: modifier.name,
               optionName: option.name,
-              priceAdjustment: option.priceAdjustment
+              priceAdjustment: option.priceAdjustment,
             });
           }
         }
