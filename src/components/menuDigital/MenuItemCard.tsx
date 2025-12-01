@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IMenuItem } from "@/types/menu";
 import ProductModal from "./ProductModal";
+import { useChatStore } from "@/stores/chatStore";
 
 interface MenuItemCardProps {
   item: IMenuItem;

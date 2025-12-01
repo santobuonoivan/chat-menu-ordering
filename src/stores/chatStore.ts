@@ -7,9 +7,12 @@ interface ChatState {
   messages: IMessage[];
   showListMenuItems: boolean;
   setShowListMenuItems: (show: boolean) => void;
+  showListModifiers: boolean;
+  setShowListModifiers: (show: boolean) => void;
   addMessage: (message: IMessage) => void;
   setMessages: (messages: IMessage[]) => void;
   clearMessages: () => void;
+  resetToInitial: () => void;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -43,9 +46,31 @@ export const useChatStore = create<ChatState>()(
       clearMessages: () => {
         set({ messages: [] });
       },
+
+      resetToInitial: () => {
+        const initialMessages = [
+          {
+            id: generateUUID(),
+            text: "¡Hola! ¿Cómo estás? Soy tu Asistente Digital. ¿En qué te puedo ayudar hoy?",
+            sender: "assistant" as const,
+            timestamp: new Date(),
+          },
+          {
+            id: generateUUID(),
+            text: "Puedes hablar conmigo para pedir algo delicioso o puedes acceder a la gestión por menú digital.",
+            sender: "assistant" as const,
+            timestamp: new Date(),
+          },
+        ];
+        set({ messages: initialMessages });
+      },
       showListMenuItems: false,
       setShowListMenuItems: (show: boolean) => {
         set({ showListMenuItems: show });
+      },
+      showListModifiers: false,
+      setShowListModifiers: (show: boolean) => {
+        set({ showListModifiers: show });
       },
     }),
     {

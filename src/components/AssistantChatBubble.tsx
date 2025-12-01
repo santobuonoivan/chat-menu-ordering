@@ -1,7 +1,7 @@
 import { IMessage } from "@/types/chat";
-import ModifierChat from "./modifierChatCard";
 import ItemChatCard from "./ItemChatCard";
 import { useChatStore } from "@/stores/chatStore";
+import ModifierChatCard from "./modifierChatCard";
 
 interface AssistantChatBubbleProps {
   message: string;
@@ -18,7 +18,7 @@ export default function AssistantChatBubble({
   avatarUrl,
   data,
 }: AssistantChatBubbleProps) {
-  const { showListMenuItems } = useChatStore();
+  const { showListMenuItems, showListModifiers } = useChatStore();
   const defaultAvatarUrl =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDNmKa-EkUU4XqRtnBRlyyJ_tD6KNtRHf1ETzkN_u9j8slcMXx2oPh-DbODa-9hvXgzsuKbWanRB2r0eyUO3klnXKU7Dzxm_dAVpTchJNgtVeD2UuX1Zj8vsrGRFaKoqYa3S2ez3_RWwqNZS8NartY1ePM-J48BkgaUAnYoD_Pg-Vo37_fuTLT6Z7rSfG_3yADtNcHoWl3qYX1lX3ucqnsnN4xTwTPB5jWMboZOYNpPYshT2y-o2s2xtiAWoNl4si63fykgixBuR7jl";
 
@@ -53,12 +53,13 @@ export default function AssistantChatBubble({
           </div>
         )}
         {/* Renderizar items si hay data */}
-        {data &&
+        {showListModifiers &&
+          data &&
           data.modifiers &&
           data.modifiers.length > 0 &&
           data.itemSelected && (
             <div className="flex flex-col gap-2 mt-2 max-w-xs">
-              <ModifierChat
+              <ModifierChatCard
                 key={data.itemSelected.id}
                 item={data.itemSelected}
                 modifiers={data.modifiers}

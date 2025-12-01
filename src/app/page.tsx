@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import TopNavBar from "@/components/TopNavBar";
+import TopNavBar from "@/components/menuDigital/TopNavBar";
 import MessageBubble from "@/components/MessageBubble";
-import ActionChips from "@/components/ActionChips";
+import ActionChips from "@/components/menuDigital/ActionChips";
 import MessageComposer from "@/components/MessageComposer";
 import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";

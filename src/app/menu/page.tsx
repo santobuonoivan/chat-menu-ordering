@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import NavigationHeader from "./../../components/NavigationHeader";
-import CategoryTabs from "./../../components/CategoryTabs";
-import MenuItemCard from "./../../components/MenuItemCard";
-import CartIndicator from "./../../components/CartIndicator";
+import NavigationHeader from "../../components/menuDigital/NavigationHeader";
+import CategoryTabs from "../../components/menuDigital/CategoryTabs";
+import MenuItemCard from "../../components/menuDigital/MenuItemCard";
+import CartIndicator from "../../components/menuDigital/CartIndicator";
 import { IMenuItem, IMenuData } from "./../../types/menu";
 import menuData from "./../../mocks/menu.json";
 

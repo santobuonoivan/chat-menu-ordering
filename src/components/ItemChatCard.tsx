@@ -8,8 +8,8 @@ interface ItemChatProps {
 }
 
 export default function ItemChatCard({ item, action }: ItemChatProps) {
-  const { messages, addMessage } = useChatStore();
-
+  const { addMessage } = useChatStore();
+  const { setShowListMenuItems, setShowListModifiers } = useChatStore();
   const handleActionClick = async () => {
     // Esta función será utilizada más adelante para manejar acciones del carrito
     console.log("Action clicked:", action, "for item:", item);
@@ -20,8 +20,11 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
       sender: "user",
       timestamp: new Date(),
     });
+    setShowListMenuItems(false);
+
     await sleep(100);
-    if (item.modifiers && item.modifiers.length === 0) {
+    if (item.modifiers && item.modifiers.length > 0) {
+      setShowListModifiers(true);
       addMessage({
         id: generateUUID(),
         text: `Puedo agregarle a tu ${item.name} :`,
@@ -36,7 +39,7 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
     } else {
       addMessage({
         id: generateUUID(),
-        text: `He agregado ${item.name} a tu pedido.`,
+        text: `He agregado ${item.name} a tu pedido. Puedo ayudarte con algo más?`,
         sender: "assistant",
         timestamp: new Date(),
       });

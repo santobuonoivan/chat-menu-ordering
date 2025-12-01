@@ -1,6 +1,7 @@
 "use client";
 
 import { useChatStore } from "@/stores/chatStore";
+import { useCartStore } from "@/stores/cartStore";
 import { IMessage } from "@/types/chat";
 import { generateUUID } from "@/utils";
 import { useState } from "react";
@@ -19,7 +20,8 @@ export default function MessageComposer({
   placeholder = "Escribe tu mensaje aquí...",
 }: MessageComposerProps) {
   const [message, setMessage] = useState("");
-  const { setShowListMenuItems } = useChatStore();
+  const { setShowListMenuItems, resetToInitial } = useChatStore();
+  const { resetCart } = useCartStore();
 
   const handleSend = () => {
     const mockBody: IMessage = {
@@ -181,7 +183,9 @@ export default function MessageComposer({
     };
     if (message.trim()) {
       if (message.toLowerCase() === "cancelar") {
-        // debe resertar chat y carrito
+        // Resetear chat y carrito
+        resetToInitial();
+        resetCart();
       } else if (message.toLowerCase() != "ver menú digital") {
         setShowListMenuItems(true);
         onSendMessage?.(message, mockBody);
