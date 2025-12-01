@@ -8,25 +8,33 @@ import MessageComposer from "@/components/MessageComposer";
 import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
 import { generateUUID, sleep } from "@/utils";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import { menuService } from "@/services";
 
 export default function Home() {
   const router = useRouter();
   const { messages, addMessage } = useChatStore();
-  const [uuid, setUuid] = useState("");
   const [restNumber, setRestNumber] = useState("");
 
   /** tomar de la url el uuid y restNumber */
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const uuidParam = urlParams.get("uuid");
     const restNumberParam = urlParams.get("phone");
-
-    if (uuidParam) setUuid(uuidParam);
     if (restNumberParam) setRestNumber(restNumberParam);
-    console.log("UUID:", uuidParam);
     console.log("Rest Number:", restNumberParam);
   }, []);
+
+  useEffect(() => {
+    if (restNumber) {
+      menuService.getMenuItems(restNumber).then((response) => {
+        if (response.success) {
+          console.log("Menu Items:", response.data);
+        } else {
+          console.error("Error fetching menu items:", response.error);
+        }
+      });
+    }
+  }, [restNumber]);
 
   const handleSendMessage = (
     message: string,
