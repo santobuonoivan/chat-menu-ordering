@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useChatStore } from "@/stores/chatStore";
+import { useCartStore } from "@/stores/cartStore";
 import { IMenuItem, IModifier, IModifierOption } from "@/types/menu";
+import { ICartModifier } from "@/types/cart";
 import { generateUUID, sleep } from "@/utils";
 
 interface ModifierChatProps {
@@ -21,6 +23,7 @@ export default function ModifierChatCard({
 }: ModifierChatProps) {
   const { messages, addMessage, setShowListModifiers, showListModifiers } =
     useChatStore();
+  const { addItem } = useCartStore();
   const [selectedModifiers, setSelectedModifiers] = useState<
     SelectedModifier[]
   >(
@@ -108,10 +111,28 @@ export default function ModifierChatCard({
 
     console.log("Configuración de modificadores:", config);
     setShowListModifiers(false);
+    
+    // Convertir modificadores seleccionados al formato del carrito
+    const cartModifiers: ICartModifier[] = [];
+    selectedModifiers.forEach((selected) => {
+      const modifier = modifiers.find(m => m.modifierId === selected.modifierId);
+      selected.selectedOptions.forEach((option) => {
+        cartModifiers.push({
+          modifierId: selected.modifierId,
+          modifierName: modifier?.name || '',
+          optionName: option.name,
+          priceAdjustment: option.priceAdjustment,
+        });
+      });
+    });
+
+    // Agregar al carrito con los modificadores seleccionados
+    addItem(item, cartModifiers, 1);
+
     addMessage({
       id: generateUUID(),
-      text: `He agregardo los adicionales a tu ${item.name}. Puedo ayudarte con algo más?`,
-      sender: "user",
+      text: `He agregado los adicionales a tu ${item.name}. ¿Puedo ayudarte con algo más?`,
+      sender: "assistant",
       timestamp: new Date(),
     });
   };

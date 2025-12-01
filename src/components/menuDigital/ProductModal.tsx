@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IMenuItem, IModifier, IModifierOption } from "@/types/menu";
 import { ICartModifier } from "@/types/cart";
 import { useCartStore } from "@/stores/cartStore";
@@ -9,19 +9,35 @@ interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   item: IMenuItem;
+  initialQuantity?: number;
+  initialModifiers?: {
+    [key: string]: string | string[];
+  };
+  isEditing?: boolean;
 }
 
 export default function ProductModal({
   isOpen,
   onClose,
   item,
+  initialQuantity = 1,
+  initialModifiers = {},
+  isEditing = false,
 }: ProductModalProps) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(initialQuantity);
   const [selectedModifiers, setSelectedModifiers] = useState<{
     [key: string]: string | string[];
-  }>({});
+  }>(initialModifiers);
 
   const addItem = useCartStore((state) => state.addItem);
+
+  // Actualizar valores cuando cambie el modal o los datos iniciales
+  useEffect(() => {
+    if (isOpen) {
+      setQuantity(initialQuantity);
+      setSelectedModifiers(initialModifiers);
+    }
+  }, [isOpen, initialQuantity, initialModifiers]);
 
   // Calcular precio total basado en modificadores seleccionados
   const calculateTotalPrice = () => {
@@ -130,11 +146,11 @@ export default function ProductModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center p-4"
+      className="fixed inset-0 z-[60] flex items-start justify-center p-4 overflow-y-auto"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
       <div
-        className="relative w-full max-w-[450px] overflow-hidden rounded-xl pb-20 mt-8"
+        className="relative w-full max-w-[450px] rounded-xl pb-20 mt-8 mb-8"
         style={{
           backgroundColor: "#f7f8f6",
         }}
