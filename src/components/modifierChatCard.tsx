@@ -19,7 +19,8 @@ export default function ModifierChatCard({
   modifiers,
   action,
 }: ModifierChatProps) {
-  const { messages, addMessage } = useChatStore();
+  const { messages, addMessage, setShowListModifiers, showListModifiers } =
+    useChatStore();
   const [selectedModifiers, setSelectedModifiers] = useState<
     SelectedModifier[]
   >(
@@ -106,10 +107,10 @@ export default function ModifierChatCard({
     };
 
     console.log("Configuración de modificadores:", config);
-
+    setShowListModifiers(false);
     addMessage({
       id: generateUUID(),
-      text: `He configurado tu ${item.name} con los modificadores seleccionados.`,
+      text: `He agregardo los adicionales a tu ${item.name}.`,
       sender: "user",
       timestamp: new Date(),
     });
