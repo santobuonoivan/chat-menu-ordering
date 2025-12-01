@@ -1,60 +1,45 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import TopNavBar from "@/components/TopNavBar";
 import MessageBubble from "@/components/MessageBubble";
 import ActionChips from "@/components/ActionChips";
 import MessageComposer from "@/components/MessageComposer";
 import { IMessage } from "@/types/chat";
+import { useChatStore } from "@/stores/chatStore";
+import { generateUUID, sleep } from "@/utils";
 
 export default function Home() {
   const router = useRouter();
-  const [messages, setMessages] = useState<IMessage[]>([
-    {
-      id: 1,
-      text: "¡Hola! ¿Cómo estás? Soy tu Asistente Digital. ¿En qué te puedo ayudar hoy?",
-      sender: "assistant",
-      timestamp: new Date(),
-    },
-    {
-      id: 2,
-      text: "Puedes hablar conmigo para pedir algo delicioso o puedes acceder a la gestión por menú digital.",
-      sender: "assistant",
-      timestamp: new Date(),
-    },
-  ]);
-
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const { messages, addMessage } = useChatStore();
 
   const handleSendMessage = (
     message: string,
     messageBody?: IMessage | null
   ) => {
     const newMessage: IMessage = {
-      id: messages.length + 1,
+      id: generateUUID(),
       text: message,
       sender: "user",
       timestamp: new Date(),
     };
-    setMessages((prev) => [...prev, newMessage]);
+    addMessage(newMessage);
 
     if (message.toLowerCase() == "ver menú digital") {
       // Simular respuesta del asistente después de un breve delay
       setTimeout(() => {
         const assistantResponse: IMessage = {
-          id: messages.length + 2,
+          id: generateUUID(),
           text: "Gracias por tu mensaje. Te mostraré el menú digital para que puedas elegir.",
           sender: "assistant",
           timestamp: new Date(),
         };
-        setMessages((prev) => [...prev, assistantResponse]);
+        addMessage(assistantResponse);
       }, 1000);
     } else if (messageBody) {
       // Simular respuesta genérica del asistente
       setTimeout(() => {
-        setMessages((prev) => [...prev, messageBody]);
+        addMessage(messageBody);
       }, 1000);
     }
   };

@@ -1,43 +1,46 @@
-import { IMessage } from "@/types/chat";
+import { useChatStore } from "@/stores/chatStore";
 import { IMenuItem } from "@/types/menu";
+import { generateUUID, sleep } from "@/utils";
 
 interface ItemChatProps {
   item: IMenuItem;
   action: string;
 }
 
-export default function ItemChat({ item, action }: ItemChatProps) {
-  const handleSendMessage = (messageBody: IMessage) => {
-    const newMessage: IMessage = {
-      id: messages.length + 1,
-      text: "agrega " + messageBody.text,
+export default function ItemChatCard({ item, action }: ItemChatProps) {
+  const { messages, addMessage } = useChatStore();
+
+  const handleActionClick = async () => {
+    // Esta función será utilizada más adelante para manejar acciones del carrito
+    console.log("Action clicked:", action, "for item:", item);
+
+    addMessage({
+      id: generateUUID(),
+      text: `Agrega ${item.name} a tu pedido.`,
       sender: "user",
       timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, newMessage]);
-
-    if (message.toLowerCase() == "ver menú digital") {
-      // Simular respuesta del asistente después de un breve delay
-      setTimeout(() => {
-        const assistantResponse: IMessage = {
-          id: messages.length + 2,
-          text: "Gracias por tu mensaje. Te mostraré el menú digital para que puedas elegir.",
-          sender: "assistant",
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, assistantResponse]);
-      }, 1000);
-    } else if (messageBody) {
-      // Simular respuesta genérica del asistente
-      setTimeout(() => {
-        setMessages((prev) => [...prev, messageBody]);
-      }, 1000);
+    });
+    await sleep(100);
+    if (item.modifiers && item.modifiers.length === 0) {
+      addMessage({
+        id: generateUUID(),
+        text: `Puedo agregarle a tu ${item.name} :`,
+        sender: "assistant",
+        timestamp: new Date(),
+        data: {
+          modifiers: item.modifiers,
+          itemSelected: item,
+          action: "add_modifier",
+        },
+      });
+    } else {
+      addMessage({
+        id: generateUUID(),
+        text: `He agregado ${item.name} a tu pedido.`,
+        sender: "assistant",
+        timestamp: new Date(),
+      });
     }
-  };
-
-  const handleActionClick = () => {
-    // Esta función será utilizada más adelante para manejar acciones del carrito
-    console.log(`Acción: ${action} para el ítem: ${item.name}`);
   };
 
   return (

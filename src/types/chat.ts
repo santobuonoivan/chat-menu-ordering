@@ -1,15 +1,14 @@
-import { ICartModifier } from "./cart";
-import { IMenuItem } from "./menu";
+import { IMenuItem, IModifier } from "./menu";
 
 export interface IMessage {
-  id: number;
+  id: string;
   text: string;
   sender: "user" | "assistant";
   timestamp: Date;
   data?: {
     items?: IMenuItem[];
-    modifiers?: ICartModifier[];
-    itemId?: string;
+    modifiers?: IModifier[];
+    itemSelected?: IMenuItem;
     action: //ordering actions
     | "add_dish"
       | "add_modifier"
