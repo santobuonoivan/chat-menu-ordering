@@ -1,0 +1,2768 @@
+{
+  "menu": [
+    {
+      "dish_id": 591,
+      "dish_sku": "ENT-02|1",
+      "dish_name": "Bola Express",
+      "description": "Bola de arroz empanizada, rellena de queso philadelphia, queso manchego, tampico, aguacate y camarón. Acompañado de salsa de chipotle.",
+      "category": "ENTRADAS",
+      "category_order": 10,
+      "dish_price": "128.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/e5e29063-723d-4ada-b7e4-f68f13db0929.jpg",
+      "external_id": "ENT-02|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2183,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2184,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2185,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2186,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 590,
+      "dish_sku": "ENT-01|1",
+      "dish_name": "Edamames",
+      "description": "Frijoles de soya asados o al vapor, preparados con salsa de soya, sal, pimienta y chile en polvo.",
+      "category": "ENTRADAS",
+      "category_order": 10,
+      "dish_price": "98.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/2215f603-0c38-4898-bb74-ec0f9c6a0c9e.jpg",
+      "external_id": "ENT-01|1",
+      "modifiers": [null]
+    },
+    {
+      "dish_id": 593,
+      "dish_sku": "ENT-03|1",
+      "dish_name": "Nigiris",
+      "description": "Orden de 6 piezas de bolas de arroz, moldeadas artesanalmente sobre las que se sirve un trozo de proteína: camarón, salmón, cangrejo, tampico, masago y pulpo.",
+      "category": "ENTRADAS",
+      "category_order": 10,
+      "dish_price": "178.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/ef1a9668-ae25-4454-a9d2-e74ddc15edf2.jpg",
+      "external_id": "ENT-03|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2191,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2192,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2193,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2194,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 592,
+      "dish_sku": "ENT-08|1",
+      "dish_name": "Temaki Especial",
+      "description": "Cono de alga nori, relleno de arroz con aguacate, pepino, mango y proteína a elegir. Acompañado de salsa chipotle.",
+      "category": "ENTRADAS",
+      "category_order": 10,
+      "dish_price": "138.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/9c75542a-567a-463e-a65a-0b82493094f3.jpg",
+      "external_id": "ENT-08|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2187,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2188,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2189,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2190,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 601,
+      "dish_sku": "ROLLO-08|1",
+      "dish_name": "2X1 Rollo Arrachera",
+      "description": "Rollo de arroz con alga nori tempurizado, relleno de arrachera, cangrejo, aguacate y queso manchego. Coronado con chiles serranos en rodajas.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/d748a018-0c30-423f-b992-a63b4e775d09.jpg",
+      "external_id": "ROLLO-08|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2223,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2224,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2225,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2226,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 610,
+      "dish_sku": "ROLLO-20|1",
+      "dish_name": "2X1 Rollo California Especial",
+      "description": "Rollo de arroz con alga nori, masago por fuera, relleno de cangrejo, queso philadelphia, pepino y aguacate.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/a37445cb-b112-4243-acb6-a71758a170d0.jpg",
+      "external_id": "ROLLO-20|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2259,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2260,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2261,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2262,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 594,
+      "dish_sku": "ROLLO-01|1",
+      "dish_name": "2X1 Rollo California Express",
+      "description": "Rollo de arroz con alga nori y ajonjolí mixto, relleno de pepino, queso philadelphia y proteína a elegir.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "114.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/c2839573-8466-4bb7-bfe3-1f35609702b8.jpg",
+      "external_id": "ROLLO-01|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2195,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2196,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2197,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2198,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 599,
+      "dish_sku": "ROLLO-06|1",
+      "dish_name": "2X1 Rollo Camarón",
+      "description": "Rollo de arroz con alga nori, relleno de camarón empanizado, pepino, aguacate y queso philadelphia. Coronado con salsa tampico.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/c2c7fb31-be5f-4d30-ace5-1b0c3d0abf90.jpg",
+      "external_id": "ROLLO-06|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2215,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2216,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2217,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2218,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 611,
+      "dish_sku": "ROLLO-21|1",
+      "dish_name": "2X1 Rollo Chef",
+      "description": "Rollo de arroz con alga nori, arrachera flameada bañada en salsa BBQ por fuera, relleno de aguacate, queso manchego empanizado y mango. Coronado con chiles toreados.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "154.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/a3ce5895-8b8e-4764-abb6-944f90d3c71f.jpg",
+      "external_id": "ROLLO-21|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2263,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2264,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2265,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2266,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 606,
+      "dish_sku": "ROLLO-16|1",
+      "dish_name": "2X1 Rollo Coco Empanizado",
+      "description": "Rollo de arroz con alga nori, empanizado con coco y panko, relleno de salmón, aguacate y queso philadelphia. Coronado con salsa lemon y coco tostado.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/e39b3cec-e55a-4e88-895e-81394e029958.jpg",
+      "external_id": "ROLLO-16|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2243,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2244,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2245,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2246,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 609,
+      "dish_sku": "ROLLO-19|1",
+      "dish_name": "2X1 Rollo Empanizado",
+      "description": "Rollo de arroz con alga nori empanizado, relleno de camarón tempurizado, queso philadelphia y aguacate. Coronado con tampico.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/c53926ef-8248-486c-b455-ec3a49c8a6a6.jpg",
+      "external_id": "ROLLO-19|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2255,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2256,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2257,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2258,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 596,
+      "dish_sku": "ROLLO-03|1",
+      "dish_name": "2X1 Rollo Express",
+      "description": "Rollo de arroz con alga nori, relleno de cangrejo, pepino y aguacate. Coronado con kakiage.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "124.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/bf38988b-9ebe-4fda-8054-9e8dbaea71aa.jpg",
+      "external_id": "ROLLO-03|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2203,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2204,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2205,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2206,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 608,
+      "dish_sku": "ROLLO-18|1",
+      "dish_name": "2X1 Rollo Gratinado",
+      "description": "Rollo de arroz con alga nori, queso manchego gratinado por fuera, relleno de camarón al ajillo, queso philadelphia y aguacate. Coronado con salsa spicy.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/7e1abc8c-f7ff-49ed-8c99-1f972bfba5fa.jpg",
+      "external_id": "ROLLO-18|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2251,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2252,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2253,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2254,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 603,
+      "dish_sku": "ROLLO-11|1",
+      "dish_name": "2X1 Rollo Horneado",
+      "description": "Rollo de arroz con alga nori, salmón horneado por fuera, relleno\nde cangrejo, aguacate y queso philadelphia. Coronado con tampico.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/f0e39721-fcbd-4223-8ee7-940964a3f5f6.jpg",
+      "external_id": "ROLLO-11|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2231,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2232,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2233,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2234,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 604,
+      "dish_sku": "2X1 ROLLO-12|1",
+      "dish_name": "2X1 Rollo Manchego",
+      "description": "Rollo de arroz con alga nori, queso manchego por fuera, relleno de surimi, kakiage frito y aguacate. Coronado con chiles toreados.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/fc348df8-b7e5-4d38-b785-cddf46d402f6.jpg",
+      "external_id": "2X1 ROLLO-12|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2235,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2236,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2237,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2238,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 597,
+      "dish_sku": "ROLLO-04|1",
+      "dish_name": "2X1 Rollo Mango",
+      "description": "Rollo de arroz con alga nori, mango por fuera, relleno de camarón empanizado, queso philadelphia. Coronado con nuez caramelizada y salsa dulce.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/86f6b510-5554-45fd-8b1c-1065f1773ecc.jpg",
+      "external_id": "ROLLO-04|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2207,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2208,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2209,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2210,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 602,
+      "dish_sku": "ROLLO-10|1",
+      "dish_name": "2X1 Rollo Mango Kiwi",
+      "description": "Rollo de arroz con alga nori, mango con kiwi por fuera, relleno de camarón empanizado, queso philadelphia y aguacate. Coronado con salsa dulce y salsa tampico.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/bedbc3e4-ac8e-437a-a609-0557574bceb9.jpg",
+      "external_id": "ROLLO-10|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2227,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2228,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2229,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2230,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 598,
+      "dish_sku": "ROLLO-05|1",
+      "dish_name": "2X1 Rollo Pepino",
+      "description": "Rollo de arroz con alga nori, escalopas de pepino por fuera, relleno de cangrejo, camarón empanizado, aguacate y queso philadelphia. Coronado con tampico y salsa dulce.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/443ad86a-8014-481a-9faa-056b01f15dbf.jpg",
+      "external_id": "ROLLO-05|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2211,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2212,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2213,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2214,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 607,
+      "dish_sku": "ROLLO-17|1",
+      "dish_name": "2X1 Rollo Pollo",
+      "description": "Rollo de pollo empanizado, relleno de zanahoria, queso gouda, pimiento verde y rojo. Coronado con salsa de chile chipotle.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/bae81c2e-6f2f-44c8-be8f-9e7a4b79bf50.jpg",
+      "external_id": "ROLLO-17|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2247,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2248,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2249,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2250,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 600,
+      "dish_sku": "ROLLO-07|1",
+      "dish_name": "2X1 Rollo Salmón",
+      "description": "Rollo de arroz con alga nori, salmón a la plancha por fuera, relleno de camarón tempurizado y aguacate. Coronado con salsa lucky.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/b238b392-3212-4af3-a4dc-ebcfd745736b.jpg",
+      "external_id": "ROLLO-07|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2219,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2220,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2221,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2222,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 612,
+      "dish_sku": "ROLLO-15|1",
+      "dish_name": "2X1 Rollo Tori",
+      "description": "Rollo de arroz con alga nori, pollo empanizado por fuera, relleno de cangrejo y queso philadelphia. Coronado con salsa de chipotle.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/599e4b70-c011-4b21-b638-53500655b4f1.jpg",
+      "external_id": "ROLLO-15|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2267,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2268,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2269,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2270,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 605,
+      "dish_sku": "ROLLO-13|1",
+      "dish_name": "2X1 Rollo Tori Pollo Express",
+      "description": "Rollo de arroz con alga nori, pollo empanizado por fuera, relleno de aguacate y queso philadelphia. Coronado con salsa de chipotle.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "144.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/91c67924-ab41-4ec5-80c7-6e35f15cb831.jpg",
+      "external_id": "ROLLO-13|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2239,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2240,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2241,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2242,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 595,
+      "dish_sku": "ROLLO-02|1",
+      "dish_name": "2X1 Rollo Vegetariano",
+      "description": "Rollo de arroz con alga nori, relleno de jícama, pepino y plátano macho. Coronado con kakiage.",
+      "category": "PROMOCION ROLLOS 2X1",
+      "category_order": 20,
+      "dish_price": "124.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/5de9747b-b251-42eb-85f6-2360055a7585.jpg",
+      "external_id": "ROLLO-02|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2199,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2200,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2201,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2202,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 615,
+      "dish_sku": "TEPA-03|1",
+      "dish_name": "Teppanyaki de Arrachera",
+      "description": "Mezcla de arrachera marinada, pimiento rojo, cebolla, calabaza, champiñón, espárragos y germen de soya preparados a la plancha. Acompañado de arroz gohan y salsa de ajonjolí.",
+      "category": "TEPPANYAKI",
+      "category_order": 30,
+      "dish_price": "199.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/3d988f5c-ec5f-487d-bb65-03066566b164.jpg",
+      "external_id": "TEPA-03|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2279,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2280,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2281,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2282,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 614,
+      "dish_sku": "TEPA-02|1",
+      "dish_name": "Teppanyaki de Camarón",
+      "description": "Mezcla de camarones, pimiento rojo, cebolla, calabaza, champiñón, espárragos y germen de soya preparados a la plancha. Acompañado de arroz gohan y salsa de ajonjolí.",
+      "category": "TEPPANYAKI",
+      "category_order": 30,
+      "dish_price": "199.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/3564669a-5139-426e-b7d9-a82b4c1a3810.jpg",
+      "external_id": "TEPA-02|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2275,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2276,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2277,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2278,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 613,
+      "dish_sku": "TEPA-01|1",
+      "dish_name": "Teppanyaki de Pollo",
+      "description": "Mezcla de pollo, pimiento rojo, cebolla, calabaza, champiñón, espárragos y germen de soya preparados a la plancha.\nAcompañado de arroz gohan y salsa de ajonjolí.",
+      "category": "TEPPANYAKI",
+      "category_order": 30,
+      "dish_price": "179.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/ebb5f49d-c885-475b-bc30-b9de07face1d.jpg",
+      "external_id": "TEPA-01|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2271,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2272,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2273,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2274,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 616,
+      "dish_sku": "TEPA-06|1",
+      "dish_name": "Teppanyaki Mar y Tierra",
+      "description": "Mezcla de pollo, arrachera marinada, camarones, pimiento rojo, cebolla, calabaza, champiñón, espárragos y germen de soya preparados a la plancha. Acompañado de arroz gohan y salsa de ajonjolí.",
+      "category": "TEPPANYAKI",
+      "category_order": 30,
+      "dish_price": "259.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/31253949-692e-420c-8c94-7bae312fdb05.jpg",
+      "external_id": "TEPA-06|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2283,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2284,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2285,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2286,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 622,
+      "dish_sku": "SOPA-07.|1",
+      "dish_name": "Miso Express",
+      "description": "Sopa japonesa preparada a base de caldo dashi con fideos harusame, acompañada de camarón, pescado, espinaca, champiñón y tofu.",
+      "category": "SOPAS",
+      "category_order": 40,
+      "dish_price": "158.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/dd9107db-5196-4909-8c70-279e32adfc1c.jpg",
+      "external_id": "SOPA-07.|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2307,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2308,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2309,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2310,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 617,
+      "dish_sku": "SOPA-01.|1",
+      "dish_name": "Ramen de Arrachera",
+      "description": "Fideos de trigo preparados con un caldo muy aromático, acompañado de arrachera marinada, espinaca, champiñón, huevo, cebollín, naruto, zanahoria, calabaza y chile de árbol en polvo.",
+      "category": "SOPAS",
+      "category_order": 40,
+      "dish_price": "168.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/733e8a7a-675d-47e1-b6c5-20ad0563372c.jpg",
+      "external_id": "SOPA-01.|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2287,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2288,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2289,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2290,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 619,
+      "dish_sku": "SOPA-03.|1",
+      "dish_name": "Ramen de Camarón",
+      "description": "Fideos de trigo preparados con un caldo muy aromático, acompañado de camarón, espinaca, champiñón, huevo, cebollín, naruto, zanahoria, calabaza y chile de árbol en polvo .",
+      "category": "SOPAS",
+      "category_order": 40,
+      "dish_price": "168.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/818121b9-c3a0-4729-a461-7b651ea6d39a.jpg",
+      "external_id": "SOPA-03.|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2295,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2296,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2297,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2298,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 618,
+      "dish_sku": "SOPA-02.|1",
+      "dish_name": "Ramen de Pork Belly",
+      "description": "Fideos de trigo preparados con un caldo muy aromático, acompañado de pork belly en láminas, espinaca, champiñón, huevo, cebollín, naruto, zanahoria, calabaza y chile de árbol en polvo.",
+      "category": "SOPAS",
+      "category_order": 40,
+      "dish_price": "168.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/20b2ee7b-9f6b-4ae2-8765-101b05fd85a7.jpg",
+      "external_id": "SOPA-02.|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2291,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2292,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2293,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2294,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 620,
+      "dish_sku": "SOPA-04.|1",
+      "dish_name": "Ramen de Salmón",
+      "description": "Fideos de trigo preparados con un caldo muy aromático, acompañado de salmón, espinaca, champiñón, huevo, cebollín, naruto, zanahoria, calabaza y chile de árbol en polvo.",
+      "category": "SOPAS",
+      "category_order": 40,
+      "dish_price": "168.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/216598ba-7a74-4581-abd0-7ae30faf2e3f.jpg",
+      "external_id": "SOPA-04.|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2299,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2300,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2301,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2302,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 621,
+      "dish_sku": "SOPA-06.|1",
+      "dish_name": "Tori Express",
+      "description": "Sopa japonesa preparada a base de fondo blanco de pescado, acompañada de pollo, champiñón, zanahoria, espinaca, huevo, arroz y chile de árbol en polvo.",
+      "category": "SOPAS",
+      "category_order": 40,
+      "dish_price": "118.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/016e6624-e447-466d-8e9e-cbe5753e4779.jpg",
+      "external_id": "SOPA-06.|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2303,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2304,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2305,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2306,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 625,
+      "dish_sku": "KUSHI-03|1",
+      "dish_name": "Kushiague de Camarón (3 pz)",
+      "description": "Orden de 3 brochetas empanizadas con panko, rellenas de camarón con queso philadelphia. Acompañadas de salsa tonkatsu.",
+      "category": "KUSHIAGES",
+      "category_order": 50,
+      "dish_price": "128.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/c74422cc-8289-41b1-8b33-dffe602cc86d.jpg",
+      "external_id": "KUSHI-03|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2319,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2320,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2321,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2322,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 623,
+      "dish_sku": "KUSHI-01|1",
+      "dish_name": "Kushiague de Cangrejo (3pz)",
+      "description": "Orden de 3 brochetas empanizadas con panko, rellenas de cangrejo con queso philadelphia. Acompañadas de salsa tonkatsu.",
+      "category": "KUSHIAGES",
+      "category_order": 50,
+      "dish_price": "128.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/a44f5749-74e0-4e2a-af4e-ce9c9f3e1a73.jpg",
+      "external_id": "KUSHI-01|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2311,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2312,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2313,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2314,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 626,
+      "dish_sku": "KUSHI-04|1",
+      "dish_name": "Kushiague de Plátano con Queso (3 pz)",
+      "description": "Orden de 3 brochetas empanizadas con panko, rellenas de plátano macho con queso manchego. Acompañadas de salsa tonkatsu.",
+      "category": "KUSHIAGES",
+      "category_order": 50,
+      "dish_price": "128.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/dd2c7f6b-6b0d-4b5b-8069-266c263c9f31.jpg",
+      "external_id": "KUSHI-04|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2323,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2324,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2325,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2326,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 624,
+      "dish_sku": "KUSHI-02|1",
+      "dish_name": "Kushiagues de Queso (3pz)",
+      "description": "Orden de 3 brochetas empanizadas con panko, rellenas de queso manchego. Acompañadas de salsa tonkatsu.",
+      "category": "KUSHIAGES",
+      "category_order": 50,
+      "dish_price": "128.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/28257df6-a125-4277-a19b-836ffc7123f7.jpg",
+      "external_id": "KUSHI-02|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2315,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2316,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2317,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2318,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 627,
+      "dish_sku": "KUSHI05",
+      "dish_name": "Kushiagues Mixtas (4pz)",
+      "description": "Orden de 4 brochetas empanizadas con panko. Incluye 1 pza de camarón con queso philadelphia, 1 pza de cangrejo con queso philadelphia, 1 pza de queso manchego y 1 pza de plátano con manchego. Acompañados con salsa tonkatsu.",
+      "category": "KUSHIAGES",
+      "category_order": 50,
+      "dish_price": "168.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/9ae1cee9-55f1-4671-90ce-84e574955044.jpg",
+      "external_id": "KUSHI05",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2327,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2328,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2329,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2330,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 629,
+      "dish_sku": "YAKIT-02|1",
+      "dish_name": "Yakitoris de Arrachera (3pz)",
+      "description": "Orden de 3 brochetas de arrachera marinada, cebolla, pimiento y calabaza, sazonadas con sal, pimienta y soya natural, cocinadas a la plancha, bañadas en salsa teriyaki y chile en polvo.",
+      "category": "YAKITORIS",
+      "category_order": 60,
+      "dish_price": "138.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/704593fd-57dd-4099-a599-f40fc7511970.jpg",
+      "external_id": "YAKIT-02|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2335,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2336,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2337,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2338,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 630,
+      "dish_sku": "YAKIT-03|1",
+      "dish_name": "Yakitoris de Camarón (3pz)",
+      "description": "Orden de 3 brochetas de camarón, cebolla, pimiento y calabaza, sazonadas con sal, pimienta y soya natural, cocinadas a la plancha, bañadas en salsa teriyaki y chile en polvo.",
+      "category": "YAKITORIS",
+      "category_order": 60,
+      "dish_price": "138.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/d5de33bf-e668-4267-91dd-457a60807072.jpg",
+      "external_id": "YAKIT-03|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2339,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2340,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2341,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2342,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 628,
+      "dish_sku": "YAKIT-01|1",
+      "dish_name": "Yakitoris de Pollo (3pz)",
+      "description": "Orden de 3 brochetas con pollo, cebolla, pimiento y calabaza, sazonadas con sal, pimienta y soya natural, cocinadas a la plancha, bañadas en salsa teriyaki y chile en polvo.",
+      "category": "YAKITORIS",
+      "category_order": 60,
+      "dish_price": "118.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/fdbd7906-98eb-427c-a1d5-738dec84afce.jpg",
+      "external_id": "YAKIT-01|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2331,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2332,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2333,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2334,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 631,
+      "dish_sku": "YAKIT-06|1",
+      "dish_name": "Yakitoris Mixtas (3pz)",
+      "description": "Orden de 3 brochetas (pollo, arrachera marinada, camarón) con cebolla, pimiento y calabaza, sazonadas con sal, pimienta y soya natural, cocinadas a la plancha, bañadas en salsa teriyaki y chile en polvo.",
+      "category": "YAKITORIS",
+      "category_order": 60,
+      "dish_price": "138.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/dc82e461-757d-4a7f-bdcc-bb5d1cc8fe3b.jpg",
+      "external_id": "YAKIT-06|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2343,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2344,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2345,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2346,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 634,
+      "dish_sku": "YAKIM-03|1",
+      "dish_name": "Yakimeshi de Arrachera",
+      "description": "Arroz frito sazonado con pimienta y soya natural, acompañado de arrachera marinada, verduras mixtas, queso philadelphia, aguacate y ajonjolí mixto.",
+      "category": "YAKIMESHI",
+      "category_order": 70,
+      "dish_price": "138.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/bf3698f9-daed-4aaf-915c-8ea0196f27b5.jpg",
+      "external_id": "YAKIM-03|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2355,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2356,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2357,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2358,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 635,
+      "dish_sku": "YAKIM-04|1",
+      "dish_name": "Yakimeshi de Camarón",
+      "description": "Arroz frito sazonado con pimienta y soya natural, acompañado de camarones asados a la plancha, verduras mixtas, queso philadelphia, aguacate y ajonjolí mixto.",
+      "category": "YAKIMESHI",
+      "category_order": 70,
+      "dish_price": "138.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/8554dd35-6197-4c68-8a1b-32ff8fc39636.jpg",
+      "external_id": "YAKIM-04|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2359,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2360,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2361,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2362,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 633,
+      "dish_sku": "YAKIM-02|1",
+      "dish_name": "Yakimeshi de Pollo",
+      "description": "Arroz frito sazonado con pimienta y soya natural, acompañado de pollo a la plancha, verduras mixtas, queso philadelphia, aguacate y ajonjolí mixto.",
+      "category": "YAKIMESHI",
+      "category_order": 70,
+      "dish_price": "128.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/d0bae93f-5650-4370-a453-78fd2da79950.jpg",
+      "external_id": "YAKIM-02|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2351,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2352,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2353,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2354,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 632,
+      "dish_sku": "YAKIM-01|1",
+      "dish_name": "Yakimeshi de Verdura",
+      "description": "Arroz frito sazonado con pimienta y soya natural, acompañado de verduras mixtas, queso philadelphia, aguacate y ajonjolí mixto.",
+      "category": "YAKIMESHI",
+      "category_order": 70,
+      "dish_price": "118.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/862b6b24-3405-4ccc-ae34-d2b0efd0ffe0.jpg",
+      "external_id": "YAKIM-01|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2347,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2348,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2349,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2350,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 636,
+      "dish_sku": "YAKIM-07|1",
+      "dish_name": "Yakimeshi Mixto",
+      "description": "Arroz frito sazonado con pimienta y soya natural, acompañado de pollo, arrachera, camarón, verduras mixtas, queso philadelphia, aguacate y ajonjolí mixto.",
+      "category": "YAKIMESHI",
+      "category_order": 70,
+      "dish_price": "168.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/52ebcaac-90cf-4c34-9df4-db858da7b377.jpg",
+      "external_id": "YAKIM-07|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2363,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2364,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2365,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2366,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 637,
+      "dish_sku": "ARROZ-2|1",
+      "dish_name": "Gohan Express Especial",
+      "description": "Arroz al vapor estilo japonés, acompañado de surimi en láminas, queso philadelphia, aguacate, tampico y ajonjolí mixto.",
+      "category": "ARROZ GOHAN",
+      "category_order": 80,
+      "dish_price": "99.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/7ea3054a-bf34-43d4-90c3-d445b29e9ea9.jpg",
+      "external_id": "ARROZ-2|1",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2367,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2368,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2369,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2370,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 639,
+      "dish_sku": "676",
+      "dish_name": "Agua de sabor",
+      "description": "Agua embotellada de sabor natural 500ml",
+      "category": "Bebidas",
+      "category_order": 90,
+      "dish_price": "40.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": null,
+      "external_id": "676",
+      "modifiers": [
+        {
+          "mod_sku": "m,",
+          "mod_name": "Maracuya",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2375,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "th",
+          "mod_name": "Te helado",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2376,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "lcc",
+          "mod_name": "Limon con chia",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2377,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "fcc",
+          "mod_name": "Fresa con chia",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2378,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 638,
+      "dish_sku": "Ciel ",
+      "dish_name": "Agua natural 500ml",
+      "description": "",
+      "category": "Bebidas",
+      "category_order": 90,
+      "dish_price": "30.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": null,
+      "external_id": "Ciel ",
+      "modifiers": [
+        {
+          "mod_sku": "Aguacate",
+          "mod_name": "Aguacate",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2371,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Queso Philadelphia",
+          "mod_name": "Queso Philadelphia",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2372,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa Tampico",
+          "mod_name": "Salsa Tampico",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2373,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "Salsa de Chipotle",
+          "mod_name": "Salsa de Chipotle",
+          "mod_price": 15,
+          "group_code": "Elige tus Extras",
+          "modifier_id": 2374,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    },
+    {
+      "dish_id": 640,
+      "dish_sku": "RDL",
+      "dish_name": "REFRESCO DE LATA",
+      "description": "",
+      "category": "Bebidas",
+      "category_order": 90,
+      "dish_price": "38.00",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "image": null,
+      "external_id": "RDL",
+      "modifiers": [
+        {
+          "mod_sku": "m,",
+          "mod_name": "Maracuya",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2379,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "th",
+          "mod_name": "Te helado",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2380,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "lcc",
+          "mod_name": "Limon con chia",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2381,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        },
+        {
+          "mod_sku": "fcc",
+          "mod_name": "Fresa con chia",
+          "mod_price": 0,
+          "group_code": "Elige tu sabor",
+          "modifier_id": 2382,
+          "max_quantity": 5,
+          "min_quantity": 1,
+          "mod_description": ""
+        }
+      ]
+    }
+  ]
+}
