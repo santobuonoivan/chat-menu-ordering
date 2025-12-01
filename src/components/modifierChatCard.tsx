@@ -110,7 +110,7 @@ export default function ModifierChatCard({
     setShowListModifiers(false);
     addMessage({
       id: generateUUID(),
-      text: `He agregardo los adicionales a tu ${item.name}.`,
+      text: `He agregardo los adicionales a tu ${item.name}. Puedo ayudarte con algo más?`,
       sender: "user",
       timestamp: new Date(),
     });

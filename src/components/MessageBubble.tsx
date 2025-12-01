@@ -15,7 +15,7 @@ export default function MessageBubble({
   afterSender,
   message,
   sender,
-  senderName = sender === "assistant" ? "Asistente Appio" : "Tú",
+  senderName = sender === "assistant" ? "Restaurante" : "Tú",
   avatarUrl,
   data,
 }: MessageBubbleProps) {

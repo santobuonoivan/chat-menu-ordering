@@ -1,10 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Comfortaa } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+});
+
+const comfortaa = Comfortaa({
+  subsets: ["latin"],
+  variable: "--font-comfortaa",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +31,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased`}
+        className={`${inter.variable} ${comfortaa.variable} font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased`}
       >
         {children}
       </body>

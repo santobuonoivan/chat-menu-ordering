@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        comfortaa: ["var(--font-comfortaa)", "sans-serif"],
+      },
       colors: {
         appio: {
           50: "#fdf2f8",

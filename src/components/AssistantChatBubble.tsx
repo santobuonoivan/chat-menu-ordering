@@ -14,7 +14,7 @@ interface AssistantChatBubbleProps {
 export default function AssistantChatBubble({
   afterSender,
   message,
-  senderName = "Asistente Appio",
+  senderName = "Restaurante",
   avatarUrl,
   data,
 }: AssistantChatBubbleProps) {
