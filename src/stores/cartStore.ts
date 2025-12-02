@@ -6,19 +6,6 @@ import { IMenuItem } from "@/types/menu";
 const CART_EXPIRY_MINUTES = 30;
 const STORAGE_KEY = "appio-cart";
 
-const calculateTotalPrice = (
-  menuItem: IMenuItem,
-  modifiers: ICartModifier[],
-  quantity: number
-): number => {
-  const basePrice = menuItem.price;
-  const modifiersPrice = modifiers.reduce(
-    (total, modifier) => total + modifier.priceAdjustment,
-    0
-  );
-  return (basePrice + modifiersPrice) * quantity;
-};
-
 const generateCartItemId = (
   menuItem: IMenuItem,
   modifiers: ICartModifier[]
@@ -27,7 +14,20 @@ const generateCartItemId = (
     .map((m) => `${m.modifierId}-${m.optionName}`)
     .sort()
     .join("|");
-  return `${menuItem.id}-${modifierIds}`;
+  return `${menuItem.dish_id}-${modifierIds}`;
+};
+
+const calculateTotalPrice = (
+  menuItem: IMenuItem,
+  modifiers: ICartModifier[],
+  quantity: number
+): number => {
+  const basePrice = menuItem.dish_price ? parseFloat(menuItem.dish_price) : 0;
+  const modifiersPrice = modifiers.reduce(
+    (total, modifier) => total + modifier.priceAdjustment,
+    0
+  );
+  return (basePrice + modifiersPrice) * quantity;
 };
 
 const isCartExpired = (expiresAt: Date | null): boolean => {
