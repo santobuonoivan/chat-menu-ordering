@@ -52,15 +52,18 @@ export default function AssistantChatBubble({
             ))}
           </div>
         )}
-        {/* Renderizar items si hay data */}
+        {/* Renderizar ModifierChatCard si hay data de modificadores */}
         {showListModifiers &&
           data &&
           data.modifiers &&
           data.modifiers.length > 0 &&
           data.itemSelected && (
             <div className="flex flex-col gap-2 mt-2 max-w-xs">
-              {/* ModifierChatCard temporalmente deshabilitado */}
-              <ModifierChatCard />
+              <ModifierChatCard
+                item={data.itemSelected}
+                modifiers={data.modifiers}
+                action={data.action || ""}
+              />
             </div>
           )}
       </div>
