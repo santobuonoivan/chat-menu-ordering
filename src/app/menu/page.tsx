@@ -7,23 +7,31 @@ import CategoryTabs from "../../components/menuDigital/CategoryTabs";
 import MenuItemCard from "../../components/menuDigital/MenuItemCard";
 import CartIndicator from "../../components/menuDigital/CartIndicator";
 import { IMenuItem, IMenuData } from "./../../types/menu";
-import menuData from "./../../mocks/menu.json";
+import { useMenuStore } from "../../stores/menuStore";
+import menuDataV2 from "./../../mocks/menuv2.json";
 
 export default function MenuPage() {
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>("Platos Fuertes");
+  const { setMenuData, getMenuData } = useMenuStore();
+  const [selectedCategory, setSelectedCategory] = useState<string>("ENTRADAS");
   const [menuItems, setMenuItems] = useState<IMenuItem[]>([]);
 
   // Load menu data
   useEffect(() => {
-    const data = menuData as IMenuData;
-    setMenuItems(data.items);
-  }, []);
+    const data = menuDataV2 as IMenuData;
+    setMenuData(data);
+    setMenuItems(data.menu);
+  }, [setMenuData]);
 
-  // Get unique categories from menu items
+  // Get unique categories from menu items sorted by category_order
   const categories = useMemo(() => {
-    return Array.from(new Set(menuItems.map((item) => item.category)));
+    const categoryMap = new Map<string, number>();
+    menuItems.forEach((item) => {
+      categoryMap.set(item.category, item.category_order);
+    });
+    return Array.from(categoryMap.keys()).sort((a, b) => {
+      return (categoryMap.get(a) || 0) - (categoryMap.get(b) || 0);
+    });
   }, [menuItems]);
 
   // Filter items by selected category
@@ -64,7 +72,7 @@ export default function MenuPage() {
             </h2>
 
             {filteredItems.map((item) => (
-              <MenuItemCard key={item.id} item={item} />
+              <MenuItemCard key={item.dish_id} item={item} />
             ))}
           </div>
         </div>

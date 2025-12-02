@@ -24,6 +24,7 @@ export default function MessageComposer({
   const { resetCart } = useCartStore();
 
   const handleSend = () => {
+    // Mock data temporalmente deshabilitado para compatibilidad v2
     const mockBody: IMessage = {
       id: generateUUID(),
       text: "He encontrado esto para ti.",
@@ -32,148 +33,114 @@ export default function MessageComposer({
       data: {
         items: [
           {
-            id: "f9142e98-7172-4ad2-b41b-25eb8b080d1c",
-            name: "Salmón a la Parrilla",
-            price: 18.5,
-            description: "Salmón fresco con espárragos y salsa de limón.",
-            category: "Platos Fuertes",
-            isAvailable: true,
-            imageUrl:
-              "https://lh3.googleusercontent.com/aida-public/AB6AXuCvYGJAsGSsMXelXCgui7uQzH1JYO1t-LB6YrLR7T3IzYCFp55ZG4GNsUa_2JFa3q_dQyDdEgicei5SZe9U8RmlWBimHudvg2z5zMyXDXR201RVEM7izDJxR2WDRqEek8-OlrAKXIgA_g3Gfay7dOJJkv1aRTZWHhuQmwfbZg7zCbaxU40tON486ptZZn8McWeLke-Vjpn646eEkwBNU4mPEygHJbUcgdxHlcgdxJ2ljMwq7QPlSPNvdo9t5YpOaz-Iq3CmGLU5HUBR",
+            dish_id: 637,
+            dish_sku: "ARROZ-2|1",
+            dish_name: "Gohan Express Especial",
+            description:
+              "Arroz al vapor estilo japonés, acompañado de surimi en láminas, queso philadelphia, aguacate, tampico y ajonjolí mixto.",
+            category: "ARROZ GOHAN",
+            category_order: 80,
+            dish_price: "99.00",
+            min_quantity: 1,
+            max_quantity: 10,
+            image:
+              "https://appio-cdn.s3.us-west-1.amazonaws.com/07ac97bb-f096-42e1-b14e-9dc6b975bf2c/7ea3054a-bf34-43d4-90c3-d445b29e9ea9.jpg",
+            external_id: "ARROZ-2|1",
             modifiers: [
               {
-                modifierId: "b64ce0cc-fd07-4000-bae3-1e9c13fb8ac8",
-                name: "Adicionales",
-                options: [
-                  {
-                    name: "Extra Queso",
-                    priceAdjustment: 3.08,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Extra_Queso",
-                  },
-                  {
-                    name: "Aguacate",
-                    priceAdjustment: 0.56,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Aguacate",
-                  },
-                  {
-                    name: "Tocino",
-                    priceAdjustment: 0.58,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Tocino",
-                  },
-                  {
-                    name: "Huevo Frito",
-                    priceAdjustment: 0.56,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Huevo_Frito",
-                  },
-                ],
-                isRequired: false,
-                maxOptions: 2,
+                mod_sku: "Aguacate",
+                mod_name: "Aguacate",
+                mod_price: 15,
+                group_code: "Elige tus Extras",
+                modifier_id: 2367,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
               },
               {
-                modifierId: "85a95a5c-5b99-4397-b31d-0dfdc7c38991",
-                name: "Tamaño",
-                options: [
-                  {
-                    name: "Pequeño",
-                    priceAdjustment: 0.81,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Peque%C3%B1o",
-                  },
-                  {
-                    name: "Mediano",
-                    priceAdjustment: 1.21,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Mediano",
-                  },
-                  {
-                    name: "Grande",
-                    priceAdjustment: 1.67,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Grande",
-                  },
-                ],
-                isRequired: true,
-                maxOptions: 1,
+                mod_sku: "Queso Philadelphia",
+                mod_name: "Queso Philadelphia",
+                mod_price: 15,
+                group_code: "Elige tus Extras",
+                modifier_id: 2368,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
+              },
+              {
+                mod_sku: "Salsa Tampico",
+                mod_name: "Salsa Tampico",
+                mod_price: 15,
+                group_code: "Elige tus Extras",
+                modifier_id: 2369,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
+              },
+              {
+                mod_sku: "Salsa de Chipotle",
+                mod_name: "Salsa de Chipotle",
+                mod_price: 15,
+                group_code: "Elige tus Extras",
+                modifier_id: 2370,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
               },
             ],
           },
           {
-            id: "ca0772a8-a41f-4ff7-a599-0a8f24a64ed8",
-            name: "Aros de Cebolla #2",
-            price: 5.08,
-            description: "Aperitivo o acompañamiento ligero.",
-            category: "Ensaladas",
-            isAvailable: true,
-            imageUrl:
-              "https://placehold.co/400x200/2563eb/ffffff?text=Aros_de_Cebolla_%232",
+            dish_id: 639,
+            dish_sku: "676",
+            dish_name: "Agua de sabor",
+            description: "Agua embotellada de sabor natural 500ml",
+            category: "Bebidas",
+            category_order: 90,
+            dish_price: "40.00",
+            min_quantity: 1,
+            max_quantity: 10,
+            image: null,
+            external_id: "676",
             modifiers: [
               {
-                modifierId: "1e9e69a5-e808-4f28-9344-27078ec35598",
-                name: "Adicionales",
-                options: [
-                  {
-                    name: "Extra Queso",
-                    priceAdjustment: 3.02,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Extra_Queso",
-                  },
-                  {
-                    name: "Aguacate",
-                    priceAdjustment: 0.67,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Aguacate",
-                  },
-                  {
-                    name: "Tocino",
-                    priceAdjustment: 1.24,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Tocino",
-                  },
-                  {
-                    name: "Huevo Frito",
-                    priceAdjustment: 1.38,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Huevo_Frito",
-                  },
-                ],
-                isRequired: false,
-                maxOptions: 2,
+                mod_sku: "m,",
+                mod_name: "Maracuya",
+                mod_price: 0,
+                group_code: "Elige tu sabor",
+                modifier_id: 2375,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
               },
               {
-                modifierId: "5178e67b-a073-476b-b19c-6756246240af",
-                name: "Nivel de Picante",
-                options: [
-                  {
-                    name: "Suave",
-                    priceAdjustment: 1.05,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Suave",
-                  },
-                  {
-                    name: "Medio",
-                    priceAdjustment: 0.61,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Medio",
-                  },
-                  {
-                    name: "Picante",
-                    priceAdjustment: 1.4,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Picante",
-                  },
-                  {
-                    name: "Infierno",
-                    priceAdjustment: 0.44,
-                    imageUrl:
-                      "https://placehold.co/100x100/2563eb/ffffff?text=Infierno",
-                  },
-                ],
-                isRequired: false,
-                maxOptions: 1,
+                mod_sku: "th",
+                mod_name: "Te helado",
+                mod_price: 0,
+                group_code: "Elige tu sabor",
+                modifier_id: 2376,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
+              },
+              {
+                mod_sku: "lcc",
+                mod_name: "Limon con chia",
+                mod_price: 0,
+                group_code: "Elige tu sabor",
+                modifier_id: 2377,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
+              },
+              {
+                mod_sku: "fcc",
+                mod_name: "Fresa con chia",
+                mod_price: 0,
+                group_code: "Elige tu sabor",
+                modifier_id: 2378,
+                max_quantity: 5,
+                min_quantity: 1,
+                mod_description: "",
               },
             ],
           },

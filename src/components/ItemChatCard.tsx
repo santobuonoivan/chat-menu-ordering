@@ -1,5 +1,5 @@
 import { useChatStore } from "@/stores/chatStore";
-import { IMenuItem } from "@/types/menu";
+import { IMenuItem, IModifier } from "@/types/menu";
 import { generateUUID, sleep } from "@/utils";
 
 interface ItemChatProps {
@@ -16,7 +16,7 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
 
     addMessage({
       id: generateUUID(),
-      text: `Agrega ${item.name} a tu pedido.`,
+      text: `Agrega ${item.dish_name} a tu pedido.`,
       sender: "user",
       timestamp: new Date(),
     });
@@ -27,11 +27,14 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
       setShowListModifiers(true);
       addMessage({
         id: generateUUID(),
-        text: `Puedo agregarle a tu ${item.name} :`,
+        text: `Puedo agregarle a tu ${item.dish_name} :`,
         sender: "assistant",
         timestamp: new Date(),
         data: {
-          modifiers: item.modifiers,
+          modifiers:
+            item.modifiers?.filter(
+              (modifier): modifier is IModifier => modifier !== null
+            ) || [],
           itemSelected: item,
           action: "add_modifier",
         },
@@ -39,7 +42,7 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
     } else {
       addMessage({
         id: generateUUID(),
-        text: `He agregado ${item.name} a tu pedido. Puedo ayudarte con algo más?`,
+        text: `He agregado ${item.dish_name} a tu pedido. Puedo ayudarte con algo más?`,
         sender: "assistant",
         timestamp: new Date(),
       });
@@ -51,8 +54,8 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
       {/* Imagen del producto */}
       <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-700 shrink-0">
         <img
-          src={item.imageUrl}
-          alt={item.name}
+          src={item.image || ""}
+          alt={item.dish_name}
           className="w-full h-full object-cover"
         />
       </div>
@@ -60,10 +63,10 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
       {/* Información del producto */}
       <div className="flex-1 min-w-0">
         <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
-          {item.name}
+          {item.dish_name}
         </h4>
         <p className="text-sm font-semibold text-[#65A30D]">
-          ${item.price.toLocaleString()}
+          ${item.dish_price.toLocaleString()}
         </p>
       </div>
 

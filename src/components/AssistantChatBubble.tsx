@@ -45,7 +45,7 @@ export default function AssistantChatBubble({
           <div className="flex flex-col gap-2 mt-2 max-w-xs">
             {data.items.map((item, index) => (
               <ItemChatCard
-                key={item.id || index}
+                key={item.dish_id || index}
                 item={item}
                 action={data.action}
               />
@@ -59,12 +59,8 @@ export default function AssistantChatBubble({
           data.modifiers.length > 0 &&
           data.itemSelected && (
             <div className="flex flex-col gap-2 mt-2 max-w-xs">
-              <ModifierChatCard
-                key={data.itemSelected.id}
-                item={data.itemSelected}
-                modifiers={data.modifiers}
-                action={"add_modifier"}
-              />
+              {/* ModifierChatCard temporalmente deshabilitado */}
+              <ModifierChatCard />
             </div>
           )}
       </div>

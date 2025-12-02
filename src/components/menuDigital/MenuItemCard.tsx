@@ -32,14 +32,14 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
         <div
           className="bg-center bg-no-repeat aspect-video bg-cover rounded-lg h-32"
           style={{
-            backgroundImage: `url("${item.imageUrl || defaultImage}")`,
+            backgroundImage: `url("${item.image || defaultImage}")`,
           }}
-          title={item.name}
+          title={item.dish_name}
         />
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-1 flex-col justify-center">
             <p className="text-gray-900 dark:text-white text-base font-medium leading-normal">
-              {item.name}
+              {item.dish_name}
             </p>
             <p className="text-gray-600 dark:text-gray-400 text-sm font-normal leading-normal">
               {item.description}
@@ -48,23 +48,17 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
               className="text-sm font-bold leading-normal pt-1"
               style={{ color: "#65A30D" }}
             >
-              ${item.price.toFixed(2)}
+              ${parseFloat(item.dish_price).toFixed(2)}
             </p>
           </div>
           <div className="shrink-0">
             <button
               onClick={handleAddClick}
-              disabled={!item.isAvailable}
-              className={`flex size-9 items-center justify-center rounded-full transition-colors ${
-                item.isAvailable
-                  ? "hover:opacity-80"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
+              disabled={false}
+              className="flex size-9 items-center justify-center rounded-full transition-colors hover:opacity-80"
               style={{
-                backgroundColor: item.isAvailable
-                  ? "rgba(101, 163, 13, 0.2)"
-                  : undefined,
-                color: item.isAvailable ? "#65A30D" : undefined,
+                backgroundColor: "rgba(101, 163, 13, 0.2)",
+                color: "#65A30D",
               }}
             >
               <span className="material-symbols-outlined">add</span>

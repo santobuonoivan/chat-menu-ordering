@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { IMenuItem, IModifier, IModifierOption } from "@/types/menu";
+import { IMenuItem, IModifier } from "@/types/menu";
 import { ICartModifier } from "@/types/cart";
 import { useCartStore } from "@/stores/cartStore";
 
@@ -41,27 +41,12 @@ export default function ProductModal({
 
   // Calcular precio total basado en modificadores seleccionados
   const calculateTotalPrice = () => {
-    let price = item.price;
+    let price = parseFloat(item.dish_price);
 
-    item.modifiers?.forEach((modifier) => {
-      if (selectedModifiers[modifier.modifierId]) {
-        const selected = selectedModifiers[modifier.modifierId];
-
-        if (Array.isArray(selected)) {
-          // Para checkboxes (múltiples selecciones)
-          selected.forEach((optionName) => {
-            const option = modifier.options.find(
-              (opt) => opt.name === optionName
-            );
-            if (option) price += option.priceAdjustment;
-          });
-        } else {
-          // Para radio buttons (una sola selección)
-          const option = modifier.options.find((opt) => opt.name === selected);
-          if (option) price += option.priceAdjustment;
-        }
-      }
-    });
+    // TODO: Implementar lógica de modificadores v2 cuando sea necesario
+    // item.modifiers?.forEach((modifier) => {
+    //   // Nueva lógica para modificadores v2
+    // });
 
     return price * quantity;
   };
@@ -99,38 +84,10 @@ export default function ProductModal({
     // Convertir selectedModifiers al formato ICartModifier
     const cartModifiers: ICartModifier[] = [];
 
-    item.modifiers?.forEach((modifier) => {
-      const selected = selectedModifiers[modifier.modifierId];
-      if (selected) {
-        if (Array.isArray(selected)) {
-          // Para checkboxes (múltiples selecciones)
-          selected.forEach((optionName) => {
-            const option = modifier.options.find(
-              (opt) => opt.name === optionName
-            );
-            if (option) {
-              cartModifiers.push({
-                modifierId: modifier.modifierId,
-                modifierName: modifier.name,
-                optionName: option.name,
-                priceAdjustment: option.priceAdjustment,
-              });
-            }
-          });
-        } else {
-          // Para radio buttons (una sola selección)
-          const option = modifier.options.find((opt) => opt.name === selected);
-          if (option) {
-            cartModifiers.push({
-              modifierId: modifier.modifierId,
-              modifierName: modifier.name,
-              optionName: option.name,
-              priceAdjustment: option.priceAdjustment,
-            });
-          }
-        }
-      }
-    });
+    // TODO: Implementar lógica de modificadores v2 cuando sea necesario
+    // item.modifiers?.forEach((modifier) => {
+    //   // Nueva lógica para modificadores v2
+    // });
 
     addItem(item, cartModifiers, quantity);
     onClose();
@@ -158,119 +115,27 @@ export default function ProductModal({
         {/* Header Image */}
         <div
           className="w-full h-48 bg-center bg-no-repeat bg-cover"
-          style={{ backgroundImage: `url("${item.imageUrl}")` }}
+          style={{
+            backgroundImage: `url("${item.image || "/placeholder-image.jpg"}")`,
+          }}
         />
 
         <div className="p-6">
           {/* Product Info */}
           <div className="mb-6">
             <h1 className="text-gray-900 text-2xl font-bold mb-2">
-              {item.name}
+              {item.dish_name}
             </h1>
             <p className="text-gray-600 text-sm leading-relaxed mb-4">
               {item.description}
             </p>
             <p className="text-gray-900 text-2xl font-bold">
-              ${item.price.toFixed(2)}
+              ${parseFloat(item.dish_price).toFixed(2)}
             </p>
           </div>
 
-          {/* Modifiers */}
-          {item.modifiers?.map((modifier, modifierIndex) => (
-            <div key={modifier.modifierId} className="mb-6">
-              {/* Modifier Header */}
-              <div className="flex justify-between items-center mb-3">
-                <h2 className="text-gray-900 text-lg font-semibold">
-                  {modifier.name}
-                </h2>
-                <span
-                  className="text-xs font-medium px-2 py-1 rounded text-gray-600"
-                  style={{ backgroundColor: "#e5e7eb" }}
-                >
-                  {modifier.isRequired ? "Obligatorio" : "Opcional"}
-                </span>
-              </div>
-
-              {/* Modifier Options */}
-              <div className="space-y-2">
-                {modifier.options.map((option) => {
-                  const isSelected =
-                    modifier.maxOptions === 1
-                      ? selectedModifiers[modifier.modifierId] === option.name
-                      : (
-                          selectedModifiers[modifier.modifierId] as string[]
-                        )?.includes(option.name) || false;
-
-                  return (
-                    <label
-                      key={option.name}
-                      className="flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all"
-                      style={{
-                        borderColor: isSelected ? "#65A30D" : "#e5e7eb",
-                        backgroundColor: isSelected
-                          ? "rgba(101, 163, 13, 0.1)"
-                          : "#ffffff",
-                      }}
-                    >
-                      <div className="flex items-center gap-3">
-                        {option.imageUrl && (
-                          <img
-                            className="h-8 w-8 rounded object-cover"
-                            src={option.imageUrl}
-                            alt={option.name}
-                          />
-                        )}
-                        <div>
-                          <p className="text-gray-900 text-sm font-medium">
-                            {option.name}
-                          </p>
-                          {option.priceAdjustment > 0 && (
-                            <p className="text-gray-600 text-xs">
-                              +${option.priceAdjustment.toFixed(2)}
-                            </p>
-                          )}
-                          {option.priceAdjustment === 0 && (
-                            <p className="text-gray-600 text-xs">Base</p>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className="w-5 h-5 rounded-full border-2 flex items-center justify-center"
-                        style={{
-                          borderColor: isSelected ? "#65A30D" : "#d1d5db",
-                          backgroundColor: isSelected
-                            ? "#65A30D"
-                            : "transparent",
-                        }}
-                      >
-                        {isSelected && (
-                          <div className="w-2 h-2 bg-white rounded-full" />
-                        )}
-                      </div>
-                      <input
-                        type={modifier.maxOptions === 1 ? "radio" : "checkbox"}
-                        name={
-                          modifier.maxOptions === 1
-                            ? `modifier-${modifier.modifierId}`
-                            : undefined
-                        }
-                        checked={isSelected}
-                        onChange={(e) =>
-                          handleModifierChange(
-                            modifier.modifierId,
-                            option.name,
-                            modifier.maxOptions === 1,
-                            e.target.checked
-                          )
-                        }
-                        className="sr-only"
-                      />
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+          {/* Modifiers - Temporalmente comentado para v2 */}
+          {/* TODO: Implementar modificadores v2 cuando sea necesario */}
         </div>
 
         {/* Sticky Footer */}

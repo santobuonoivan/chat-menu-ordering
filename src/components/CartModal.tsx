@@ -28,23 +28,18 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const getInitialModifiers = (cartItem: ICartItem) => {
     const modifiers: { [key: string]: string | string[] } = {};
 
-    cartItem.menuItem.modifiers?.forEach((modifier) => {
-      const cartModifiers = cartItem.modifiers.filter(
-        (mod) => mod.modifierId === modifier.modifierId
-      );
+    // TODO: Actualizar cuando se implemente la nueva estructura de modificadores v2
+    // cartItem.menuItem.modifiers?.forEach((modifier) => {
+    //   const cartModifiers = cartItem.modifiers.filter(
+    //     (mod) => mod.modifierId === modifier.modifier_id.toString()
+    //   );
 
-      if (cartModifiers.length > 0) {
-        if (modifier.maxOptions === 1) {
-          // Radio button - una sola opción
-          modifiers[modifier.modifierId] = cartModifiers[0].optionName;
-        } else {
-          // Checkbox - múltiples opciones
-          modifiers[modifier.modifierId] = cartModifiers.map(
-            (mod) => mod.optionName
-          );
-        }
-      }
-    });
+    //   if (cartModifiers.length > 0) {
+    //     modifiers[modifier.modifier_id.toString()] = cartModifiers.map(
+    //       (mod) => mod.optionName
+    //     );
+    //   }
+    // });
 
     return modifiers;
   };
@@ -123,7 +118,9 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                     <div
                       className="h-[70px] w-[70px] shrink-0 rounded-lg bg-cover bg-center bg-no-repeat"
                       style={{
-                        backgroundImage: `url("${item.menuItem.imageUrl}")`,
+                        backgroundImage: `url("${
+                          item.menuItem.image || "/placeholder-image.jpg"
+                        }")`,
                       }}
                     />
                     <div className="flex flex-1 flex-col justify-center">
@@ -131,7 +128,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                         className="text-base font-bold leading-normal"
                         style={{ color: "#151811" }}
                       >
-                        {item.menuItem.name}
+                        {item.menuItem.dish_name}
                       </p>
                       <p
                         className="text-sm font-normal leading-normal"
