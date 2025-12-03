@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { IMenuItem, IModifier } from "@/types/menu";
+import { IMenuItem, IModifier, IModifierGroup } from "@/types/menu";
 import { ICartModifier } from "@/types/cart";
 import { useCartStore } from "@/stores/cartStore";
 
@@ -16,6 +16,11 @@ interface ProductModalProps {
   isEditing?: boolean;
 }
 
+interface SelectedModifier {
+  groupCode: string;
+  selectedModifier: IModifier | null;
+}
+
 export default function ProductModal({
   isOpen,
   onClose,
@@ -25,69 +30,84 @@ export default function ProductModal({
   isEditing = false,
 }: ProductModalProps) {
   const [quantity, setQuantity] = useState(initialQuantity);
-  const [selectedModifiers, setSelectedModifiers] = useState<{
-    [key: string]: string | string[];
-  }>(initialModifiers);
+  const [selectedModifiers, setSelectedModifiers] = useState<
+    SelectedModifier[]
+  >(
+    item.modifiers?.map((group) => ({
+      groupCode: group.group_code,
+      selectedModifier: null,
+    })) || []
+  );
 
   const addItem = useCartStore((state) => state.addItem);
 
-  // Actualizar valores cuando cambie el modal o los datos iniciales
+  // Actualizar valores cuando se abre el modal
   useEffect(() => {
     if (isOpen) {
       setQuantity(initialQuantity);
-      setSelectedModifiers(initialModifiers);
+      setSelectedModifiers(
+        item.modifiers?.map((group) => ({
+          groupCode: group.group_code,
+          selectedModifier: null,
+        })) || []
+      );
     }
-  }, [isOpen, initialQuantity, initialModifiers]);
+  }, [isOpen]);
 
   // Calcular precio total basado en modificadores seleccionados
   const calculateTotalPrice = () => {
     let price = parseFloat(item.dish_price);
 
-    // TODO: Implementar lógica de modificadores v2 cuando sea necesario
-    // item.modifiers?.forEach((modifier) => {
-    //   // Nueva lógica para modificadores v2
-    // });
+    // Agregar precios de modificadores seleccionados
+    selectedModifiers.forEach((selected) => {
+      if (selected.selectedModifier) {
+        price += selected.selectedModifier.mod_price;
+      }
+    });
 
     return price * quantity;
   };
 
-  const handleModifierChange = (
-    modifierId: string,
-    optionName: string,
-    isRadio: boolean,
-    checked: boolean
-  ) => {
-    setSelectedModifiers((prev) => {
-      const newModifiers = { ...prev };
-
-      if (isRadio) {
-        newModifiers[modifierId] = optionName;
-      } else {
-        // Checkbox
-        if (!newModifiers[modifierId]) newModifiers[modifierId] = [];
-        const currentArray = newModifiers[modifierId] as string[];
-
-        if (checked) {
-          newModifiers[modifierId] = [...currentArray, optionName];
-        } else {
-          newModifiers[modifierId] = currentArray.filter(
-            (name) => name !== optionName
-          );
+  const handleModifierClick = (groupCode: string, modifier: IModifier) => {
+    setSelectedModifiers((prev) =>
+      prev.map((selected) => {
+        if (selected.groupCode === groupCode) {
+          return {
+            ...selected,
+            selectedModifier:
+              selected.selectedModifier?.modifier_id === modifier.modifier_id
+                ? null
+                : modifier,
+          };
         }
-      }
+        return selected;
+      })
+    );
+  };
 
-      return newModifiers;
-    });
+  const isModifierSelected = (groupCode: string, modifier: IModifier) => {
+    const groupSelection = selectedModifiers.find(
+      (s) => s.groupCode === groupCode
+    );
+    return (
+      groupSelection?.selectedModifier?.modifier_id === modifier.modifier_id
+    );
   };
 
   const handleAddToCart = () => {
     // Convertir selectedModifiers al formato ICartModifier
     const cartModifiers: ICartModifier[] = [];
 
-    // TODO: Implementar lógica de modificadores v2 cuando sea necesario
-    // item.modifiers?.forEach((modifier) => {
-    //   // Nueva lógica para modificadores v2
-    // });
+    selectedModifiers.forEach((selected) => {
+      if (selected.selectedModifier) {
+        cartModifiers.push({
+          modifierId: selected.selectedModifier.modifier_id.toString(),
+          modifierName: selected.selectedModifier.group_code,
+          optionName: selected.selectedModifier.mod_name,
+          priceAdjustment: selected.selectedModifier.mod_price,
+        });
+      }
+    });
 
     addItem(item, cartModifiers, quantity);
     onClose();
@@ -134,8 +154,87 @@ export default function ProductModal({
             </p>
           </div>
 
-          {/* Modifiers - Temporalmente comentado para v2 */}
-          {/* TODO: Implementar modificadores v2 cuando sea necesario */}
+          {/* Modifiers Section */}
+          {item.modifiers && item.modifiers.length > 0 && (
+            <div className="mb-6 pb-6 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Adicionales
+              </h2>
+
+              <div className="space-y-5">
+                {item.modifiers.map((group) => (
+                  <div key={group.group_code} className="flex flex-col gap-3">
+                    {/* Group Title */}
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-gray-900">
+                        {group.group_code}
+                      </h3>
+                      <span className="text-xs text-gray-500">Opcional</span>
+                    </div>
+
+                    {/* Options */}
+                    <div className="space-y-2">
+                      {group.options?.map((modifier) => {
+                        const isSelected = isModifierSelected(
+                          group.group_code,
+                          modifier
+                        );
+
+                        return (
+                          <button
+                            key={modifier.modifier_id}
+                            onClick={() =>
+                              handleModifierClick(group.group_code, modifier)
+                            }
+                            className={`
+                              w-full flex items-center justify-between p-3 rounded-lg border-2 transition-all duration-200
+                              ${
+                                isSelected
+                                  ? "border-[#65A30D] bg-green-50"
+                                  : "border-gray-200 hover:border-gray-300"
+                              }
+                            `}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={`
+                                  w-5 h-5 rounded border-2 flex items-center justify-center
+                                  ${
+                                    isSelected
+                                      ? "border-[#65A30D] bg-[#65A30D]"
+                                      : "border-gray-300"
+                                  }
+                                `}
+                              >
+                                {isSelected && (
+                                  <span className="text-white text-xs">✓</span>
+                                )}
+                              </div>
+                              <div className="text-left">
+                                <p className="text-sm font-medium text-gray-900">
+                                  {modifier.mod_name}
+                                </p>
+                                {modifier.mod_description && (
+                                  <p className="text-xs text-gray-500">
+                                    {modifier.mod_description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <span className="text-sm font-semibold text-[#65A30D]">
+                              {modifier.mod_price > 0
+                                ? `+$${modifier.mod_price.toFixed(2)}`
+                                : "Gratis"}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sticky Footer */}
