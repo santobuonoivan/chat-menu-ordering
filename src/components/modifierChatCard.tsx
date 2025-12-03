@@ -116,8 +116,8 @@ export default function ModifierChatCard({
       </div>
 
       {/* Lista de grupos de modificadores */}
-      {modifiers.map((group) => (
-        <div key={group.group_code} className="flex flex-col gap-2">
+      {modifiers.map((group, index) => (
+        <div key={index} className="flex flex-col gap-2">
           {/* Título del grupo */}
           <div className="flex items-center justify-between">
             <h5 className="text-sm font-semibold text-gray-900 dark:text-white">

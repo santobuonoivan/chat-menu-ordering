@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RiRobot3Line } from "react-icons/ri";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCartStore } from "@/stores/cartStore";
@@ -10,9 +10,12 @@ interface TopNavBarProps {
 
 export default function TopNavBar({ onClose }: TopNavBarProps) {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
   const { getTotalItems } = useCartStore();
 
-  const totalItems = getTotalItems();
+  useEffect(() => {
+    setTotalItems(getTotalItems());
+  }, [getTotalItems]);
 
   const handleCartClick = () => {
     setIsCartOpen(true);
