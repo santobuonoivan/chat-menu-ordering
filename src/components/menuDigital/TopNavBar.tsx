@@ -11,11 +11,11 @@ interface TopNavBarProps {
 export default function TopNavBar({ onClose }: TopNavBarProps) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
-  const { getTotalItems } = useCartStore();
+  const { getTotalItems, items } = useCartStore();
 
   useEffect(() => {
     setTotalItems(getTotalItems());
-  }, [getTotalItems]);
+  }, [getTotalItems, items]);
 
   const handleCartClick = () => {
     setIsCartOpen(true);
