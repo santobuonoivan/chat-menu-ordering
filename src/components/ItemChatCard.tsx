@@ -25,16 +25,14 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
     await sleep(100);
     if (item.modifiers && item.modifiers.length > 0) {
       setShowListModifiers(true);
+      console.log(item.modifiers);
       addMessage({
         id: generateUUID(),
         text: `Puedo agregarle a tu ${item.dish_name} :`,
         sender: "assistant",
         timestamp: new Date(),
         data: {
-          modifiers:
-            item.modifiers?.filter(
-              (modifier): modifier is IModifier => modifier !== null
-            ) || [],
+          modifiers: item.modifiers,
           itemSelected: item,
           action: "add_modifier",
         },

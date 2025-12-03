@@ -8,19 +8,18 @@ import MenuItemCard from "../../components/menuDigital/MenuItemCard";
 import CartIndicator from "../../components/menuDigital/CartIndicator";
 import { IMenuItem, IMenuData } from "./../../types/menu";
 import { useMenuStore } from "../../stores/menuStore";
-import menuDataV2 from "./../../mocks/menuv2.json";
 
 export default function MenuPage() {
   const router = useRouter();
   const { setMenuData, getMenuData } = useMenuStore();
   const [selectedCategory, setSelectedCategory] = useState<string>("ENTRADAS");
   const [menuItems, setMenuItems] = useState<IMenuItem[]>([]);
-
   // Load menu data
   useEffect(() => {
-    const data = menuDataV2 as IMenuData;
-    setMenuData(data);
-    setMenuItems(data.menu);
+    const data = getMenuData();
+    if (data) {
+      setMenuItems(data.menu);
+    }
   }, [setMenuData]);
 
   // Get unique categories from menu items sorted by category_order

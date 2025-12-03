@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useChatStore } from "@/stores/chatStore";
 import { useCartStore } from "@/stores/cartStore";
-import { IMenuItem, IModifier } from "@/types/menu";
+import { IMenuItem, IModifier, IModifierGroup } from "@/types/menu";
 import { ICartModifier } from "@/types/cart";
 import { generateUUID } from "@/utils";
 
 interface ModifierChatProps {
   item: IMenuItem;
-  modifiers: IModifier[];
+  modifiers: IModifierGroup[];
   action: string;
 }
 
 interface SelectedModifier {
-  modifierId: number;
+  groupCode: string;
   selectedModifier: IModifier | null;
 }
 
@@ -24,22 +24,11 @@ export default function ModifierChatCard({
   const { addMessage, setShowListModifiers } = useChatStore();
   const { addItem } = useCartStore();
 
-  // Agrupar modificadores por group_code
-  const modifierGroups = modifiers.reduce((groups, modifier) => {
-    if (!modifier) return groups;
-    const groupKey = modifier.group_code;
-    if (!groups[groupKey]) {
-      groups[groupKey] = [];
-    }
-    groups[groupKey].push(modifier);
-    return groups;
-  }, {} as Record<string, IModifier[]>);
-
   const [selectedModifiers, setSelectedModifiers] = useState<
     SelectedModifier[]
   >(
-    Object.keys(modifierGroups).map((groupCode) => ({
-      modifierId: modifierGroups[groupCode][0]?.modifier_id || 0,
+    modifiers.map((group) => ({
+      groupCode: group.group_code,
       selectedModifier: null,
     }))
   );
@@ -47,12 +36,7 @@ export default function ModifierChatCard({
   const handleOptionClick = (groupCode: string, modifier: IModifier) => {
     setSelectedModifiers((prev) =>
       prev.map((selected) => {
-        const groupModifiers = modifierGroups[groupCode];
-        const isInGroup = groupModifiers.some(
-          (m) => m.modifier_id === selected.modifierId
-        );
-
-        if (isInGroup) {
+        if (selected.groupCode === groupCode) {
           return {
             ...selected,
             selectedModifier:
@@ -66,10 +50,12 @@ export default function ModifierChatCard({
     );
   };
 
-  const isOptionSelected = (modifier: IModifier) => {
-    return selectedModifiers.some(
-      (selected) =>
-        selected.selectedModifier?.modifier_id === modifier.modifier_id
+  const isOptionSelected = (groupCode: string, modifier: IModifier) => {
+    const groupSelection = selectedModifiers.find(
+      (s) => s.groupCode === groupCode
+    );
+    return (
+      groupSelection?.selectedModifier?.modifier_id === modifier.modifier_id
     );
   };
 
@@ -130,25 +116,25 @@ export default function ModifierChatCard({
       </div>
 
       {/* Lista de grupos de modificadores */}
-      {Object.entries(modifierGroups).map(([groupCode, groupModifiers]) => (
-        <div key={groupCode} className="flex flex-col gap-2">
+      {modifiers.map((group) => (
+        <div key={group.group_code} className="flex flex-col gap-2">
           {/* Título del grupo */}
           <div className="flex items-center justify-between">
             <h5 className="text-sm font-semibold text-gray-900 dark:text-white">
-              {groupCode}
+              {group.group_code}
             </h5>
             <span className="text-xs text-gray-500">Opcional</span>
           </div>
 
           {/* Lista de opciones del grupo */}
           <div className="flex flex-col gap-2">
-            {groupModifiers.map((modifier) => {
-              const isSelected = isOptionSelected(modifier);
+            {group.options?.map((modifier) => {
+              const isSelected = isOptionSelected(group.group_code, modifier);
 
               return (
                 <button
                   key={modifier.modifier_id}
-                  onClick={() => handleOptionClick(groupCode, modifier)}
+                  onClick={() => handleOptionClick(group.group_code, modifier)}
                   className={`
                     flex items-center justify-between p-3 rounded-lg border transition-all duration-200
                     ${

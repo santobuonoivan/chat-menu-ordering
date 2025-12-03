@@ -7,10 +7,11 @@ import ActionChips from "@/components/menuDigital/ActionChips";
 import MessageComposer from "@/components/MessageComposer";
 import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
-import { generateUUID, sleep } from "@/utils";
+import { generateUUID, groupModifiers, sleep } from "@/utils";
 import { use, useEffect, useState } from "react";
 import { menuService } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
+import { IMenuItem } from "@/types/menu";
 
 export default function Home() {
   const router = useRouter();
@@ -30,8 +31,22 @@ export default function Home() {
     if (restNumber) {
       menuService.getMenuItems(restNumber).then((response) => {
         if (response.success) {
-          console.log("Menu Items:", response.data);
-          setMenuData(response.data);
+          const menu = response.data.menu.map((item: IMenuItem) => {
+            let modifiers =
+              item.modifiers && typeof item.modifiers === "string"
+                ? JSON.parse(item.modifiers)
+                : [];
+
+            modifiers = groupModifiers(modifiers);
+
+            return {
+              ...item,
+              modifiers,
+            };
+          });
+
+          console.log("Menu Items:", menu[0].modifiers);
+          setMenuData({ menu });
         } else {
           console.error("Error fetching menu items:", response.error);
         }

@@ -1,4 +1,4 @@
-import { IMenuItem, IModifier } from "./menu";
+import { IMenuItem, IModifier, IModifierGroup } from "./menu";
 
 export interface IMessage {
   id: string;
@@ -7,7 +7,7 @@ export interface IMessage {
   timestamp: Date;
   data?: {
     items?: IMenuItem[];
-    modifiers?: IModifier[];
+    modifiers?: IModifierGroup[];
     itemSelected?: IMenuItem;
     action: //ordering actions
     | "add_dish"

@@ -1,4 +1,4 @@
-import { IMenuItem } from "@/types/menu";
+import { IMenuItem, IModifier } from "@/types/menu";
 import { v4 as uuidv4 } from "uuid";
 
 export const sleep = (ms: number) =>
@@ -6,6 +6,47 @@ export const sleep = (ms: number) =>
 
 export const generateUUID = () => {
   return uuidv4();
+};
+
+// Función auxiliar para agrupar los modificadores
+export const groupModifiers = (
+  modifiers: (IModifier | null | undefined)[] // Aceptamos posibles null/undefined
+): { group_code: string; options: IModifier[] }[] => {
+  if (!modifiers || modifiers.length === 0) {
+    return [];
+  }
+
+  // 🛡️ Filtro para eliminar elementos null o undefined
+  const validModifiers = modifiers.filter((mod): mod is IModifier => !!mod);
+
+  // Si después de filtrar no quedan modificadores válidos, retornamos un array vacío
+  if (validModifiers.length === 0) {
+    return [];
+  }
+
+  // Usamos reduce para transformar el array plano en un objeto agrupado
+  const grouped = validModifiers.reduce((acc, modifier) => {
+    // 🎉 Ahora 'modifier' está garantizado de ser un objeto IModifier válido
+    // Sin necesidad de 'if (modifier)' dentro del reduce.
+
+    // Aseguramos que 'group_code' exista antes de usarlo como clave (aunque el error era por 'modifier' ser null)
+    const group_code = modifier.group_code || "SIN_GRUPO";
+
+    // Si el grupo ya existe, agregamos el modificador a sus opciones
+    if (acc[group_code]) {
+      acc[group_code].options.push(modifier);
+    } else {
+      // Si no existe, creamos el nuevo grupo
+      acc[group_code] = {
+        group_code,
+        options: [modifier],
+      };
+    }
+    return acc;
+  }, {} as Record<string, { group_code: string; options: IModifier[] }>);
+
+  // Convertimos el objeto agrupado de nuevo a un array para el formato final
+  return Object.values(grouped);
 };
 
 export const rankAndFilterDishes = (

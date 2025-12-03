@@ -9,6 +9,11 @@ export interface IModifier {
   mod_description: string;
 }
 
+export interface IModifierGroup {
+  group_code: string;
+  options: IModifier[];
+}
+
 export interface IMenuItem {
   dish_id: number;
   dish_sku: string;
@@ -21,7 +26,7 @@ export interface IMenuItem {
   max_quantity: number;
   image: string | null;
   external_id: string;
-  modifiers: (IModifier | null)[];
+  modifiers: IModifierGroup[];
 }
 
 export interface IMenuData {
