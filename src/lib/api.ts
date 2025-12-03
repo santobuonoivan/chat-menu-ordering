@@ -9,6 +9,14 @@ export const API_CONFIG = {
   },
 };
 
+export const WEBHOOK_CONFIG = {
+  URL: process.env.NEXT_PUBLIC_WEBHOOK_URL,
+  HEADERS: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+};
+
 // API Request Types
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -27,7 +35,8 @@ export interface ApiRequestOptions {
 // Generic API Call Function
 export async function apiCall<T = any>(
   endpoint: string,
-  options: ApiRequestOptions = {}
+  options: ApiRequestOptions = {},
+  host: string = API_CONFIG.BASE_URL
 ): Promise<ApiResponse<T>> {
   const {
     method = "GET",
@@ -36,7 +45,7 @@ export async function apiCall<T = any>(
     timeout = API_CONFIG.TIMEOUT,
   } = options;
 
-  const url = `${API_CONFIG.BASE_URL}${endpoint}`;
+  const url = `${host}${endpoint}`;
 
   const requestHeaders: Record<string, string> = {
     ...API_CONFIG.HEADERS,
@@ -99,6 +108,20 @@ export async function apiCall<T = any>(
   }
 }
 
+export const agentAIApi = {
+  // https://automate.appio.com.mx/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff
+  // post
+  post: <T = any>(
+    endpoint: string,
+    data?: any,
+    headers?: Record<string, string>
+  ) =>
+    apiCall<T>(
+      endpoint,
+      { method: "POST", body: data, headers },
+      WEBHOOK_CONFIG.URL
+    ),
+};
 // Specific API functions examples
 export const api = {
   // GET request example

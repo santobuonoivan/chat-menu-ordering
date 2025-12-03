@@ -5,6 +5,8 @@ import { useCartStore } from "@/stores/cartStore";
 import { IMessage } from "@/types/chat";
 import { generateUUID } from "@/utils";
 import { useState } from "react";
+import { getDishesByInput } from "@/services";
+import { useMenuStore } from "@/stores/menuStore";
 
 interface MessageComposerProps {
   onSendMessage?: (message: string, messageBody?: IMessage | null) => void;
@@ -22,7 +24,44 @@ export default function MessageComposer({
   const [message, setMessage] = useState("");
   const { setShowListMenuItems, resetToInitial } = useChatStore();
   const { resetCart } = useCartStore();
+  const { menuData } = useMenuStore();
 
+  const searchDishesByInput = async (input: string) => {
+    // Lógica para buscar platos por entrada de usuario
+    const dishList: string[] =
+      menuData?.menu.map((item) => item.dish_name) || [];
+    console.log("Dish List:", dishList);
+    console.log("Input:", input);
+    getDishesByInput(input, dishList).then((response) => {
+      if (response.success) {
+        console.log("Dishes by Input:", response.data);
+        const dishesFound = menuData?.menu.filter((item) =>
+          response.data.includes(item.dish_name)
+        );
+        if (dishesFound && dishesFound.length > 0) {
+          setShowListMenuItems(true);
+          onSendMessage?.(
+            `He encontrado ${dishesFound.length} plato(s) que coinciden con tu búsqueda.`,
+            {
+              id: generateUUID(),
+              text: "He encontrado esto para ti.",
+              sender: "assistant",
+              timestamp: new Date(),
+              data: {
+                items: dishesFound,
+                action: "add_dish",
+              },
+            }
+          );
+        } else {
+          onSendMessage?.(
+            `Lo siento, no he encontrado ningún plato que coincida con "${input}". ¿Quieres intentar con otro nombre?`,
+            null
+          );
+        }
+      }
+    });
+  };
   const handleSend = () => {
     // Mock data temporalmente deshabilitado para compatibilidad v2
     const mockBody: IMessage = {
@@ -155,7 +194,8 @@ export default function MessageComposer({
         resetCart();
       } else if (message.toLowerCase() != "ver menú digital") {
         setShowListMenuItems(true);
-        onSendMessage?.(message, mockBody);
+        searchDishesByInput(message);
+        //onSendMessage?.(message, mockBody);
       }
       setMessage("");
     }

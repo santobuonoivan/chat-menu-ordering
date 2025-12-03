@@ -10,10 +10,12 @@ import { useChatStore } from "@/stores/chatStore";
 import { generateUUID, sleep } from "@/utils";
 import { use, useEffect, useState } from "react";
 import { menuService } from "@/services";
+import { useMenuStore } from "@/stores/menuStore";
 
 export default function Home() {
   const router = useRouter();
   const { messages, addMessage } = useChatStore();
+  const { setMenuData } = useMenuStore();
   const [restNumber, setRestNumber] = useState("");
 
   /** tomar de la url el uuid y restNumber */
@@ -29,6 +31,7 @@ export default function Home() {
       menuService.getMenuItems(restNumber).then((response) => {
         if (response.success) {
           console.log("Menu Items:", response.data);
+          setMenuData(response.data);
         } else {
           console.error("Error fetching menu items:", response.error);
         }

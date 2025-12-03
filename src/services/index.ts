@@ -1,4 +1,5 @@
-import { api } from "@/lib/api";
+import { api, agentAIApi } from "@/lib/api";
+import { rankAndFilterDishes } from "@/utils";
 
 // Menu API Service
 export const menuService = {
@@ -8,6 +9,28 @@ export const menuService = {
   },
 };
 
+export const getDishesByInput = async (
+  input: string,
+  list: string[]
+): Promise<{
+  success: boolean;
+  data: string[];
+}> => {
+  const filteredDishes = rankAndFilterDishes(list, input);
+  console.log("Filtered Dishes:", filteredDishes);
+  if (filteredDishes.length === 1)
+    return { success: true, data: filteredDishes };
+  const agentRespones = await agentAIApi.post(
+    "/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff",
+    {
+      type: "FIND_DISH_BY_NAME",
+      data: { DISH_LIST: filteredDishes, INPUT: input },
+    }
+  );
+  console.log("Agent Responses:", agentRespones);
+  const { success, data } = agentRespones;
+  return { success, data: data.output };
+};
 /*// Cart API Service
 export const cartService = {
   // Submit order
