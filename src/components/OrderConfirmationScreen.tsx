@@ -73,7 +73,8 @@ export default function OrderConfirmationScreen({
             </div>
 
             {/* Order Details Card */}
-            <div className="w-full rounded-xl border border-black/5 dark:border-white/10 p-6 soft-shadow"
+            <div
+              className="w-full rounded-xl border border-black/5 dark:border-white/10 p-6 soft-shadow"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.5)",
                 backdropFilter: "blur(12px)",
@@ -127,8 +128,7 @@ export default function OrderConfirmationScreen({
                           className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
                           style={{
                             backgroundImage: `url("${
-                              item.menuItem.image ||
-                              "/placeholder-image.jpg"
+                              item.menuItem.image || "/placeholder-image.jpg"
                             }")`,
                           }}
                         />
