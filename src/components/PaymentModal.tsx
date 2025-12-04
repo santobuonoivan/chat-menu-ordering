@@ -251,8 +251,8 @@ export default function PaymentModal({
                 </label>
 
                 {/* Expiry and CVV */}
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <label className="flex flex-col flex-1">
+                <div className="flex flex-row gap-4">
+                  <label className="flex flex-col flex-1 min-w-0">
                     <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
                       Vencimiento
                     </p>
@@ -265,7 +265,7 @@ export default function PaymentModal({
                     />
                   </label>
 
-                  <label className="flex flex-col flex-1">
+                  <label className="flex flex-col flex-1 min-w-0">
                     <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
                       CVV
                     </p>
