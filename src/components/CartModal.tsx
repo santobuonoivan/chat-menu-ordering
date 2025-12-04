@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useCartStore } from "@/stores/cartStore";
 import { useDeliveryStore } from "@/stores/deliveryStore";
+import { useOrderStore } from "@/stores/orderStore";
 import { ICartItem } from "@/types/cart";
 import ProductModal from "./menuDigital/ProductModal";
 import DeliveryAddressModal, { DeliveryAddress } from "./DeliveryAddressModal";
 import PaymentModal, { PaymentData } from "./PaymentModal";
+import OrderConfirmationScreen from "./OrderConfirmationScreen";
 
 interface CartModalProps {
   isOpen: boolean;
@@ -15,10 +17,12 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } =
     useCartStore();
   const { address: deliveryAddress } = useDeliveryStore();
+  const { setOrder } = useOrderStore();
   const [editingItem, setEditingItem] = useState<ICartItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleEditItem = (item: ICartItem) => {
     setEditingItem(item);
@@ -69,9 +73,47 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
     console.log("Pago confirmado:", paymentData);
     console.log("Dirección de entrega:", deliveryAddress);
     console.log("Productos del pedido:", items);
-    // TODO: Implementar envío de orden completa a backend
-    // Debe incluir: items, deliveryAddress, paymentData, total
+
+    if (!deliveryAddress) {
+      alert("Error: No hay dirección de entrega");
+      return;
+    }
+
+    // Generar número de pedido único
+    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+    // Calcular fechas
+    const now = new Date();
+    const estimatedDeliveryDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 días
+
+    // Calcular totales
+    const subtotal = getTotalPrice();
+    const taxes = subtotal * 0.08;
+    const total = subtotal + taxes;
+
+    // Crear el orden
+    const order = {
+      orderNumber,
+      items,
+      deliveryAddress,
+      subtotal,
+      taxes,
+      total,
+      paymentMethod: paymentData.paymentMethod,
+      createdAt: now,
+      estimatedDeliveryDate,
+    };
+
+    // Guardar orden en store
+    setOrder(order);
+
+    // Mostrar pantalla de confirmación
     setIsPaymentModalOpen(false);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmationClose = () => {
+    setShowConfirmation(false);
     onClose();
   };
 
@@ -84,6 +126,11 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const total = subtotal + taxes;
 
   if (!isOpen) return null;
+
+  // Si está mostrando la confirmación, mostrar esa pantalla en lugar del carrito
+  if (showConfirmation) {
+    return <OrderConfirmationScreen onClose={handleConfirmationClose} />;
+  }
 
   return (
     <div

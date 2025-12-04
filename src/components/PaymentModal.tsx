@@ -19,6 +19,13 @@ export interface PaymentData {
   };
 }
 
+interface CardErrors {
+  cardNumber?: string;
+  expiryDate?: string;
+  cvv?: string;
+  cardholderName?: string;
+}
+
 export default function PaymentModal({
   isOpen,
   onClose,
@@ -32,6 +39,40 @@ export default function PaymentModal({
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [cardholderName, setCardholderName] = useState("");
+  const [errors, setErrors] = useState<CardErrors>({});
+
+  // Validar número de tarjeta con algoritmo de Luhn
+  const luhnCheck = (num: string): boolean => {
+    let sum = 0;
+    let isEven = false;
+    for (let i = num.length - 1; i >= 0; i--) {
+      let digit = parseInt(num[i], 10);
+      if (isEven) {
+        digit *= 2;
+        if (digit > 9) {
+          digit -= 9;
+        }
+      }
+      sum += digit;
+      isEven = !isEven;
+    }
+    return sum % 10 === 0;
+  };
+
+  // Validar que la fecha no sea expirada
+  const isExpired = (expiryString: string): boolean => {
+    const [month, year] = expiryString.split("/");
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear() % 100;
+    const currentMonth = currentDate.getMonth() + 1;
+
+    const expYear = parseInt(year, 10);
+    const expMonth = parseInt(month, 10);
+
+    if (expYear < currentYear) return true;
+    if (expYear === currentYear && expMonth < currentMonth) return true;
+    return false;
+  };
 
   const handleFormatCardNumber = (value: string) => {
     // Remover espacios y caracteres no numéricos
@@ -41,6 +82,10 @@ export default function PaymentModal({
     // Agregar espacios cada 4 dígitos
     const formatted = limited.replace(/(\d{4})(?=\d)/g, "$1 ");
     setCardNumber(formatted);
+    // Limpiar error cuando el usuario empieza a escribir
+    if (errors.cardNumber) {
+      setErrors({ ...errors, cardNumber: undefined });
+    }
   };
 
   const handleFormatExpiryDate = (value: string) => {
@@ -54,31 +99,73 @@ export default function PaymentModal({
     } else {
       setExpiryDate(limited);
     }
+    // Limpiar error cuando el usuario empieza a escribir
+    if (errors.expiryDate) {
+      setErrors({ ...errors, expiryDate: undefined });
+    }
   };
 
   const handleFormatCvv = (value: string) => {
     // Solo números, máximo 4 dígitos
     const cleaned = value.replace(/\D/g, "").slice(0, 4);
     setCvv(cleaned);
+    // Limpiar error cuando el usuario empieza a escribir
+    if (errors.cvv) {
+      setErrors({ ...errors, cvv: undefined });
+    }
   };
 
   const validateCardData = (): boolean => {
-    if (!cardNumber || cardNumber.replace(/\s/g, "").length !== 16) {
-      alert("El número de tarjeta debe tener 16 dígitos");
-      return false;
+    const newErrors: CardErrors = {};
+
+    // Validar número de tarjeta
+    const cleanCardNumber = cardNumber.replace(/\s/g, "");
+    if (!cleanCardNumber) {
+      newErrors.cardNumber = "El número de tarjeta es requerido";
+    } else if (cleanCardNumber.length !== 16) {
+      newErrors.cardNumber = "El número de tarjeta debe tener 16 dígitos";
+    } else if (!luhnCheck(cleanCardNumber)) {
+      newErrors.cardNumber = "El número de tarjeta no es válido";
     }
-    if (!expiryDate || expiryDate.length !== 5) {
-      alert("La fecha de vencimiento debe estar en formato MM/AA");
-      return false;
+
+    // Validar fecha de vencimiento
+    if (!expiryDate) {
+      newErrors.expiryDate = "La fecha de vencimiento es requerida";
+    } else if (expiryDate.length !== 5) {
+      newErrors.expiryDate = "La fecha debe estar en formato MM/AA";
+    } else {
+      const [month] = expiryDate.split("/");
+      const monthNum = parseInt(month, 10);
+      if (monthNum < 1 || monthNum > 12) {
+        newErrors.expiryDate = "El mes debe estar entre 01 y 12";
+      } else if (isExpired(expiryDate)) {
+        newErrors.expiryDate = "La tarjeta está expirada";
+      }
     }
-    if (!cvv || cvv.length < 3) {
-      alert("El CVV debe tener al menos 3 dígitos");
-      return false;
+
+    // Validar CVV
+    if (!cvv) {
+      newErrors.cvv = "El CVV es requerido";
+    } else if (cvv.length < 3 || cvv.length > 4) {
+      newErrors.cvv = "El CVV debe tener 3 o 4 dígitos";
     }
+
+    // Validar nombre del titular
     if (!cardholderName.trim()) {
-      alert("El nombre del titular es requerido");
+      newErrors.cardholderName = "El nombre del titular es requerido";
+    } else if (cardholderName.trim().length < 3) {
+      newErrors.cardholderName = "El nombre debe tener al menos 3 caracteres";
+    } else if (!/^[a-záéíóúñ\s]+$/i.test(cardholderName)) {
+      newErrors.cardholderName =
+        "El nombre solo puede contener letras y espacios";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return false;
     }
+
+    setErrors({});
     return true;
   };
 
@@ -246,8 +333,20 @@ export default function PaymentModal({
                     placeholder="0000 0000 0000 0000"
                     value={cardNumber}
                     onChange={(e) => handleFormatCardNumber(e.target.value)}
-                    className="h-14 w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-3 text-base font-normal text-slate-900 placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:border-gray-600 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400"
+                    className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                      errors.cardNumber
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
+                        : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
+                    } text-slate-900 dark:text-slate-200`}
                   />
+                  {errors.cardNumber && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-base">
+                        error
+                      </span>
+                      {errors.cardNumber}
+                    </p>
+                  )}
                 </label>
 
                 {/* Expiry and CVV */}
@@ -261,8 +360,20 @@ export default function PaymentModal({
                       placeholder="MM/AA"
                       value={expiryDate}
                       onChange={(e) => handleFormatExpiryDate(e.target.value)}
-                      className="h-14 w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-3 text-base font-normal text-slate-900 placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:border-gray-600 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400"
+                      className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                        errors.expiryDate
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
+                          : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
+                      } text-slate-900 dark:text-slate-200`}
                     />
+                    {errors.expiryDate && (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-base">
+                          error
+                        </span>
+                        {errors.expiryDate}
+                      </p>
+                    )}
                   </label>
 
                   <label className="flex flex-col flex-1 min-w-0">
@@ -274,8 +385,20 @@ export default function PaymentModal({
                       placeholder="123"
                       value={cvv}
                       onChange={(e) => handleFormatCvv(e.target.value)}
-                      className="h-14 w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-3 text-base font-normal text-slate-900 placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:border-gray-600 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400"
+                      className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                        errors.cvv
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
+                          : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
+                      } text-slate-900 dark:text-slate-200`}
                     />
+                    {errors.cvv && (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-base">
+                          error
+                        </span>
+                        {errors.cvv}
+                      </p>
+                    )}
                   </label>
                 </div>
 
@@ -288,9 +411,26 @@ export default function PaymentModal({
                     type="text"
                     placeholder="Nombre como aparece en la tarjeta"
                     value={cardholderName}
-                    onChange={(e) => setCardholderName(e.target.value)}
-                    className="h-14 w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-3 text-base font-normal text-slate-900 placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:border-gray-600 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400"
+                    onChange={(e) => {
+                      setCardholderName(e.target.value);
+                      if (errors.cardholderName) {
+                        setErrors({ ...errors, cardholderName: undefined });
+                      }
+                    }}
+                    className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                      errors.cardholderName
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
+                        : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
+                    } text-slate-900 dark:text-slate-200`}
                   />
+                  {errors.cardholderName && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-base">
+                        error
+                      </span>
+                      {errors.cardholderName}
+                    </p>
+                  )}
                 </label>
               </div>
             )}
@@ -326,9 +466,23 @@ export default function PaymentModal({
 
         {/* Footer with Confirm Button */}
         <footer className="shrink-0 border-t border-gray-200/50 bg-white/30 px-2 py-4 dark:border-gray-700/50 dark:bg-black/30 sm:px-4">
+          {paymentMethod === "credit_card" &&
+            Object.keys(errors).length > 0 && (
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 dark:border-red-900/30 dark:bg-red-950/20">
+                <span className="material-symbols-outlined text-red-600 dark:text-red-400">
+                  warning
+                </span>
+                <p className="text-sm font-medium text-red-700 dark:text-red-300">
+                  Por favor revisa los errores en el formulario
+                </p>
+              </div>
+            )}
           <button
             onClick={handleConfirmPayment}
-            className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95"
+            disabled={
+              paymentMethod === "credit_card" && Object.keys(errors).length > 0
+            }
+            className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             style={{
               backgroundColor: "#65A30D",
               boxShadow: "0 8px 16px rgba(101, 163, 13, 0.3)",
