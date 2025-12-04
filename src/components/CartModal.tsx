@@ -80,11 +80,16 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
     }
 
     // Generar número de pedido único
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    const orderNumber = `ORD-${Date.now()}-${Math.random()
+      .toString(36)
+      .substr(2, 9)
+      .toUpperCase()}`;
 
     // Calcular fechas
     const now = new Date();
-    const estimatedDeliveryDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 días
+    const estimatedDeliveryDate = new Date(
+      now.getTime() + 3 * 24 * 60 * 60 * 1000
+    ); // 3 días
 
     // Calcular totales
     const subtotal = getTotalPrice();
