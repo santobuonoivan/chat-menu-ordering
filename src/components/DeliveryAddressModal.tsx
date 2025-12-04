@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useDeliveryStore } from "@/stores/deliveryStore";
 
 interface DeliveryAddressModalProps {
   isOpen: boolean;
@@ -28,6 +29,8 @@ export default function DeliveryAddressModal({
   onClose,
   onConfirm,
 }: DeliveryAddressModalProps) {
+  const { address: storedAddress, setAddress: setStoredAddress } =
+    useDeliveryStore();
   const [address, setAddress] = useState<DeliveryAddress>({
     street: "",
     city: "",
@@ -42,6 +45,20 @@ export default function DeliveryAddressModal({
   const markerInstance = useRef<any>(null);
   const geocoderInstance = useRef<any>(null);
   const mapInitialized = useRef(false);
+
+  // Cargar dirección guardada si existe
+  useEffect(() => {
+    if (storedAddress) {
+      setAddress(storedAddress);
+    }
+  }, [storedAddress]);
+
+  // Guardar dirección en el store cada vez que cambia
+  useEffect(() => {
+    if (address.latitude !== 0 || address.longitude !== 0) {
+      setStoredAddress(address);
+    }
+  }, [address, setStoredAddress]);
 
   // Cargar Google Maps API
   useEffect(() => {

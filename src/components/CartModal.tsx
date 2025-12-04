@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCartStore } from "@/stores/cartStore";
+import { useDeliveryStore } from "@/stores/deliveryStore";
 import { ICartItem } from "@/types/cart";
 import ProductModal from "./menuDigital/ProductModal";
 import DeliveryAddressModal, { DeliveryAddress } from "./DeliveryAddressModal";
@@ -12,11 +13,10 @@ interface CartModalProps {
 export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } =
     useCartStore();
+  const { address: deliveryAddress } = useDeliveryStore();
   const [editingItem, setEditingItem] = useState<ICartItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [deliveryAddress, setDeliveryAddress] =
-    useState<DeliveryAddress | null>(null);
 
   const handleEditItem = (item: ICartItem) => {
     setEditingItem(item);
@@ -57,7 +57,6 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   };
 
   const handleAddressConfirm = (address: DeliveryAddress) => {
-    setDeliveryAddress(address);
     console.log("Dirección confirmada:", address);
     // TODO: Implementar envío de orden con dirección
     setIsAddressModalOpen(false);
