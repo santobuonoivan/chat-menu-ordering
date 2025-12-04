@@ -4,6 +4,7 @@ import { useDeliveryStore } from "@/stores/deliveryStore";
 import { ICartItem } from "@/types/cart";
 import ProductModal from "./menuDigital/ProductModal";
 import DeliveryAddressModal, { DeliveryAddress } from "./DeliveryAddressModal";
+import PaymentModal, { PaymentData } from "./PaymentModal";
 
 interface CartModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const [editingItem, setEditingItem] = useState<ICartItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const handleEditItem = (item: ICartItem) => {
     setEditingItem(item);
@@ -58,8 +60,18 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
   const handleAddressConfirm = (address: DeliveryAddress) => {
     console.log("Dirección confirmada:", address);
-    // TODO: Implementar envío de orden con dirección
+    // Pasar a la pantalla de pago
     setIsAddressModalOpen(false);
+    setIsPaymentModalOpen(true);
+  };
+
+  const handlePaymentConfirm = (paymentData: PaymentData) => {
+    console.log("Pago confirmado:", paymentData);
+    console.log("Dirección de entrega:", deliveryAddress);
+    console.log("Productos del pedido:", items);
+    // TODO: Implementar envío de orden completa a backend
+    // Debe incluir: items, deliveryAddress, paymentData, total
+    setIsPaymentModalOpen(false);
     onClose();
   };
 
@@ -257,6 +269,14 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
         isOpen={isAddressModalOpen}
         onClose={() => setIsAddressModalOpen(false)}
         onConfirm={handleAddressConfirm}
+      />
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        totalAmount={total}
+        onConfirm={handlePaymentConfirm}
       />
     </div>
   );
