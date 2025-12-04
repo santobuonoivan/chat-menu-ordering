@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCartStore } from "@/stores/cartStore";
 import { ICartItem } from "@/types/cart";
 import ProductModal from "./menuDigital/ProductModal";
+import DeliveryAddressModal, { DeliveryAddress } from "./DeliveryAddressModal";
 
 interface CartModalProps {
   isOpen: boolean;
@@ -13,6 +14,9 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
     useCartStore();
   const [editingItem, setEditingItem] = useState<ICartItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [deliveryAddress, setDeliveryAddress] =
+    useState<DeliveryAddress | null>(null);
 
   const handleEditItem = (item: ICartItem) => {
     setEditingItem(item);
@@ -49,8 +53,15 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   };
 
   const handleFinalizePurchase = () => {
-    // TODO: Implementar finalización de compra
-    console.log("Finalizar compra");
+    setIsAddressModalOpen(true);
+  };
+
+  const handleAddressConfirm = (address: DeliveryAddress) => {
+    setDeliveryAddress(address);
+    console.log("Dirección confirmada:", address);
+    // TODO: Implementar envío de orden con dirección
+    setIsAddressModalOpen(false);
+    onClose();
   };
 
   const formatModifiers = (modifiers: any[]) => {
@@ -224,7 +235,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)]"
               style={{ backgroundColor: "#65A30D" }}
             >
-              Finalizar Compra
+              Ordenar
             </button>
           </footer>
         )}
@@ -241,6 +252,13 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
           isEditing={true}
         />
       )}
+
+      {/* Delivery Address Modal */}
+      <DeliveryAddressModal
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+        onConfirm={handleAddressConfirm}
+      />
     </div>
   );
 }
