@@ -1,5 +1,6 @@
 import { api, agentAIApi, duckApi } from "@/lib/api";
 import { rankAndFilterDishes } from "@/utils";
+import { timeStamp } from "console";
 
 // Menu API Service
 export const menuService = {
@@ -39,6 +40,51 @@ export const GetPaymentGateway = async (
   data: any;
 }> => {
   const response = await duckApi.get(`/v1/gateways/${gatewaySignature}`);
+  const { success, data } = response;
+  return { success, data: data };
+};
+
+export const ProcessPayment = async (
+  paymentData: any
+): Promise<{
+  success: boolean;
+  data: any;
+}> => {
+  const {
+    signature,
+    recipeuuid,
+    customer,
+    paymentMethod,
+    receiptAmount,
+    restaurantData,
+  } = paymentData;
+  const timeStamp = new Date().getTime();
+  const response = await duckApi.post(
+    `/v1/payments/${signature}/order/${recipeuuid}`,
+    {
+      customer,
+      reference: timeStamp,
+      concept: "ORDER_PAYMENT",
+      description: "Pago de prueba orden AI",
+      currency: "MXN",
+      receipt_amount: receiptAmount,
+      type_charge: "direct",
+      payment_method: paymentMethod,
+      service: "PAYMENT",
+      cashOnHand: 1,
+      receipt_details: [],
+      receipt_charges: [],
+      receipt_owner: {
+        name: restaurantData.name,
+        email: restaurantData.email,
+        mobile: restaurantData.mobile,
+        owner_id: restaurantData.ownerId,
+      },
+      metadata: {
+        action: "PAY-ORDER-AI",
+      },
+    }
+  );
   const { success, data } = response;
   return { success, data: data };
 };

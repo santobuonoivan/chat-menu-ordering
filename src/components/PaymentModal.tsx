@@ -1,7 +1,8 @@
 "use client";
 
 import { CreditCardSchema } from "@/schemas/ credit-card.schema";
-import { GetPaymentGateway } from "@/services";
+import { EmailSchema } from "@/schemas/email.schema";
+import { GetPaymentGateway, ProcessPayment } from "@/services";
 import Script from "next/script";
 import { useState } from "react";
 
@@ -42,25 +43,129 @@ export default function PaymentModal({
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [cardholderName, setCardholderName] = useState("");
-  const [errors, setErrors] = useState<CardErrors>({});
+  const [email, setEmail] = useState("");
+  const [cardErrors, setCardErrors] = useState<CardErrors>({});
+  const [disable, setDisable] = useState<any>(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [payment, setPayment] = useState<any>({});
+  async function handleProcess(e: any): Promise<void> {
+    setDisable(true);
+    setErrors([]);
+
+    try {
+      const emailResult: any = EmailSchema.validate(email, {
+        abortEarly: false,
+      });
+
+      if (emailResult.error == null) {
+        console.log("Procesando cobro .... espere porfavor");
+
+        let token = null;
+        if (paymentMethod == "credit_card") {
+          token = await createTokenOfcard();
+          console.log("token", token);
+          if (token == null || token == undefined) {
+            setDisable(false);
+            console.log("La tarjeta no se pudo tokenizar");
+            console.warn(
+              `La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.`
+            );
+            setErrors((prev) => [
+              ...prev,
+              "La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.",
+            ]);
+
+            return;
+          }
+        }
+
+        let payPayload = {
+          receiptUUID: payment.receiptUUID,
+          customer: {
+            email: email,
+            token_card: token ? token.id : null,
+          },
+          payment_method: paymentMethod == "credit_card" ? "card" : "cash",
+          signature: payment.gatewaySignature,
+          restaurantData: {},
+          receiptAmount: totalAmount,
+        };
+
+        console.log(payPayload);
+
+        let credits = await ProcessPayment(payPayload).then((res: any) => {
+          console.log(res);
+          return res;
+        });
+
+        let { data } = credits;
+
+        if (data && data.status == "processing") {
+          console.log("Procesando cobro");
+          //await setupConfig();
+          setDisable(false);
+        } else {
+          //await setupConfig();
+
+          let apiData = credits.data;
+
+          if (
+            apiData.operationResponse.object &&
+            apiData.operationResponse.object === "error"
+          ) {
+            let errors = apiData.operationResponse.tracer.data.details.map(
+              (element: any) => element.message || "Error desconocido"
+            );
+            setErrors((prev) => [...prev, ...errors]);
+
+            errors.forEach((element: any) => {
+              console.warn(element);
+            });
+          } else {
+            console.warn("El cobro no pudo ser efectuado");
+            setErrors((prev) => [...prev, "El cobro no pudo ser efectuado"]);
+          }
+          setDisable(false);
+        }
+
+        console.log("token", token);
+      } else {
+        setDisable(false);
+        let errors = [...emailResult.error?.details];
+        setErrors((prev) => [...prev, ...errors]);
+
+        console.warn(`${emailResult.error.message}`);
+      }
+    } catch (error: any) {
+      console.log(error);
+      console.error(
+        "Error cobro no pudo ser relizado, no se puede obtener la causa del error."
+      );
+      setErrors((prev) => [
+        ...prev,
+        "Error: No se puede obtener la causa del error.",
+      ]);
+      setDisable(false);
+    }
+  }
 
   async function createTokenOfcard() {
     try {
-      const gateway = await GetPaymentGateway('CNKT');
+      const gateway = await GetPaymentGateway("CNKT");
       console.log(gateway);
 
-      if (typeof Conekta !== 'undefined' && gateway.success) {
+      if (typeof Conekta !== "undefined" && gateway.success) {
         await Conekta.setPublicKey(gateway.data.publicKey);
 
-        const cardClean = card.replace(/_/g, '');
-        const cvcClean = cvc.replace(/_/g, '');
-        let exp_month = expired.substring(0, 2);
-        let exp_year = expired.substring(3, 5);
+        const cardClean = cardNumber.replace(/\s/g, "");
+        const cvcClean = cvv.replace(/\s/g, "");
+        let exp_month = expiryDate.substring(0, 2);
+        let exp_year = expiryDate.substring(3, 5);
 
         let info = {
           card: {
             number: cardClean,
-            name: name,
+            name: cardholderName,
             exp_month: exp_month,
             exp_year: exp_year,
             cvc: cvcClean,
@@ -71,8 +176,8 @@ export default function PaymentModal({
         const creditCardResult: any = CreditCardSchema.validate(
           {
             number: cardClean,
-            name: name,
-            expirationDate: expired,
+            name: cardholderName,
+            expirationDate: expiryDate,
             cvv: cvcClean,
           },
           {
@@ -83,10 +188,10 @@ export default function PaymentModal({
         if (creditCardResult.error == null) {
           const token: any = await new Promise((resolve, reject) => {
             Conekta.Token.create(info, (response: any) => {
-              if (response.object === 'token') {
+              if (response.object === "token") {
                 resolve(response);
               } else {
-                reject(new Error('Error al crear el token'));
+                reject(new Error("Error al crear el token"));
               }
             });
           });
@@ -94,21 +199,17 @@ export default function PaymentModal({
           return token;
         } else {
           if (creditCardResult.error) {
-            let errors = [...creditCardResult.error?.details];
-            errors.forEach((x) => message.warning(${x.message}));
+            let validationErrors = [...creditCardResult.error?.details];
+            console.error("Validation errors:", validationErrors);
           }
         }
       }
     } catch (error: any) {
       console.log(error);
-      if (error.object && error.object === 'error') {
-        message.error(
-          'Error al tokenizar la tarjeta. Verifica los parámetros ingresados.'
-        );
+      if (error.object && error.object === "error") {
+        console.error("Error al tokenizar la tarjeta:", error);
       } else {
-        message.error(
-          'Error con la tarjeta, no se puede obtener la causa del error.'
-        );
+        console.error("Error con la tarjeta:", error);
       }
     }
   }
@@ -155,8 +256,8 @@ export default function PaymentModal({
     const formatted = limited.replace(/(\d{4})(?=\d)/g, "$1 ");
     setCardNumber(formatted);
     // Limpiar error cuando el usuario empieza a escribir
-    if (errors.cardNumber) {
-      setErrors({ ...errors, cardNumber: undefined });
+    if (cardErrors.cardNumber) {
+      setCardErrors({ ...cardErrors, cardNumber: undefined });
     }
   };
 
@@ -172,8 +273,8 @@ export default function PaymentModal({
       setExpiryDate(limited);
     }
     // Limpiar error cuando el usuario empieza a escribir
-    if (errors.expiryDate) {
-      setErrors({ ...errors, expiryDate: undefined });
+    if (cardErrors.expiryDate) {
+      setCardErrors({ ...cardErrors, expiryDate: undefined });
     }
   };
 
@@ -182,8 +283,8 @@ export default function PaymentModal({
     const cleaned = value.replace(/\D/g, "").slice(0, 4);
     setCvv(cleaned);
     // Limpiar error cuando el usuario empieza a escribir
-    if (errors.cvv) {
-      setErrors({ ...errors, cvv: undefined });
+    if (cardErrors.cvv) {
+      setCardErrors({ ...cardErrors, cvv: undefined });
     }
   };
 
@@ -233,11 +334,11 @@ export default function PaymentModal({
     }
 
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+      setCardErrors(newErrors);
       return false;
     }
 
-    setErrors({});
+    setCardErrors({});
     return true;
   };
 
@@ -267,7 +368,7 @@ export default function PaymentModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
-      <Script src="https://cdn.conekta.io/js/latest/conekta.js" /> 
+      <Script src="https://cdn.conekta.io/js/latest/conekta.js" />
       <div
         className="absolute inset-0 z-0 h-full w-full bg-cover bg-center"
         style={{
@@ -303,6 +404,29 @@ export default function PaymentModal({
 
         {/* Main Content */}
         <main className="flex flex-1 flex-col gap-6 overflow-y-auto px-2 py-4 sm:px-4">
+          {/* Email Section */}
+          <div
+            className="flex flex-col gap-4 rounded-lg p-5 shadow-lg"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+            }}
+          >
+            <label className="flex flex-col">
+              <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
+                Correo Electrónico
+              </p>
+              <input
+                type="email"
+                placeholder="tu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-14 w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-3 text-base font-normal text-slate-900 placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:border-gray-600 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors"
+              />
+            </label>
+          </div>
+
           {/* Payment Method Section */}
           <div
             className="flex flex-col gap-4 rounded-lg p-5 shadow-lg"
@@ -407,17 +531,17 @@ export default function PaymentModal({
                     value={cardNumber}
                     onChange={(e) => handleFormatCardNumber(e.target.value)}
                     className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
-                      errors.cardNumber
+                      cardErrors.cardNumber
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                         : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
                     } text-slate-900 dark:text-slate-200`}
                   />
-                  {errors.cardNumber && (
+                  {cardErrors.cardNumber && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
                       <span className="material-symbols-outlined text-base">
                         error
                       </span>
-                      {errors.cardNumber}
+                      {cardErrors.cardNumber}
                     </p>
                   )}
                 </label>
@@ -434,17 +558,17 @@ export default function PaymentModal({
                       value={expiryDate}
                       onChange={(e) => handleFormatExpiryDate(e.target.value)}
                       className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
-                        errors.expiryDate
+                        cardErrors.expiryDate
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                           : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
                       } text-slate-900 dark:text-slate-200`}
                     />
-                    {errors.expiryDate && (
+                    {cardErrors.expiryDate && (
                       <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">
                           error
                         </span>
-                        {errors.expiryDate}
+                        {cardErrors.expiryDate}
                       </p>
                     )}
                   </label>
@@ -459,17 +583,17 @@ export default function PaymentModal({
                       value={cvv}
                       onChange={(e) => handleFormatCvv(e.target.value)}
                       className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
-                        errors.cvv
+                        cardErrors.cvv
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                           : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
                       } text-slate-900 dark:text-slate-200`}
                     />
-                    {errors.cvv && (
+                    {cardErrors.cvv && (
                       <p className="mt-1 text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">
                           error
                         </span>
-                        {errors.cvv}
+                        {cardErrors.cvv}
                       </p>
                     )}
                   </label>
@@ -486,22 +610,25 @@ export default function PaymentModal({
                     value={cardholderName}
                     onChange={(e) => {
                       setCardholderName(e.target.value);
-                      if (errors.cardholderName) {
-                        setErrors({ ...errors, cardholderName: undefined });
+                      if (cardErrors.cardholderName) {
+                        setCardErrors({
+                          ...cardErrors,
+                          cardholderName: undefined,
+                        });
                       }
                     }}
                     className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
-                      errors.cardholderName
+                      cardErrors.cardholderName
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                         : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
                     } text-slate-900 dark:text-slate-200`}
                   />
-                  {errors.cardholderName && (
+                  {cardErrors.cardholderName && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
                       <span className="material-symbols-outlined text-base">
                         error
                       </span>
-                      {errors.cardholderName}
+                      {cardErrors.cardholderName}
                     </p>
                   )}
                 </label>
@@ -540,7 +667,7 @@ export default function PaymentModal({
         {/* Footer with Confirm Button */}
         <footer className="shrink-0 border-t border-gray-200/50 bg-white/30 px-2 py-4 dark:border-gray-700/50 dark:bg-black/30 sm:px-4">
           {paymentMethod === "credit_card" &&
-            Object.keys(errors).length > 0 && (
+            Object.keys(cardErrors).length > 0 && (
               <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 dark:border-red-900/30 dark:bg-red-950/20">
                 <span className="material-symbols-outlined text-red-600 dark:text-red-400">
                   warning
@@ -553,7 +680,8 @@ export default function PaymentModal({
           <button
             onClick={handleConfirmPayment}
             disabled={
-              paymentMethod === "credit_card" && Object.keys(errors).length > 0
+              paymentMethod === "credit_card" &&
+              Object.keys(cardErrors).length > 0
             }
             className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             style={{
