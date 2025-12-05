@@ -167,17 +167,29 @@ export default function OrderConfirmationScreen({
                 Dirección de entrega
               </h3>
               <div className="flex flex-col gap-2">
-                <p className="text-[#151811] dark:text-white text-sm font-medium">
-                  {order.deliveryAddress.street}
-                </p>
-                <p className="text-[#798961] dark:text-gray-300 text-sm font-normal">
-                  {order.deliveryAddress.city}, {order.deliveryAddress.zip}
-                </p>
-                {order.deliveryAddress.references && (
-                  <p className="text-[#798961] dark:text-gray-300 text-xs font-normal italic">
-                    Ref: {order.deliveryAddress.references}
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-base text-primary">
+                    phone
+                  </span>
+                  <p className="text-[#151811] dark:text-white text-sm font-medium">
+                    {order.deliveryAddress.phoneNumber}
                   </p>
-                )}
+                </div>
+                <div>
+                  <p className="text-[#151811] dark:text-white text-sm font-medium">
+                    {order.deliveryAddress.street}{" "}
+                    {order.deliveryAddress.streetNumber}
+                  </p>
+                  {order.deliveryAddress.references && (
+                    <p className="text-[#798961] dark:text-gray-300 text-xs font-normal">
+                      Apto/Depto: {order.deliveryAddress.references}
+                    </p>
+                  )}
+                </div>
+                <p className="text-[#798961] dark:text-gray-300 text-sm font-normal">
+                  {order.deliveryAddress.city}, {order.deliveryAddress.state}{" "}
+                  {order.deliveryAddress.zip}
+                </p>
               </div>
             </div>
 

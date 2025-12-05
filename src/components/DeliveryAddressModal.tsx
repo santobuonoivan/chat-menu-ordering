@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useDeliveryStore } from "@/stores/deliveryStore";
 
 interface DeliveryAddressModalProps {
@@ -11,9 +11,12 @@ interface DeliveryAddressModalProps {
 
 export interface DeliveryAddress {
   street: string;
+  streetNumber: string;
   city: string;
+  state: string;
   zip: string;
   references: string;
+  phoneNumber: string;
   latitude: number;
   longitude: number;
 }
@@ -33,9 +36,12 @@ export default function DeliveryAddressModal({
     useDeliveryStore();
   const [address, setAddress] = useState<DeliveryAddress>({
     street: "",
+    streetNumber: "",
     city: "",
+    state: "",
     zip: "",
     references: "",
+    phoneNumber: "",
     latitude: 0,
     longitude: 0,
   });
@@ -45,20 +51,52 @@ export default function DeliveryAddressModal({
   const markerInstance = useRef<any>(null);
   const geocoderInstance = useRef<any>(null);
   const mapInitialized = useRef(false);
+  const hasInitialized = useRef(false);
 
-  // Cargar dirección guardada si existe
+  // Cargar dirección guardada si existe (solo una vez al abrir)
   useEffect(() => {
-    if (storedAddress) {
-      setAddress(storedAddress);
+    if (isOpen && storedAddress && !hasInitialized.current) {
+      hasInitialized.current = true;
+      // Asegurar que todos los campos tengan valores definidos
+      setAddress({
+        street: storedAddress.street || "",
+        streetNumber: storedAddress.streetNumber || "",
+        city: storedAddress.city || "",
+        state: storedAddress.state || "",
+        zip: storedAddress.zip || "",
+        references: storedAddress.references || "",
+        phoneNumber: storedAddress.phoneNumber || "",
+        latitude: storedAddress.latitude || 0,
+        longitude: storedAddress.longitude || 0,
+      });
     }
-  }, [storedAddress]);
 
-  // Guardar dirección en el store cada vez que cambia
+    // Reset cuando se cierra el modal
+    if (!isOpen) {
+      hasInitialized.current = false;
+    }
+  }, [isOpen, storedAddress]);
+
+  // Guardar dirección en el store cada vez que cambia (pero no en la carga inicial)
   useEffect(() => {
-    if (address.latitude !== 0 || address.longitude !== 0) {
+    if (
+      hasInitialized.current &&
+      (address.latitude !== 0 || address.longitude !== 0)
+    ) {
       setStoredAddress(address);
     }
-  }, [address, setStoredAddress]);
+  }, [
+    address.street,
+    address.streetNumber,
+    address.city,
+    address.state,
+    address.zip,
+    address.references,
+    address.phoneNumber,
+    address.latitude,
+    address.longitude,
+    setStoredAddress,
+  ]);
 
   // Cargar Google Maps API
   useEffect(() => {
@@ -178,6 +216,7 @@ export default function DeliveryAddressModal({
 
         let street = "";
         let city = "";
+        let state = "";
         let zip = "";
 
         // Extraer componentes de dirección
@@ -196,6 +235,9 @@ export default function DeliveryAddressModal({
           ) {
             city = component.long_name;
           }
+          if (types.includes("administrative_area_level_1")) {
+            state = component.long_name;
+          }
           if (types.includes("postal_code")) {
             zip = component.long_name;
           }
@@ -205,6 +247,7 @@ export default function DeliveryAddressModal({
           ...prev,
           street: street || result.formatted_address,
           city: city || "",
+          state: state || "",
           zip: zip || "",
         }));
       }
@@ -262,7 +305,14 @@ export default function DeliveryAddressModal({
   };
 
   const handleConfirm = () => {
-    if (!address.street || !address.city || !address.zip) {
+    if (
+      !address.street ||
+      !address.streetNumber ||
+      !address.city ||
+      !address.state ||
+      !address.zip ||
+      !address.phoneNumber
+    ) {
       alert("Por favor completa todos los campos requeridos");
       return;
     }
@@ -314,11 +364,30 @@ export default function DeliveryAddressModal({
 
             {/* Address Form */}
             <div className="flex flex-col gap-4">
+              {/* Phone Number */}
+              <div className="relative">
+                <input
+                  type="tel"
+                  placeholder="Teléfono"
+                  value={address.phoneNumber}
+                  onChange={(e) =>
+                    handleAddressChange("phoneNumber", e.target.value)
+                  }
+                  className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  style={{ backgroundColor: "#f3f4f6" }}
+                />
+                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <span className="material-symbols-outlined text-lg">
+                    phone
+                  </span>
+                </label>
+              </div>
+
               {/* Street Input */}
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Calle y número"
+                  placeholder="Calle"
                   value={address.street}
                   onChange={(e) => handleStreetSearch(e.target.value)}
                   className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -331,8 +400,65 @@ export default function DeliveryAddressModal({
                 </label>
               </div>
 
-              {/* City and Zip Grid */}
+              {/* Street Number and Apartment */}
               <div className="grid grid-cols-2 gap-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Número"
+                    value={address.streetNumber}
+                    onChange={(e) =>
+                      handleAddressChange("streetNumber", e.target.value)
+                    }
+                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    style={{ backgroundColor: "#f3f4f6" }}
+                  />
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
+                      numbers
+                    </span>
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Apto/Depto (opcional)"
+                    value={address.references}
+                    onChange={(e) =>
+                      handleAddressChange("references", e.target.value)
+                    }
+                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    style={{ backgroundColor: "#f3f4f6" }}
+                  />
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
+                      apartment
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              {/* State and City Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Estado"
+                    value={address.state}
+                    onChange={(e) =>
+                      handleAddressChange("state", e.target.value)
+                    }
+                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    style={{ backgroundColor: "#f3f4f6" }}
+                  />
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
+                      location_city
+                    </span>
+                  </label>
+                </div>
+
                 <div className="relative">
                   <input
                     type="text"
@@ -350,38 +476,21 @@ export default function DeliveryAddressModal({
                     </span>
                   </label>
                 </div>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Código Postal"
-                    value={address.zip}
-                    onChange={(e) => handleAddressChange("zip", e.target.value)}
-                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    style={{ backgroundColor: "#f3f4f6" }}
-                  />
-                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
-                    <span className="material-symbols-outlined text-lg">
-                      mail
-                    </span>
-                  </label>
-                </div>
               </div>
 
-              {/* References */}
+              {/* Zip Code */}
               <div className="relative">
-                <textarea
-                  placeholder="Referencias adicionales (ej. color de la casa, entre calles)"
-                  value={address.references}
-                  onChange={(e) =>
-                    handleAddressChange("references", e.target.value)
-                  }
-                  className="h-24 w-full resize-none rounded-lg border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                <input
+                  type="text"
+                  placeholder="Código Postal"
+                  value={address.zip}
+                  onChange={(e) => handleAddressChange("zip", e.target.value)}
+                  className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
                   style={{ backgroundColor: "#f3f4f6" }}
                 />
-                <label className="absolute left-4 top-4 text-text-muted-light dark:text-text-muted-dark">
+                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
                   <span className="material-symbols-outlined text-lg">
-                    notes
+                    mail
                   </span>
                 </label>
               </div>
