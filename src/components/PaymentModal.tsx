@@ -1,5 +1,8 @@
 "use client";
 
+import { CreditCardSchema } from "@/schemas/ credit-card.schema";
+import { GetPaymentGateway } from "@/services";
+import Script from "next/script";
 import { useState } from "react";
 
 interface PaymentModalProps {
@@ -40,6 +43,75 @@ export default function PaymentModal({
   const [cvv, setCvv] = useState("");
   const [cardholderName, setCardholderName] = useState("");
   const [errors, setErrors] = useState<CardErrors>({});
+
+  async function createTokenOfcard() {
+    try {
+      const gateway = await GetPaymentGateway('CNKT');
+      console.log(gateway);
+
+      if (typeof Conekta !== 'undefined' && gateway.success) {
+        await Conekta.setPublicKey(gateway.data.publicKey);
+
+        const cardClean = card.replace(/_/g, '');
+        const cvcClean = cvc.replace(/_/g, '');
+        let exp_month = expired.substring(0, 2);
+        let exp_year = expired.substring(3, 5);
+
+        let info = {
+          card: {
+            number: cardClean,
+            name: name,
+            exp_month: exp_month,
+            exp_year: exp_year,
+            cvc: cvcClean,
+            address: false,
+          },
+        };
+
+        const creditCardResult: any = CreditCardSchema.validate(
+          {
+            number: cardClean,
+            name: name,
+            expirationDate: expired,
+            cvv: cvcClean,
+          },
+          {
+            abortEarly: false,
+          }
+        );
+
+        if (creditCardResult.error == null) {
+          const token: any = await new Promise((resolve, reject) => {
+            Conekta.Token.create(info, (response: any) => {
+              if (response.object === 'token') {
+                resolve(response);
+              } else {
+                reject(new Error('Error al crear el token'));
+              }
+            });
+          });
+
+          return token;
+        } else {
+          if (creditCardResult.error) {
+            let errors = [...creditCardResult.error?.details];
+            errors.forEach((x) => message.warning(${x.message}));
+          }
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.object && error.object === 'error') {
+        message.error(
+          'Error al tokenizar la tarjeta. Verifica los parámetros ingresados.'
+        );
+      } else {
+        message.error(
+          'Error con la tarjeta, no se puede obtener la causa del error.'
+        );
+      }
+    }
+  }
 
   // Validar número de tarjeta con algoritmo de Luhn
   const luhnCheck = (num: string): boolean => {
@@ -195,6 +267,7 @@ export default function PaymentModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
+      <Script src="https://cdn.conekta.io/js/latest/conekta.js" /> 
       <div
         className="absolute inset-0 z-0 h-full w-full bg-cover bg-center"
         style={{

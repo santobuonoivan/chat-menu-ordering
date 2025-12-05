@@ -1,4 +1,4 @@
-import { api, agentAIApi } from "@/lib/api";
+import { api, agentAIApi, duckApi } from "@/lib/api";
 import { rankAndFilterDishes } from "@/utils";
 
 // Menu API Service
@@ -30,6 +30,17 @@ export const getDishesByInput = async (
   console.log("Agent Responses:", agentRespones);
   const { success, data } = agentRespones;
   return { success, data: data.output };
+};
+
+export const GetPaymentGateway = async (
+  gatewaySignature: string
+): Promise<{
+  success: boolean;
+  data: any;
+}> => {
+  const response = await duckApi.get(`/v1/gateways/${gatewaySignature}`);
+  const { success, data } = response;
+  return { success, data: data };
 };
 /*// Cart API Service
 export const cartService = {

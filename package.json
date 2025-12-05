@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/joi": "^17.2.2",
     "@types/uuid": "^10.0.0",
+    "joi": "^18.0.2",
     "leaflet": "^1.9.4",
     "next": "16.0.6",
     "react": "19.2.0",

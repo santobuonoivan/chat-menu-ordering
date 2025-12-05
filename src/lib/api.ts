@@ -1,5 +1,5 @@
 // API Configuration
-export const API_CONFIG = {
+const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
   HEADERS: {
@@ -9,8 +9,17 @@ export const API_CONFIG = {
   },
 };
 
-export const WEBHOOK_CONFIG = {
+const WEBHOOK_CONFIG = {
   URL: process.env.NEXT_PUBLIC_WEBHOOK_URL,
+  HEADERS: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+};
+
+const DUCK_API_CONFIG = {
+  BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL || "http://localhost:8098/api",
+  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -108,6 +117,63 @@ export async function apiCall<T = any>(
   }
 }
 
+export const duckApi = {
+  get: <T = any>(
+    endpoint: string,
+    options: ApiRequestOptions = {},
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { ...options, method: "GET", headers },
+      DUCK_API_CONFIG.BASE_URL
+    );
+  },
+  post: <T = any>(
+    endpoint: string,
+    data?: any,
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { method: "POST", body: data, headers },
+      DUCK_API_CONFIG.BASE_URL
+    );
+  },
+  put: <T = any>(
+    endpoint: string,
+    data?: any,
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { method: "PUT", body: data, headers },
+      DUCK_API_CONFIG.BASE_URL
+    );
+  },
+  delete: <T = any>(
+    endpoint: string,
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { method: "DELETE", headers },
+      DUCK_API_CONFIG.BASE_URL
+    );
+  },
+  patch: <T = any>(
+    endpoint: string,
+    data?: any,
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { method: "PATCH", body: data, headers },
+      DUCK_API_CONFIG.BASE_URL
+    );
+  },
+};
+
 export const agentAIApi = {
   // https://automate.appio.com.mx/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff
   // post
@@ -123,6 +189,7 @@ export const agentAIApi = {
     ),
 };
 // Specific API functions examples
+
 export const api = {
   // GET request example
   get: <T = any>(endpoint: string, headers?: Record<string, string>) =>
