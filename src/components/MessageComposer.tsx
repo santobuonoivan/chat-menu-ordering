@@ -26,7 +26,7 @@ export default function MessageComposer({
   placeholder = "Escribe tu mensaje aquí...",
 }: MessageComposerProps) {
   const [message, setMessage] = useState("");
-  const { resetToInitial } = useChatStore();
+  const { resetToInitial, setShowListMenuItems } = useChatStore();
   const { resetCart } = useCartStore();
   const { menuData } = useMenuStore();
 
@@ -43,6 +43,7 @@ export default function MessageComposer({
           response.data.includes(item.dish_name)
         );
         if (dishesFound && dishesFound.length > 0) {
+          setShowListMenuItems(true);
           onSendMessage?.(
             `He encontrado ${dishesFound.length} plato(s) que coinciden con tu búsqueda.`,
             "assistant",
@@ -76,6 +77,7 @@ export default function MessageComposer({
         resetToInitial();
         resetCart();
       } else if (message.toLowerCase() != "ver menú digital") {
+        setShowListMenuItems(true);
         onSendMessage?.(message, "user", null);
         searchDishesByInput(message);
       }
