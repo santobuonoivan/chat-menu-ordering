@@ -14,9 +14,10 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
     // Esta función será utilizada más adelante para manejar acciones del carrito
     console.log("Action clicked:", action, "for item:", item);
 
+    // Postear el nombre del item en formato {itemname}
     addMessage({
       id: generateUUID(),
-      text: `Agrega ${item.dish_name} a tu pedido.`,
+      text: `quiero un ${item.dish_name}`,
       sender: "user",
       timestamp: new Date(),
     });

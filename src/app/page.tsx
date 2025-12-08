@@ -56,12 +56,13 @@ export default function Home() {
 
   const handleSendMessage = (
     message: string,
+    sender: "user" | "assistant" = "user",
     messageBody?: IMessage | null
   ) => {
     const newMessage: IMessage = {
       id: generateUUID(),
       text: message,
-      sender: "user",
+      sender,
       timestamp: new Date(),
     };
     addMessage(newMessage);

@@ -9,7 +9,11 @@ import { getDishesByInput } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
 
 interface MessageComposerProps {
-  onSendMessage?: (message: string, messageBody?: IMessage | null) => void;
+  onSendMessage?: (
+    message: string,
+    sender: "user" | "assistant",
+    messageBody?: IMessage | null
+  ) => void;
   onMicClick?: () => void;
   onAttachClick?: () => void;
   placeholder?: string;
@@ -41,6 +45,7 @@ export default function MessageComposer({
         if (dishesFound && dishesFound.length > 0) {
           onSendMessage?.(
             `He encontrado ${dishesFound.length} plato(s) que coinciden con tu búsqueda.`,
+            "assistant",
             {
               id: generateUUID(),
               text: "He encontrado esto para ti.",
@@ -55,6 +60,7 @@ export default function MessageComposer({
         } else {
           onSendMessage?.(
             `Lo siento, no he encontrado ningún plato que coincida con "${input}". ¿Quieres intentar con otro nombre?`,
+            "assistant",
             null
           );
         }
@@ -70,7 +76,7 @@ export default function MessageComposer({
         resetToInitial();
         resetCart();
       } else if (message.toLowerCase() != "ver menú digital") {
-        onSendMessage?.(message);
+        onSendMessage?.(message, "user", null);
         searchDishesByInput(message);
       }
       setMessage("");
