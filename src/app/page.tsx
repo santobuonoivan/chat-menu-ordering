@@ -134,6 +134,7 @@ export default function Home() {
             return (
               <MessageBubble
                 key={message.id}
+                messageId={message.id}
                 message={message.text}
                 sender={message.sender}
                 afterSender={afterSender}

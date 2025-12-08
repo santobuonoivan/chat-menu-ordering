@@ -4,6 +4,7 @@ import AssistantChatBubble from "./AssistantChatBubble";
 
 interface MessageBubbleProps {
   message: string;
+  messageId?: string;
   afterSender: "user" | "assistant" | null;
   sender: "user" | "assistant";
   senderName?: string;
@@ -13,6 +14,7 @@ interface MessageBubbleProps {
 
 export default function MessageBubble({
   afterSender,
+  messageId,
   message,
   sender,
   senderName = sender === "assistant" ? "Restaurante" : "Tú",
@@ -34,6 +36,7 @@ export default function MessageBubble({
     <AssistantChatBubble
       afterSender={afterSender}
       message={message}
+      messageId={messageId}
       senderName={senderName}
       avatarUrl={avatarUrl}
       data={data}
