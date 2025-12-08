@@ -26,7 +26,7 @@ export default function MessageComposer({
   placeholder = "Escribe tu mensaje aquí...",
 }: MessageComposerProps) {
   const [message, setMessage] = useState("");
-  const { resetToInitial, setShowListMenuItems } = useChatStore();
+  const { resetToInitial, setItemListUUID } = useChatStore();
   const { resetCart } = useCartStore();
   const { menuData } = useMenuStore();
 
@@ -34,8 +34,6 @@ export default function MessageComposer({
     // Lógica para buscar platos por entrada de usuario
     const dishList: string[] =
       menuData?.menu.map((item) => item.dish_name) || [];
-    console.log("Dish List:", dishList);
-    console.log("Input:", input);
     getDishesByInput(input, dishList).then((response) => {
       if (response.success) {
         console.log("Dishes by Input:", response.data);
@@ -43,20 +41,21 @@ export default function MessageComposer({
           response.data.includes(item.dish_name)
         );
         if (dishesFound && dishesFound.length > 0) {
-          setShowListMenuItems(true);
+          const newListDishes: IMessage = {
+            id: generateUUID(),
+            text: "He encontrado esto para ti.",
+            sender: "assistant",
+            timestamp: new Date(),
+            data: {
+              items: dishesFound,
+              action: "add_dish",
+            },
+          };
+          setItemListUUID?.(newListDishes.id);
           onSendMessage?.(
             `He encontrado ${dishesFound.length} plato(s) que coinciden con tu búsqueda.`,
             "assistant",
-            {
-              id: generateUUID(),
-              text: "He encontrado esto para ti.",
-              sender: "assistant",
-              timestamp: new Date(),
-              data: {
-                items: dishesFound,
-                action: "add_dish",
-              },
-            }
+            newListDishes
           );
         } else {
           onSendMessage?.(
@@ -77,7 +76,6 @@ export default function MessageComposer({
         resetToInitial();
         resetCart();
       } else if (message.toLowerCase() != "ver menú digital") {
-        setShowListMenuItems(true);
         onSendMessage?.(message, "user", null);
         searchDishesByInput(message);
       }

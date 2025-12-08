@@ -53,13 +53,13 @@ export default function OrderConfirmationScreen({
         <div className="flex flex-1 flex-col items-center justify-center py-5">
           <div className="layout-content-container flex w-full flex-col items-center gap-6">
             {/* Confirmation Icon */}
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/20 dark:bg-primary/30">
+            {/* <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/20 dark:bg-primary/30">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
                 <span className="material-symbols-outlined text-4xl text-white">
                   check
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Headline & Body Text */}
             <div className="flex flex-col items-center gap-2 text-center">
