@@ -39,9 +39,11 @@ export default function AssistantChatBubble({
         )}
 
         {/* Mensaje de texto */}
-        <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-slate-700 text-text-light dark:text-text-dark shadow-sm">
-          {message}
-        </div>
+        {!!message && (
+          <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-slate-700 text-text-light dark:text-text-dark shadow-sm">
+            {message}
+          </div>
+        )}
 
         {/* Renderizar items si hay data */}
         {itemListUUID == messageId &&
