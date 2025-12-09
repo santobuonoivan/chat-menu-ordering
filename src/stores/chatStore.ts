@@ -15,7 +15,7 @@ interface ChatState {
   resetToInitial: () => void;
   setItemListUUID?: (uuid: string | undefined) => void;
   itemListUUID?: string | undefined;
-  setModifierListUUID?: (uuid: string | undefined) => void;
+  setModifierListUUID?: (uuid: string) => void;
   modifierListUUID?: string | undefined;
 }
 

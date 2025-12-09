@@ -21,7 +21,7 @@ export default function ModifierChatCard({
   modifiers,
   action,
 }: ModifierChatProps) {
-  const { addMessage, setShowListModifiers } = useChatStore();
+  const { addMessage, setModifierListUUID } = useChatStore();
   const { addItem } = useCartStore();
 
   const [selectedModifiers, setSelectedModifiers] = useState<
@@ -66,7 +66,7 @@ export default function ModifierChatCard({
   const handleAddToCart = async () => {
     if (!canAddToCart()) return;
 
-    setShowListModifiers(false);
+    setModifierListUUID?.(undefined);
 
     // Convertir modificadores seleccionados al formato del carrito
     const cartModifiers: ICartModifier[] = [];
@@ -83,6 +83,15 @@ export default function ModifierChatCard({
 
     // Agregar al carrito con los modificadores seleccionados
     addItem(item, cartModifiers, 1);
+
+    addMessage({
+      id: generateUUID(),
+      text: `Quiero agregarle ${cartModifiers
+        .map((modifier) => modifier.optionName)
+        .join(", ")} a mi ${item.dish_name}`,
+      sender: "user",
+      timestamp: new Date(),
+    });
 
     addMessage({
       id: generateUUID(),

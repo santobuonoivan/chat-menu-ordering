@@ -43,7 +43,7 @@ export default function MessageComposer({
         if (dishesFound && dishesFound.length > 0) {
           const newListDishes: IMessage = {
             id: generateUUID(),
-            text: "He encontrado esto para ti.",
+            text: "", //"He encontrado esto para ti.",
             sender: "assistant",
             timestamp: new Date(),
             data: {
