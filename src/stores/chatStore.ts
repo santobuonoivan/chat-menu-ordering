@@ -13,10 +13,10 @@ interface ChatState {
   setMessages: (messages: IMessage[]) => void;
   clearMessages: () => void;
   resetToInitial: () => void;
-  setItemListUUID?: (uuid: string | undefined) => void;
-  itemListUUID?: string | undefined;
-  setModifierListUUID?: (uuid: string) => void;
-  modifierListUUID?: string | undefined;
+  setItemListUUID: (uuid: string | undefined) => void;
+  itemListUUID: string | undefined;
+  setModifierListUUID: (uuid: string | undefined) => void;
+  modifierListUUID: string | undefined;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -87,7 +87,11 @@ export const useChatStore = create<ChatState>()(
     }),
     {
       name: "chat-store",
-      partialize: (state) => ({ messages: state.messages }),
+      partialize: (state) => ({ 
+        messages: state.messages,
+        itemListUUID: state.itemListUUID,
+        modifierListUUID: state.modifierListUUID,
+      }),
     }
   )
 );
