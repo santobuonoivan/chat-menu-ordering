@@ -440,6 +440,44 @@ export default function PaymentModal({
               Método de Pago
             </h3>
 
+            {/* Cash Option */}
+            <label
+              className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 p-3 transition-all hover:border-primary/50 dark:bg-slate-800/80 dark:hover:border-primary/50"
+              style={{
+                borderColor:
+                  paymentMethod === "cash" ? "#65A30D" : "transparent",
+                backgroundColor:
+                  paymentMethod === "cash"
+                    ? "rgba(101, 163, 13, 0.2)"
+                    : "rgba(255, 255, 255, 0.8)",
+              }}
+            >
+              <input
+                type="radio"
+                name="payment_method"
+                value="cash"
+                checked={paymentMethod === "cash"}
+                onChange={(e) =>
+                  setPaymentMethod(e.target.value as "credit_card" | "cash")
+                }
+                className="sr-only"
+              />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
+                <span
+                  className="material-symbols-outlined text-2xl"
+                  style={{
+                    color:
+                      paymentMethod === "cash" ? "#65A30D" : "text-slate-600",
+                  }}
+                >
+                  payments
+                </span>
+              </div>
+              <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
+                Efectivo
+              </span>
+            </label>
+
             <fieldset className="grid grid-cols-2 gap-3">
               <legend className="sr-only">Seleccione un método de pago</legend>
 
@@ -475,44 +513,6 @@ export default function PaymentModal({
                 </div>
                 <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
                   Tarjeta
-                </span>
-              </label>
-
-              {/* Cash Option */}
-              <label
-                className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 p-3 transition-all hover:border-primary/50 dark:bg-slate-800/80 dark:hover:border-primary/50"
-                style={{
-                  borderColor:
-                    paymentMethod === "cash" ? "#65A30D" : "transparent",
-                  backgroundColor:
-                    paymentMethod === "cash"
-                      ? "rgba(101, 163, 13, 0.2)"
-                      : "rgba(255, 255, 255, 0.8)",
-                }}
-              >
-                <input
-                  type="radio"
-                  name="payment_method"
-                  value="cash"
-                  checked={paymentMethod === "cash"}
-                  onChange={(e) =>
-                    setPaymentMethod(e.target.value as "credit_card" | "cash")
-                  }
-                  className="sr-only"
-                />
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
-                  <span
-                    className="material-symbols-outlined text-2xl"
-                    style={{
-                      color:
-                        paymentMethod === "cash" ? "#65A30D" : "text-slate-600",
-                    }}
-                  >
-                    payments
-                  </span>
-                </div>
-                <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
-                  Efectivo
                 </span>
               </label>
             </fieldset>
