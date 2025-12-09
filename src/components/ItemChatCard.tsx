@@ -9,8 +9,12 @@ interface ItemChatProps {
 
 export default function ItemChatCard({ item, action }: ItemChatProps) {
   const { addMessage } = useChatStore();
-  const { setShowListMenuItems, setModifierListUUID, setItemListUUID } =
-    useChatStore();
+  const {
+    itemListUUID,
+    modifierListUUID,
+    setModifierListUUID,
+    setItemListUUID,
+  } = useChatStore();
   const handleActionClick = async () => {
     // Esta función será utilizada más adelante para manejar acciones del carrito
     console.log("Action clicked:", action, "for item:", item);

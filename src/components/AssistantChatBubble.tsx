@@ -61,11 +61,11 @@ export default function AssistantChatBubble({
             </div>
           )}
         {/* Renderizar ModifierChatCard si hay data de modificadores */}
-        {modifierListUUID == messageId &&
-          data &&
+        {data &&
           data.modifiers &&
           data.modifiers.length > 0 &&
-          data.itemSelected && (
+          data.itemSelected &&
+          (modifierListUUID == messageId ? (
             <div className="flex flex-col gap-2 mt-2 max-w-xs">
               <ModifierChatCard
                 item={data.itemSelected}
@@ -73,7 +73,17 @@ export default function AssistantChatBubble({
                 action={data.action || ""}
               />
             </div>
-          )}
+          ) : (
+            <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-slate-700 text-text-light dark:text-text-dark shadow-sm">
+              {!itemListUUID &&
+                !modifierListUUID &&
+                data?.itemSelected?.modifiers
+                  .map((mod) =>
+                    mod.options.map((option) => option.mod_name).join(", ")
+                  )
+                  .join(", ")}
+            </div>
+          ))}
       </div>
     </div>
   );
