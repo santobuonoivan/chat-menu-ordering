@@ -326,52 +326,59 @@ export default function DeliveryAddressModal({
     setFindQuoteLoading(true);
     getDeliveryQuote()
       .then(() => {
-        if (hasQuote) {
-          onConfirm(address);
-        } else {
-          console.log(
-            "No se pudo obtener una cotización de entrega. Por favor verifica tu dirección."
-          );
-        }
+        setTimeout(() => {
+          if (hasQuote) {
+            onConfirm(address);
+            setFindQuoteLoading(false);
+          } else {
+            console.log(
+              "No se pudo obtener una cotización de entrega. Por favor verifica tu dirección."
+            );
+            setFindQuoteLoading(false);
+          }
+        }, 500);
       })
       .catch((error) => {
         console.error("Error obteniendo cotización de entrega:", error);
-      })
-      .finally(() => {
         setFindQuoteLoading(false);
       });
-    //
-    //onConfirm(address);
   };
 
   const getDeliveryQuote = async () => {
-    const menuData = getMenuData();
-    if (menuData && menuData.rest_id) {
-      console.log("Obteniendo cotización para:", {
-        lat: address.latitude,
-        lng: address.longitude,
-        rest_id: parseInt(menuData.rest_id.toString()),
-      });
-
-      GetDeliveryCost({
-        lat: address.latitude,
-        lng: address.longitude,
-        rest_id: menuData.rest_id, // Reemplazar con el ID real del restaurante
-      }).then((response) => {
-        if (response.success) {
-          const { quoteUUID, summary } = response.data?.quote?.data;
-          const { overloadAmountFee } = summary;
-          setQuoteData({
-            quoteUUID,
-            overloadAmountFee,
+    return new Promise((resolve, reject) => {
+      const menuData = getMenuData();
+      if (menuData && menuData.rest_id) {
+        GetDeliveryCost({
+          lat: address.latitude,
+          lng: address.longitude,
+          rest_id: parseInt(menuData.rest_id.toString()),
+        })
+          .then((response) => {
+            if (response.success) {
+              const quoteUUID = response.data?.data?.quote?.data?.quoteUUID;
+              const summary = response.data?.data?.quote?.data?.summary;
+              console.log("Quote UUID:", quoteUUID);
+              console.log("Summary:", summary);
+              const { overloadAmountFee } = summary;
+              setQuoteData({
+                quoteUUID,
+                overloadAmountFee,
+              });
+              setHasQuote(true);
+              resolve(true);
+            } else {
+              console.error("Error obteniendo costo de entrega", response);
+              reject(new Error("No se pudo obtener cotización"));
+            }
+          })
+          .catch((error) => {
+            console.error("Error en GetDeliveryCost:", error);
+            reject(error);
           });
-          setHasQuote(true);
-          console.log("Costo de entrega:", response.data);
-        } else {
-          console.error("Error obteniendo costo de entrega", response);
-        }
-      });
-    }
+      } else {
+        reject(new Error("No hay datos de restaurante"));
+      }
+    });
   };
 
   if (!isOpen) return null;

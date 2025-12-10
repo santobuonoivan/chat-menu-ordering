@@ -110,10 +110,16 @@ export const GetDeliveryCost = async (deliveryData: {
   const { lat, lng, rest_id } = deliveryData;
   const response = await deliveryApi.post(
     `/v2/delivery/booking/quote-by-rest-id`,
-    {
+    /*{
       rest_id,
       lat,
       lng,
+    }*/
+    /* test */
+    {
+      rest_id: 163,
+      lat: 19.432608,
+      lng: -99.133209,
     }
   );
   const { success, data } = response;
