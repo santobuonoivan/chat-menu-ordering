@@ -1,11 +1,21 @@
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000",
+  BASE_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
     "X-Authorization": process.env.NEXT_PUBLIC_API_KEY || "",
+  },
+};
+
+const API_CONFIG_CORE = {
+  BASE_URL: process.env.NEXT_PUBLIC_URL_CORE_API,
+  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
+  HEADERS: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "HTTP-X-API-KEY": process.env.NEXT_PUBLIC_CORE_API_KEY || "",
   },
 };
 
@@ -17,8 +27,7 @@ const WEBHOOK_CONFIG = {
   },
 };
 const DELIVERY_API_CONFIG = {
-  BASE_URL:
-    process.env.NEXT_PUBLIC_URL_API_BACKEND || "http://localhost:8097/api/v1",
+  BASE_URL: process.env.NEXT_PUBLIC_URL_API_BACKEND,
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -28,7 +37,7 @@ const DELIVERY_API_CONFIG = {
 };
 
 const DUCK_API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL || "http://localhost:8098/api",
+  BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL,
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -265,4 +274,29 @@ export const api = {
       body: data,
       headers: API_CONFIG.HEADERS,
     }),
+};
+
+export const coreApi = {
+  get: <T = any>(
+    endpoint: string,
+    options: ApiRequestOptions = {},
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { ...options, method: "GET", headers: API_CONFIG_CORE.HEADERS },
+      process.env.NEXT_PUBLIC_URL_CORE_API
+    );
+  },
+  post: <T = any>(
+    endpoint: string,
+    data?: any,
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { method: "POST", body: data, headers: API_CONFIG_CORE.HEADERS },
+      process.env.NEXT_PUBLIC_URL_CORE_API
+    );
+  },
 };

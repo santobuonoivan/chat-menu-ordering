@@ -23,7 +23,9 @@ export default function Home() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const restNumberParam = urlParams.get("phone");
+    const clientNumberParam = urlParams.get("client_phone");
     if (restNumberParam) setRestNumber(restNumberParam);
+    //if (clientNumberParam) setClientNumber(clientNumberParam);
     console.log("Rest Number:", restNumberParam);
   }, []);
 

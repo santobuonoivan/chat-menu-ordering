@@ -1,7 +1,5 @@
-import { api, agentAIApi, duckApi, deliveryApi } from "@/lib/api";
+import { api, agentAIApi, duckApi, deliveryApi, coreApi } from "@/lib/api";
 import { rankAndFilterDishes } from "@/utils";
-import { timeStamp } from "console";
-import { sign } from "crypto";
 
 // Menu API Service
 export const menuService = {
@@ -124,6 +122,31 @@ export const GetDeliveryCost = async (deliveryData: {
   );
   const { success, data } = response;
   console.log("Get Delivery Cost Response:", response);
+  return { success, data: data };
+};
+
+export const GetSessionData = async (
+  user_phone: string,
+  rest_phone: string,
+  customer_name: string,
+  chatInput: string,
+  platform: string
+): Promise<{
+  success: boolean;
+  data: any;
+}> => {
+  const response = await coreApi.post(`/v2/automate/process_incoming_message`, {
+    user_phone,
+    rest_phone,
+    sessionId: `${user_phone}||${rest_phone}`,
+    message_id: `${Date.now()}`,
+    chatInput,
+    customer_name,
+    platform,
+  });
+  const { success, data } = response;
+  console.log("Get Session Data Response:", response);
+  console.log("Get Session Data data:", data);
   return { success, data: data };
 };
 /*// Cart API Service
