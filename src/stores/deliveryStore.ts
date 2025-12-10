@@ -1,15 +1,25 @@
 import { create } from "zustand";
 import { DeliveryAddress } from "@/components/DeliveryAddressModal";
 
+interface QuoteData {
+  quoteUUID: string;
+  overloadAmountFee: number;
+}
+
 interface DeliveryState {
   address: DeliveryAddress | null;
   setAddress: (address: DeliveryAddress) => void;
   clearAddress: () => void;
   getAddress: () => DeliveryAddress | null;
+  quoteData: QuoteData | null;
+  setQuoteData: (quoteData: QuoteData) => void;
+  clearQuoteData: () => void;
+  getQuoteData: () => QuoteData | null;
 }
 
 export const useDeliveryStore = create<DeliveryState>((set, get) => ({
   address: null,
+  quoteData: null,
 
   setAddress: (address: DeliveryAddress) => {
     set({ address });
@@ -20,9 +30,23 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
   clearAddress: () => {
     set({ address: null });
     localStorage.removeItem("deliveryAddress");
+    get().clearQuoteData();
   },
 
   getAddress: () => get().address,
+
+  setQuoteData: (quoteData: QuoteData) => {
+    set({ quoteData });
+    // Persistir en localStorage
+    localStorage.setItem("quoteData", JSON.stringify(quoteData));
+  },
+
+  clearQuoteData: () => {
+    set({ quoteData: null });
+    localStorage.removeItem("quoteData");
+  },
+
+  getQuoteData: () => get().quoteData,
 
   // Inicializar desde localStorage (se llama en useEffect)
   initializeFromStorage: () => {
@@ -34,6 +58,19 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
           set({ address });
         } catch (error) {
           console.error("Error al parsear dirección guardada:", error);
+        }
+      }
+
+      const storedQuote = localStorage.getItem("quoteData");
+      if (storedQuote) {
+        try {
+          const quoteData = JSON.parse(storedQuote);
+          set({ quoteData });
+        } catch (error) {
+          console.error(
+            "Error al parsear datos de cotización guardados:",
+            error
+          );
         }
       }
     }
@@ -49,6 +86,16 @@ if (typeof window !== "undefined") {
       useDeliveryStore.setState({ address });
     } catch (error) {
       console.error("Error al cargar dirección guardada:", error);
+    }
+  }
+
+  const storedQuote = localStorage.getItem("quoteData");
+  if (storedQuote) {
+    try {
+      const quoteData = JSON.parse(storedQuote);
+      useDeliveryStore.setState({ quoteData });
+    } catch (error) {
+      console.error("Error al cargar datos de cotización guardados:", error);
     }
   }
 }

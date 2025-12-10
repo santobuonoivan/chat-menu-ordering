@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useDeliveryStore } from "@/stores/deliveryStore";
 import { GetDeliveryCost } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
+import { get } from "http";
 
 interface DeliveryAddressModalProps {
   isOpen: boolean;
@@ -37,6 +38,8 @@ export default function DeliveryAddressModal({
   const { address: storedAddress, setAddress: setStoredAddress } =
     useDeliveryStore();
   const { getMenuData } = useMenuStore();
+  const { setQuoteData } = useDeliveryStore();
+  const [findQuoteLoading, setFindQuoteLoading] = useState(false);
   const [address, setAddress] = useState<DeliveryAddress>({
     street: "",
     streetNumber: "",
@@ -320,21 +323,52 @@ export default function DeliveryAddressModal({
       alert("Por favor completa todos los campos requeridos");
       return;
     }
-    onConfirm(address);
+    setFindQuoteLoading(true);
+    getDeliveryQuote()
+      .then(() => {
+        if (hasQuote) {
+          onConfirm(address);
+        } else {
+          console.log(
+            "No se pudo obtener una cotización de entrega. Por favor verifica tu dirección."
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error obteniendo cotización de entrega:", error);
+      })
+      .finally(() => {
+        setFindQuoteLoading(false);
+      });
+    //
+    //onConfirm(address);
   };
 
   const getDeliveryQuote = async () => {
     const menuData = getMenuData();
     if (menuData && menuData.rest_id) {
+      console.log("Obteniendo cotización para:", {
+        lat: address.latitude,
+        lng: address.longitude,
+        rest_id: parseInt(menuData.rest_id.toString()),
+      });
+
       GetDeliveryCost({
         lat: address.latitude,
         lng: address.longitude,
         rest_id: menuData.rest_id, // Reemplazar con el ID real del restaurante
       }).then((response) => {
         if (response.success) {
+          const { quoteUUID, summary } = response.data?.quote?.data;
+          const { overloadAmountFee } = summary;
+          setQuoteData({
+            quoteUUID,
+            overloadAmountFee,
+          });
+          setHasQuote(true);
           console.log("Costo de entrega:", response.data);
         } else {
-          console.error("Error obteniendo costo de entrega");
+          console.error("Error obteniendo costo de entrega", response);
         }
       });
     }
@@ -522,11 +556,21 @@ export default function DeliveryAddressModal({
         {/* Footer */}
         <footer className="shrink-0 p-4">
           <button
+            disabled={findQuoteLoading}
             onClick={handleConfirm}
-            className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)]"
+            className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             style={{ backgroundColor: "#65A30D" }}
           >
-            Confirmar Dirección
+            {findQuoteLoading ? (
+              <>
+                <span className="material-symbols-outlined animate-spin text-xl">
+                  refresh
+                </span>
+                <span>Buscando cotización...</span>
+              </>
+            ) : (
+              "Confirmar Dirección"
+            )}
           </button>
         </footer>
       </div>
