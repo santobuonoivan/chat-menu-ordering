@@ -76,6 +76,8 @@ export async function apiCall<T = any>(
   const url = `${host}${endpoint}`;
 
   const requestHeaders: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
     ...headers,
   };
 
