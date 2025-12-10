@@ -1,6 +1,7 @@
-import { api, agentAIApi, duckApi } from "@/lib/api";
+import { api, agentAIApi, duckApi, deliveryApi } from "@/lib/api";
 import { rankAndFilterDishes } from "@/utils";
 import { timeStamp } from "console";
+import { sign } from "crypto";
 
 // Menu API Service
 export const menuService = {
@@ -39,8 +40,15 @@ export const GetPaymentGateway = async (
   success: boolean;
   data: any;
 }> => {
-  const response = await duckApi.get(`/v1/gateways/${gatewaySignature}`);
+  let payload = {
+    signature: gatewaySignature,
+  };
+
+  let query = new URLSearchParams(payload).toString();
+
+  const response = await deliveryApi.get(`/finance/payment/gateway?${query}`);
   const { success, data } = response;
+  console.log("Get Payment Gateway Response:", response);
   return { success, data: data };
 };
 

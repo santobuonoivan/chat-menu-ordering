@@ -37,7 +37,7 @@ export default function PaymentModal({
   onConfirm,
 }: PaymentModalProps) {
   const [paymentMethod, setPaymentMethod] = useState<"credit_card" | "cash">(
-    "credit_card"
+    "cash"
   );
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -48,6 +48,7 @@ export default function PaymentModal({
   const [disable, setDisable] = useState<any>(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [payment, setPayment] = useState<any>({});
+
   async function handleProcess(e: any): Promise<void> {
     setDisable(true);
     setErrors([]);
@@ -361,6 +362,76 @@ export default function PaymentModal({
     }
   };
 
+  const testTokenization = async () => {
+    try {
+      const gateway = await GetPaymentGateway("CNKT");
+      console.log(gateway);
+
+      if (typeof Conekta !== "undefined" && gateway.success) {
+        await Conekta.setPublicKey(gateway.data.publicKey);
+
+        const cardClean = "4242424242424242";
+        const cvcClean = "123";
+        let exp_month = "12";
+        let exp_year = "26";
+        const cardholderNameTest = "Juan Perez";
+        const expiryDateTest = "12/26";
+
+        let info = {
+          card: {
+            number: cardClean,
+            name: cardholderNameTest,
+            exp_month: exp_month,
+            exp_year: exp_year,
+            cvc: cvcClean,
+            address: false,
+          },
+        };
+
+        const creditCardResult: any = CreditCardSchema.validate(
+          {
+            number: cardClean,
+            name: cardholderNameTest,
+            expirationDate: expiryDateTest,
+            cvv: cvcClean,
+          },
+          {
+            abortEarly: false,
+          }
+        );
+
+        console.log("info", info);
+        console.log("creditCardResult", creditCardResult);
+
+        if (creditCardResult.error == null) {
+          const token: any = await new Promise((resolve, reject) => {
+            Conekta.Token.create(info, (response: any) => {
+              if (response.object === "token") {
+                resolve(response);
+              } else {
+                reject(new Error("Error al crear el token"));
+              }
+            });
+          });
+          console.log("token", token);
+          return token;
+        } else {
+          if (creditCardResult.error) {
+            let validationErrors = [...creditCardResult.error?.details];
+            console.error("Validation errors:", validationErrors);
+          }
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.object && error.object === "error") {
+        console.error("Error al tokenizar la tarjeta:", error);
+      } else {
+        console.error("Error con la tarjeta:", error);
+      }
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -440,47 +511,46 @@ export default function PaymentModal({
               Método de Pago
             </h3>
 
-            {/* Cash Option */}
-            <label
-              className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 p-3 transition-all hover:border-primary/50 dark:bg-slate-800/80 dark:hover:border-primary/50"
-              style={{
-                borderColor:
-                  paymentMethod === "cash" ? "#65A30D" : "transparent",
-                backgroundColor:
-                  paymentMethod === "cash"
-                    ? "rgba(101, 163, 13, 0.2)"
-                    : "rgba(255, 255, 255, 0.8)",
-              }}
-            >
-              <input
-                type="radio"
-                name="payment_method"
-                value="cash"
-                checked={paymentMethod === "cash"}
-                onChange={(e) =>
-                  setPaymentMethod(e.target.value as "credit_card" | "cash")
-                }
-                className="sr-only"
-              />
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
-                <span
-                  className="material-symbols-outlined text-2xl"
-                  style={{
-                    color:
-                      paymentMethod === "cash" ? "#65A30D" : "text-slate-600",
-                  }}
-                >
-                  payments
-                </span>
-              </div>
-              <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
-                Efectivo
-              </span>
-            </label>
-
             <fieldset className="grid grid-cols-2 gap-3">
               <legend className="sr-only">Seleccione un método de pago</legend>
 
+              {/* Cash Option */}
+              <label
+                className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 p-3 transition-all hover:border-primary/50 dark:bg-slate-800/80 dark:hover:border-primary/50"
+                style={{
+                  borderColor:
+                    paymentMethod === "cash" ? "#65A30D" : "transparent",
+                  backgroundColor:
+                    paymentMethod === "cash"
+                      ? "rgba(101, 163, 13, 0.2)"
+                      : "rgba(255, 255, 255, 0.8)",
+                }}
+              >
+                <input
+                  type="radio"
+                  name="payment_method"
+                  value="cash"
+                  checked={paymentMethod === "cash"}
+                  onChange={(e) =>
+                    setPaymentMethod(e.target.value as "credit_card" | "cash")
+                  }
+                  className="sr-only"
+                />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
+                  <span
+                    className="material-symbols-outlined text-2xl"
+                    style={{
+                      color:
+                        paymentMethod === "cash" ? "#65A30D" : "text-slate-600",
+                    }}
+                  >
+                    payments
+                  </span>
+                </div>
+                <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
+                  Efectivo
+                </span>
+              </label>
               {/* Credit Card Option */}
               <label
                 className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all"
@@ -678,7 +748,7 @@ export default function PaymentModal({
               </div>
             )}
           <button
-            onClick={handleConfirmPayment}
+            onClick={handleProcess}
             disabled={
               paymentMethod === "credit_card" &&
               Object.keys(cardErrors).length > 0
@@ -690,6 +760,12 @@ export default function PaymentModal({
             }}
           >
             Confirmar Pago
+          </button>
+          <button
+            onClick={testTokenization}
+            className="mt-3 w-full text-center text-sm text-slate-600 hover:underline dark:text-slate-400"
+          >
+            test tokenization
           </button>
         </footer>
       </div>

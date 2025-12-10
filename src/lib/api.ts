@@ -16,6 +16,16 @@ const WEBHOOK_CONFIG = {
     Accept: "application/json",
   },
 };
+const DELIVERY_API_CONFIG = {
+  BASE_URL:
+    process.env.NEXT_PUBLIC_URL_API_BACKEND || "http://localhost:8097/api/v1",
+  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
+  HEADERS: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "X-Authorization": process.env.NEXT_PUBLIC_KEY_API_BACKEND || "",
+  },
+};
 
 const DUCK_API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL || "http://localhost:8098/api",
@@ -57,7 +67,6 @@ export async function apiCall<T = any>(
   const url = `${host}${endpoint}`;
 
   const requestHeaders: Record<string, string> = {
-    ...API_CONFIG.HEADERS,
     ...headers,
   };
 
@@ -117,6 +126,20 @@ export async function apiCall<T = any>(
   }
 }
 
+export const deliveryApi = {
+  get: <T = any>(
+    endpoint: string,
+    options: ApiRequestOptions = {},
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { ...options, method: "GET", headers: DELIVERY_API_CONFIG.HEADERS },
+      DELIVERY_API_CONFIG.BASE_URL
+    );
+  },
+};
+
 export const duckApi = {
   get: <T = any>(
     endpoint: string,
@@ -125,7 +148,7 @@ export const duckApi = {
   ): Promise<ApiResponse<T>> => {
     return apiCall<T>(
       endpoint,
-      { ...options, method: "GET", headers },
+      { ...options, method: "GET", headers: DUCK_API_CONFIG.HEADERS },
       DUCK_API_CONFIG.BASE_URL
     );
   },
@@ -136,7 +159,7 @@ export const duckApi = {
   ): Promise<ApiResponse<T>> => {
     return apiCall<T>(
       endpoint,
-      { method: "POST", body: data, headers },
+      { method: "POST", body: data, headers: DUCK_API_CONFIG.HEADERS },
       DUCK_API_CONFIG.BASE_URL
     );
   },
@@ -147,7 +170,7 @@ export const duckApi = {
   ): Promise<ApiResponse<T>> => {
     return apiCall<T>(
       endpoint,
-      { method: "PUT", body: data, headers },
+      { method: "PUT", body: data, headers: DUCK_API_CONFIG.HEADERS },
       DUCK_API_CONFIG.BASE_URL
     );
   },
@@ -157,7 +180,7 @@ export const duckApi = {
   ): Promise<ApiResponse<T>> => {
     return apiCall<T>(
       endpoint,
-      { method: "DELETE", headers },
+      { method: "DELETE", headers: DUCK_API_CONFIG.HEADERS },
       DUCK_API_CONFIG.BASE_URL
     );
   },
@@ -168,15 +191,13 @@ export const duckApi = {
   ): Promise<ApiResponse<T>> => {
     return apiCall<T>(
       endpoint,
-      { method: "PATCH", body: data, headers },
+      { method: "PATCH", body: data, headers: DUCK_API_CONFIG.HEADERS },
       DUCK_API_CONFIG.BASE_URL
     );
   },
 };
 
 export const agentAIApi = {
-  // https://automate.appio.com.mx/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff
-  // post
   post: <T = any>(
     endpoint: string,
     data?: any,
@@ -184,7 +205,7 @@ export const agentAIApi = {
   ) =>
     apiCall<T>(
       endpoint,
-      { method: "POST", body: data, headers },
+      { method: "POST", body: data, headers: WEBHOOK_CONFIG.HEADERS },
       WEBHOOK_CONFIG.URL
     ),
 };
@@ -193,30 +214,44 @@ export const agentAIApi = {
 export const api = {
   // GET request example
   get: <T = any>(endpoint: string, headers?: Record<string, string>) =>
-    apiCall<T>(endpoint, { method: "GET", headers }),
+    apiCall<T>(endpoint, { method: "GET", headers: API_CONFIG.HEADERS }),
 
   // POST request example
   post: <T = any>(
     endpoint: string,
     data?: any,
     headers?: Record<string, string>
-  ) => apiCall<T>(endpoint, { method: "POST", body: data, headers }),
+  ) =>
+    apiCall<T>(endpoint, {
+      method: "POST",
+      body: data,
+      headers: API_CONFIG.HEADERS,
+    }),
 
   // PUT request example
   put: <T = any>(
     endpoint: string,
     data?: any,
     headers?: Record<string, string>
-  ) => apiCall<T>(endpoint, { method: "PUT", body: data, headers }),
+  ) =>
+    apiCall<T>(endpoint, {
+      method: "PUT",
+      body: data,
+      headers: API_CONFIG.HEADERS,
+    }),
 
   // DELETE request example
   delete: <T = any>(endpoint: string, headers?: Record<string, string>) =>
-    apiCall<T>(endpoint, { method: "DELETE", headers }),
-
+    apiCall<T>(endpoint, { method: "DELETE", headers: API_CONFIG.HEADERS }),
   // PATCH request example
   patch: <T = any>(
     endpoint: string,
     data?: any,
     headers?: Record<string, string>
-  ) => apiCall<T>(endpoint, { method: "PATCH", body: data, headers }),
+  ) =>
+    apiCall<T>(endpoint, {
+      method: "PATCH",
+      body: data,
+      headers: API_CONFIG.HEADERS,
+    }),
 };
