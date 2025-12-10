@@ -46,7 +46,7 @@ export const GetPaymentGateway = async (
 
   let query = new URLSearchParams(payload).toString();
 
-  const response = await deliveryApi.get(`/finance/payment/gateway?${query}`);
+  const response = await deliveryApi.get(`v1/finance/payment/gateway?${query}`);
   const { success, data } = response;
   console.log("Get Payment Gateway Response:", response);
   return { success, data: data };
@@ -94,6 +94,28 @@ export const ProcessPayment = async (
     }
   );
   const { success, data } = response;
+  return { success, data: data };
+};
+
+export const GetDeliveryCost = async (deliveryData: {
+  lat: number;
+  lng: number;
+  rest_id: number;
+}): Promise<{
+  success: boolean;
+  data: any;
+}> => {
+  const { lat, lng, rest_id } = deliveryData;
+  const response = await deliveryApi.post(
+    `v2/delivery/booking/quote-by-rest-id`,
+    {
+      rest_id,
+      lat,
+      lng,
+    }
+  );
+  const { success, data } = response;
+  console.log("Get Delivery Cost Response:", response);
   return { success, data: data };
 };
 /*// Cart API Service

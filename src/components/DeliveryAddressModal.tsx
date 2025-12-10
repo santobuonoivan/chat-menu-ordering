@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useDeliveryStore } from "@/stores/deliveryStore";
+import { GetDeliveryCost } from "@/services";
+import { useMenuStore } from "@/stores/menuStore";
 
 interface DeliveryAddressModalProps {
   isOpen: boolean;
@@ -34,6 +36,7 @@ export default function DeliveryAddressModal({
 }: DeliveryAddressModalProps) {
   const { address: storedAddress, setAddress: setStoredAddress } =
     useDeliveryStore();
+  const { getMenuData } = useMenuStore();
   const [address, setAddress] = useState<DeliveryAddress>({
     street: "",
     streetNumber: "",
@@ -52,6 +55,7 @@ export default function DeliveryAddressModal({
   const geocoderInstance = useRef<any>(null);
   const mapInitialized = useRef(false);
   const hasInitialized = useRef(false);
+  const [hasQuote, setHasQuote] = useState(false);
 
   // Cargar dirección guardada si existe (solo una vez al abrir)
   useEffect(() => {
@@ -317,6 +321,23 @@ export default function DeliveryAddressModal({
       return;
     }
     onConfirm(address);
+  };
+
+  const getDeliveryQuote = async () => {
+    const menuData = getMenuData();
+    if (menuData && menuData.rest_id) {
+      GetDeliveryCost({
+        lat: address.latitude,
+        lng: address.longitude,
+        rest_id: menuData.rest_id, // Reemplazar con el ID real del restaurante
+      }).then((response) => {
+        if (response.success) {
+          console.log("Costo de entrega:", response.data);
+        } else {
+          console.error("Error obteniendo costo de entrega");
+        }
+      });
+    }
   };
 
   if (!isOpen) return null;

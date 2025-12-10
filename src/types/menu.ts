@@ -31,4 +31,5 @@ export interface IMenuItem {
 
 export interface IMenuData {
   menu: IMenuItem[];
+  rest_id: number;
 }

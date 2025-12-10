@@ -46,7 +46,7 @@ export default function Home() {
           });
 
           console.log("Menu Items:", menu[0].modifiers);
-          setMenuData({ menu });
+          setMenuData({ menu, rest_id: response.data.rest_id });
         } else {
           console.error("Error fetching menu items:", response.error);
         }

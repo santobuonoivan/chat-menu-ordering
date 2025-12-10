@@ -138,6 +138,17 @@ export const deliveryApi = {
       DELIVERY_API_CONFIG.BASE_URL
     );
   },
+  post: <T = any>(
+    endpoint: string,
+    data?: any,
+    headers?: Record<string, string>
+  ): Promise<ApiResponse<T>> => {
+    return apiCall<T>(
+      endpoint,
+      { method: "POST", body: data, headers: DELIVERY_API_CONFIG.HEADERS },
+      DELIVERY_API_CONFIG.BASE_URL
+    );
+  },
 };
 
 export const duckApi = {
