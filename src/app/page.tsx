@@ -7,9 +7,10 @@ import ActionChips from "@/components/menuDigital/ActionChips";
 import MessageComposer from "@/components/MessageComposer";
 import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
+import { useSessionStore } from "@/stores/sessionStore";
 import { generateUUID, groupModifiers, sleep } from "@/utils";
 import { use, useEffect, useState } from "react";
-import { menuService } from "@/services";
+import { GetSessionData, menuService } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
 
@@ -17,17 +18,47 @@ export default function Home() {
   const router = useRouter();
   const { messages, addMessage } = useChatStore();
   const { setMenuData } = useMenuStore();
+  const {
+    clientPhone,
+    setClientPhone,
+    restPhone,
+    setRestPhone,
+    sessionData,
+    setSessionData,
+  } = useSessionStore();
   const [restNumber, setRestNumber] = useState("");
 
-  /** tomar de la url el uuid y restNumber */
+  /** Tomar de la URL y obtener session data */
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const restNumberParam = urlParams.get("phone");
-    const clientNumberParam = urlParams.get("client_phone");
-    if (restNumberParam) setRestNumber(restNumberParam);
-    //if (clientNumberParam) setClientNumber(clientNumberParam);
-    console.log("Rest Number:", restNumberParam);
-  }, []);
+    const loadSessionData = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const restNumberParam = urlParams.get("phone");
+      const clientNumberParam = urlParams.get("client_phone");
+
+      // Guardar números de teléfono
+      if (clientNumberParam) setClientPhone(clientNumberParam);
+      if (restNumberParam) setRestPhone(restNumberParam);
+
+      // Obtener datos de sesión
+      const response = await GetSessionData(
+        clientNumberParam || "",
+        restNumberParam || "",
+        "Customer Name",
+        "Iniciar conversación",
+        "evolution"
+      );
+
+      // Guardar datos de sesión en el store
+      if (response?.data?.rest) {
+        setSessionData(response.data);
+      }
+
+      if (restNumberParam) setRestNumber(restNumberParam);
+      console.log("Rest Number:", restNumberParam);
+    };
+
+    loadSessionData();
+  }, [setClientPhone, setRestPhone, setSessionData]);
 
   useEffect(() => {
     if (restNumber) {

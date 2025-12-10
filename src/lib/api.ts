@@ -79,6 +79,12 @@ export async function apiCall<T = any>(
     ...headers,
   };
 
+  console.log("API Request Details:", {
+    url,
+    method,
+    headers: requestHeaders,
+  });
+
   const requestOptions: RequestInit = {
     method,
     headers: requestHeaders,
@@ -121,6 +127,15 @@ export async function apiCall<T = any>(
       data,
     };
   } catch (error: any) {
+    console.error("API Call Error:", {
+      url,
+      method,
+      errorName: error.name,
+      errorMessage: error.message,
+      errorCode: error.code,
+      errorType: error.type,
+    });
+
     if (error.name === "AbortError") {
       return {
         success: false,
@@ -130,7 +145,7 @@ export async function apiCall<T = any>(
 
     return {
       success: false,
-      error: error.message || "Network error",
+      error: error.message || "Failed to fetch",
     };
   }
 }
@@ -277,26 +292,20 @@ export const api = {
 };
 
 export const coreApi = {
-  get: <T = any>(
-    endpoint: string,
-    options: ApiRequestOptions = {},
-    headers?: Record<string, string>
-  ): Promise<ApiResponse<T>> => {
-    return apiCall<T>(
-      endpoint,
-      { ...options, method: "GET", headers: API_CONFIG_CORE.HEADERS },
-      process.env.NEXT_PUBLIC_URL_CORE_API
-    );
-  },
   post: <T = any>(
     endpoint: string,
     data?: any,
     headers?: Record<string, string>
   ): Promise<ApiResponse<T>> => {
+    console.log("Core API Config:", {
+      BASE_URL: API_CONFIG_CORE.BASE_URL,
+      HEADERS: API_CONFIG_CORE.HEADERS,
+    });
+
     return apiCall<T>(
       endpoint,
       { method: "POST", body: data, headers: API_CONFIG_CORE.HEADERS },
-      process.env.NEXT_PUBLIC_URL_CORE_API
+      API_CONFIG_CORE.BASE_URL
     );
   },
 };

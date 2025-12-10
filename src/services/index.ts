@@ -135,15 +135,19 @@ export const GetSessionData = async (
   success: boolean;
   data: any;
 }> => {
-  const response = await coreApi.post(`/v2/automate/process_incoming_message`, {
+  const payload = {
     user_phone,
     rest_phone,
     sessionId: `${user_phone}||${rest_phone}`,
-    message_id: `${Date.now()}`,
     chatInput,
     customer_name,
     platform,
-  });
+  };
+  console.log("Get Session Data Payload:", payload);
+  const response = await coreApi.post(
+    `/v2/automate/process_incoming_message`,
+    payload
+  );
   const { success, data } = response;
   console.log("Get Session Data Response:", response);
   console.log("Get Session Data data:", data);
