@@ -9,6 +9,11 @@ export const menuService = {
   },
 };
 
+export const sendOrderCartToAutomate = async (order: any) => {
+  // Get all menu items
+  return await api.post(`/automate/core/orders`, order);
+};
+
 export const getDishesByInput = async (
   input: string,
   list: string[]

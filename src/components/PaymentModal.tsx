@@ -2,7 +2,11 @@
 
 import { CreditCardSchema } from "@/schemas/ credit-card.schema";
 import { EmailSchema } from "@/schemas/email.schema";
-import { GetPaymentGateway, ProcessPayment } from "@/services";
+import {
+  GetPaymentGateway,
+  ProcessPayment,
+  sendOrderCartToAutomate,
+} from "@/services";
 import { useCartStore } from "@/stores/cartStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { useDeliveryStore } from "@/stores/deliveryStore";
@@ -113,12 +117,12 @@ export default function PaymentModal({
     return order;
   };
 
-  const sendOrderToAutomate = () => {
+  const sendOrderToAutomate = async () => {
     const cartoAutomate = convertCartToAutomateOrder();
-    if (!cartoAutomate) {
-      console.error("No se pudo convertir el carrito a orden de Automate");
-      return;
+    if (cartoAutomate) {
+      return await sendOrderCartToAutomate(cartoAutomate);
     }
+    return null;
   };
 
   async function handleProcess(e: any): Promise<void> {
