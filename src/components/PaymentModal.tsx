@@ -56,8 +56,10 @@ export default function PaymentModal({
   const [disable, setDisable] = useState<any>(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [payment, setPayment] = useState<any>({});
+  const [syncCart, setSyncCart] = useState<boolean>(false);
   const cartStore = useCartStore();
-  const { getSessionData } = useSessionStore();
+  const { getSessionData, clientPhone, restPhone, clientName } =
+    useSessionStore();
   const deliveryStore = useDeliveryStore();
 
   const convertCartToAutomateOrder = () => {
@@ -131,10 +133,15 @@ export default function PaymentModal({
     setDisable(true);
     setErrors([]);
 
-    const sendResponse = await sendOrderToAutomate();
-    console.log("sendResponse", sendResponse);
+    let sync = syncCart;
+    if (!syncCart) {
+      const sendResponse = await sendOrderToAutomate();
+      console.log("sendResponse", sendResponse);
+      setSyncCart(sendResponse != null && sendResponse.success);
+      sync = sendResponse != null && sendResponse.success;
+    }
 
-    if (sendResponse && sendResponse.success) {
+    if (sync) {
       try {
         const emailResult: any = EmailSchema.validate(email, {
           abortEarly: false,
@@ -164,17 +171,35 @@ export default function PaymentModal({
 
           const sessionData = getSessionData();
           const cartId = sessionData?.cart.id || null;
-
+          const restName = sessionData?.rest.title || null;
+          const restId = sessionData?.rest.rest_id || null;
+          const restEmail = sessionData?.rest.email || "operaciones@appio.ai";
           let payPayload = {
-            receiptUUID: payment.receiptUUID,
             customer: {
+              name: clientName || "Cliente",
+              mobile: clientPhone,
               email: email,
               token_card: token ? token.id : null,
             },
+            reference: `AI-ORDER-${cartId}`,
+            concept: "ORDER_PAYMENT",
+            description: "Pago de pedido vía IA",
+            currency: "MXN",
+            receipt_amount: parseFloat(
+              deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
+            ).toFixed(2),
+            type_charge: "direct",
             payment_method: paymentMethod == "credit_card" ? "card" : "cash",
-            signature: payment.gatewaySignature,
-            restaurantData: {},
-            receiptAmount: totalAmount,
+            service: "PAYMENT",
+            cashOnHand: 1,
+            receipt_details: [],
+            receipt_charges: [],
+            receipt_owner: {
+              name: restName || "Restaurante",
+              email: restEmail || "",
+              mobile: restPhone,
+              owner_id: restId,
+            },
             metadata: {
               action: "CREATE-ORDERING-IA",
               order_id: cartId || "",
@@ -227,8 +252,11 @@ export default function PaymentModal({
           console.log("token", token);
         } else {
           setDisable(false);
-          let errors = [...emailResult.error?.details];
-          setErrors((prev) => [...prev, ...errors]);
+          // Extraer mensajes de error del email
+          const emailErrors = emailResult.error?.details?.map(
+            (detail: any) => detail.message
+          ) || ["Email inválido o incompleto"];
+          setErrors((prev) => [...prev, ...emailErrors]);
 
           console.log(`${emailResult.error.message}`);
         }
@@ -571,6 +599,33 @@ export default function PaymentModal({
 
         {/* Main Content */}
         <main className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-4 sm:px-4">
+          {/* Errores generales */}
+          {errors.length > 0 && (
+            <div className="flex flex-col gap-2 rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-800/50 dark:bg-red-950/20">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-xl">
+                  error
+                </span>
+                <p className="font-semibold text-red-800 dark:text-red-300">
+                  Errores detectados:
+                </p>
+              </div>
+              <ul className="space-y-1 ml-8">
+                {errors.map((error, idx) => (
+                  <li
+                    key={idx}
+                    className="text-sm text-red-700 dark:text-red-200 flex items-start gap-2"
+                  >
+                    <span className="text-red-600 dark:text-red-400 mt-0.5">
+                      •
+                    </span>
+                    <span>{error}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Email Section */}
           <div
             className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
@@ -582,15 +637,33 @@ export default function PaymentModal({
           >
             <label className="flex flex-col">
               <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
-                Correo Electrónico
+                Correo Electrónico *
               </p>
               <input
                 type="email"
                 placeholder="tu@email.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-14 w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-3 text-base font-normal text-slate-900 placeholder:text-gray-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 dark:border-gray-600 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  // Limpiar errores cuando el usuario empieza a escribir
+                  setErrors([]);
+                }}
+                className={`h-14 w-full rounded-lg border bg-white/80 px-4 py-3 text-base font-normal placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors text-slate-900 dark:text-slate-200 ${
+                  !email
+                    ? "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
+                    : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                    ? "border-green-500 focus:border-green-600 focus:ring-green-500/50"
+                    : "border-red-500 focus:border-red-600 focus:ring-red-500/50"
+                }`}
               />
+              {email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                  <span className="material-symbols-outlined text-base">
+                    error
+                  </span>
+                  Email inválido. Usa el formato: ejemplo@dominio.com
+                </p>
+              )}
             </label>
           </div>
 
@@ -896,8 +969,11 @@ export default function PaymentModal({
           <button
             onClick={handleProcess}
             disabled={
-              paymentMethod === "credit_card" &&
-              Object.keys(cardErrors).length > 0
+              disable ||
+              !email ||
+              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+              (paymentMethod === "credit_card" &&
+                Object.keys(cardErrors).length > 0)
             }
             className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             style={{
@@ -905,7 +981,7 @@ export default function PaymentModal({
               boxShadow: "0 8px 16px rgba(101, 163, 13, 0.3)",
             }}
           >
-            Confirmar Pago
+            {disable ? "Procesando..." : "Confirmar Pago"}
           </button>
           {/* <button
             onClick={testTokenization}

@@ -64,6 +64,8 @@ interface SessionState {
   setClientPhone: (phone: string) => void;
   restPhone: string | null;
   setRestPhone: (phone: string) => void;
+  clientName: string | null;
+  setClientName: (name: string) => void;
   sessionData: SessionData | null;
   setSessionData: (data: SessionData) => void;
   getSessionData: () => SessionData | null;
@@ -76,6 +78,7 @@ export const useSessionStore = create<SessionState>()(
       clientPhone: null,
       restPhone: null,
       sessionData: null,
+      clientName: null,
 
       setClientPhone: (phone: string) => {
         set({ clientPhone: phone });
@@ -98,11 +101,15 @@ export const useSessionStore = create<SessionState>()(
           restPhone: null,
         });
       },
+      setClientName: (name: string) => {
+        set({ clientName: name });
+      },
     }),
     {
       name: "session-store",
       partialize: (state) => ({
         clientPhone: state.clientPhone,
+        clientName: state.clientName,
         restPhone: state.restPhone,
         sessionData: state.sessionData,
       }),
