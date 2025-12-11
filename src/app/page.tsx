@@ -9,7 +9,7 @@ import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { generateUUID, groupModifiers, sleep } from "@/utils";
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useRef } from "react";
 import { GetSessionData, menuService } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
@@ -27,6 +27,51 @@ export default function Home() {
     setSessionData,
   } = useSessionStore();
   const [restNumber, setRestNumber] = useState("");
+
+  // Refs y estados para control de scroll
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const previousMessageCountRef = useRef(0);
+
+  // Detectar si estamos al final del scroll
+  const handleScroll = () => {
+    if (!chatContainerRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    const atBottom = scrollHeight - scrollTop - clientHeight < 50; // 50px de tolerancia
+    setIsAtBottom(atBottom);
+  };
+
+  // Hacer scroll al final
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+      setIsAtBottom(true);
+      setUnreadCount(0);
+    }
+  };
+
+  // Control de auto-scroll cuando llega un nuevo mensaje
+  useEffect(() => {
+    const newMessageCount = messages.length;
+
+    // Si hay nuevo mensaje
+    if (newMessageCount > previousMessageCountRef.current) {
+      previousMessageCountRef.current = newMessageCount;
+
+      // Si estamos al final, hacer auto-scroll
+      if (isAtBottom) {
+        setTimeout(() => {
+          scrollToBottom();
+        }, 0);
+      } else {
+        // Si no estamos al final, incrementar contador de no leídos
+        setUnreadCount((prev) => prev + 1);
+      }
+    }
+  }, [messages, isAtBottom]);
 
   /** Tomar de la URL y obtener session data */
   useEffect(() => {
@@ -158,7 +203,11 @@ export default function Home() {
         <TopNavBar onClose={handleClose} />
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        <div
+          ref={chatContainerRef}
+          onScroll={handleScroll}
+          className="flex-1 overflow-y-auto p-4 space-y-6 relative"
+        >
           {messages.map((message, index) => {
             if (index === 0) {
               afterSender = null;
@@ -180,6 +229,27 @@ export default function Home() {
           {/* Show action chips only after first assistant message and no user messages yet */}
           {messages.length === 2 && messages[0].sender === "assistant" && (
             <ActionChips chips={[]} onChipClick={handleChipClick} />
+          )}
+
+          {/* Indicador de mensajes nuevos */}
+          {!isAtBottom && unreadCount > 0 && (
+            <button
+              onClick={scrollToBottom}
+              className="fixed bottom-24 right-8 flex items-center justify-center w-12 h-12 rounded-full bg-primary shadow-lg hover:shadow-xl transition-all active:scale-95 z-40 animate-bounce"
+              style={{ backgroundColor: "#65A30D" }}
+              aria-label={`${unreadCount} mensajes nuevos`}
+            >
+              <div className="flex flex-col items-center">
+                <span className="material-symbols-outlined text-white text-xl">
+                  arrow_downward
+                </span>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+              </div>
+            </button>
           )}
         </div>
 
