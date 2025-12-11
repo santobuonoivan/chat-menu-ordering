@@ -47,10 +47,11 @@ export default function Home() {
         "Iniciar conversación",
         "evolution"
       );
-
+      console.log("Session Data Response:", response);
       // Guardar datos de sesión en el store
       if (response?.data?.rest) {
         setSessionData(response.data);
+        console.log(response.data.cart);
       }
 
       if (restNumberParam) setRestNumber(restNumberParam);
