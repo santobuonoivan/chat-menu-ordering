@@ -238,6 +238,35 @@ export default function DeliveryAddressModal({
 
         // Extraer componentes de dirección
 
+        console.log("Address Components:", addressComponents);
+        /*
+          [
+            { long_name: '425', short_name: '425', types: [ 'street_number' ] },
+            { long_name: '9 de Julio', short_name: '9 de Julio', types: [ 'route' ] },
+            {
+              long_name: 'Quilmes',
+              short_name: 'Quilmes',
+              types: [ 'locality', 'political' ]
+            },
+            {
+              long_name: 'Quilmes',
+              short_name: 'Quilmes',
+              types: [ 'administrative_area_level_2', 'political' ]
+            },
+            {
+              long_name: 'Provincia de Buenos Aires',
+              short_name: 'Provincia de Buenos Aires',
+              types: [ 'administrative_area_level_1', 'political' ]
+            },
+            {
+              long_name: 'Argentina',
+              short_name: 'AR',
+              types: [ 'country', 'political' ]
+            },
+            { long_name: 'B1879', short_name: 'B1879', types: [ 'postal_code' ] }
+          ]
+        */
+
         addressComponents.forEach((component: any) => {
           const types = component.types;
 
@@ -262,10 +291,7 @@ export default function DeliveryAddressModal({
           if (types.includes("neighborhood")) {
             neighborhood = component.long_name;
           }
-          if (
-            types.includes("administrative_area_level_3") ||
-            types.includes("administrative_area_level_4")
-          ) {
+          if (types.includes("country")) {
             county = component.long_name;
           }
         });
