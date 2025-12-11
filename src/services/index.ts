@@ -63,40 +63,10 @@ export const ProcessPayment = async (
   success: boolean;
   data: any;
 }> => {
-  const {
-    signature,
-    recipeuuid,
-    customer,
-    paymentMethod,
-    receiptAmount,
-    restaurantData,
-  } = paymentData;
-  const timeStamp = new Date().getTime();
   const response = await duckApi.post(
-    `/v1/payments/${signature}/order/${recipeuuid}`,
-    {
-      customer,
-      reference: timeStamp,
-      concept: "ORDER_PAYMENT",
-      description: "Pago de prueba orden AI",
-      currency: "MXN",
-      receipt_amount: receiptAmount,
-      type_charge: "direct",
-      payment_method: paymentMethod,
-      service: "PAYMENT",
-      cashOnHand: 1,
-      receipt_details: [],
-      receipt_charges: [],
-      receipt_owner: {
-        name: restaurantData.name,
-        email: restaurantData.email,
-        mobile: restaurantData.mobile,
-        owner_id: restaurantData.ownerId,
-      },
-      metadata: {
-        action: "PAY-ORDER-AI",
-      },
-    }
+    `/v1/payments/CNKT/order/${process.env.NEXT_PUBLIC_RECIPE_UUID}`,
+    paymentData,
+    { Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` }
   );
   const { success, data } = response;
   return { success, data: data };

@@ -174,79 +174,62 @@ export default function PaymentModal({
           const restName = sessionData?.rest.title || null;
           const restId = sessionData?.rest.rest_id || null;
           const restEmail = sessionData?.rest.email || "operaciones@appio.ai";
-          let payPayload = {
-            customer: {
-              name: clientName || "Cliente",
-              mobile: clientPhone,
-              email: email,
-              token_card: token ? token.id : null,
-            },
-            reference: `AI-ORDER-${cartId}`,
-            concept: "ORDER_PAYMENT",
-            description: "Pago de pedido vía IA",
-            currency: "MXN",
-            receipt_amount: parseFloat(
-              deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
-            ).toFixed(2),
-            type_charge: "direct",
-            payment_method: paymentMethod == "credit_card" ? "card" : "cash",
-            service: "PAYMENT",
-            cashOnHand: 1,
-            receipt_details: [],
-            receipt_charges: [],
-            receipt_owner: {
-              name: restName || "Restaurante",
-              email: restEmail || "",
-              mobile: restPhone,
-              owner_id: restId,
-            },
-            metadata: {
-              action: "CREATE-ORDERING-IA",
-              order_id: cartId || "",
-              customerAmount: 35,
-              storeAmount: 24,
-              deliveryFeeAmount: parseFloat(
+
+          if (paymentMethod == "credit_card" && token) {
+            let payPayload = {
+              customer: {
+                name: clientName || "Cliente",
+                mobile: clientPhone,
+                email: email,
+                token_card: token ? token.id : null,
+              },
+              reference: `AI-ORDER-${cartId}`,
+              concept: "ORDER_PAYMENT",
+              description: "Pago de pedido vía IA",
+              currency: "MXN",
+              receipt_amount: parseFloat(
                 deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
               ).toFixed(2),
-            },
-          };
+              type_charge: "direct",
+              payment_method: "card",
+              service: "PAYMENT",
+              cashOnHand: 1,
+              receipt_details: [],
+              receipt_charges: [],
+              receipt_owner: {
+                name: restName || "Restaurante",
+                email: restEmail || "",
+                mobile: restPhone,
+                owner_id: restId,
+              },
+              metadata: {
+                action: "CREATE-ORDERING-IA",
+                order_id: cartId || "",
+                customerAmount: 35,
+                storeAmount: 24,
+                deliveryFeeAmount: parseFloat(
+                  deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
+                ).toFixed(2),
+              },
+            };
 
-          console.log(payPayload);
+            console.log(payPayload);
 
-          let credits = await ProcessPayment(payPayload).then((res: any) => {
-            console.log(res);
-            return res;
-          });
+            let processPaymentResponse = await ProcessPayment(payPayload).then(
+              (res: any) => {
+                console.log(res);
+                return res;
+              }
+            );
 
-          console.log(credits);
-          let { data } = credits;
+            console.log(processPaymentResponse);
+            let { data } = processPaymentResponse;
 
-          if (data && data.status == "processing") {
-            console.log("Procesando cobro");
-            //await setupConfig();
-            setDisable(false);
-          } else {
-            //await setupConfig();
-
-            let apiData = credits.data;
-
-            if (
-              apiData.operationResponse.object &&
-              apiData.operationResponse.object === "error"
-            ) {
-              let errors = apiData.operationResponse.tracer.data.details.map(
-                (element: any) => element.message || "Error desconocido"
-              );
-              setErrors((prev) => [...prev, ...errors]);
-
-              errors.forEach((element: any) => {
-                console.warn(element);
-              });
-            } else {
-              console.warn("El cobro no pudo ser efectuado");
-              setErrors((prev) => [...prev, "El cobro no pudo ser efectuado"]);
+            if (data && data.status == "processing") {
+              console.log("Procesando cobro");
+              setDisable(false);
             }
-            setDisable(false);
+          } else {
           }
 
           console.log("token", token);
