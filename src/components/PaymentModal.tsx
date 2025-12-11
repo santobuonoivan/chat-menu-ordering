@@ -12,6 +12,7 @@ import { useSessionStore } from "@/stores/sessionStore";
 import { useDeliveryStore } from "@/stores/deliveryStore";
 import Script from "next/script";
 import { useState } from "react";
+import { ICartItem } from "@/types/cart";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -60,9 +61,9 @@ export default function PaymentModal({
   const deliveryStore = useDeliveryStore();
 
   const convertCartToAutomateOrder = () => {
-    const items = cartStore.items.map((item: any) => ({
+    const items = cartStore.items.map((item: ICartItem) => ({
       id: item.menuItem.dish_id?.toString() || "1768",
-      name: item.menuItem.name,
+      name: item.menuItem.dish_name,
       unit_price: (item.menuItem.dish_price || "0").toString(),
       quantity: item.quantity.toString(),
       price: item.totalPrice.toFixed(0),
@@ -120,6 +121,7 @@ export default function PaymentModal({
   const sendOrderToAutomate = async () => {
     const cartoAutomate = convertCartToAutomateOrder();
     if (cartoAutomate) {
+      console.log("cartoAutomate", cartoAutomate);
       return await sendOrderCartToAutomate(cartoAutomate);
     }
     return null;
@@ -129,101 +131,118 @@ export default function PaymentModal({
     setDisable(true);
     setErrors([]);
 
-    sendOrderToAutomate();
-    try {
-      const emailResult: any = EmailSchema.validate(email, {
-        abortEarly: false,
-      });
+    const sendResponse = await sendOrderToAutomate();
+    console.log("sendResponse", sendResponse);
 
-      if (emailResult.error == null) {
-        console.log("Procesando cobro .... espere porfavor");
-
-        let token = null;
-        if (paymentMethod == "credit_card") {
-          token = await createTokenOfcard();
-          console.log("token", token);
-          if (token == null || token == undefined) {
-            setDisable(false);
-            console.log("La tarjeta no se pudo tokenizar");
-            console.warn(
-              `La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.`
-            );
-            setErrors((prev) => [
-              ...prev,
-              "La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.",
-            ]);
-
-            return;
-          }
-        }
-
-        let payPayload = {
-          receiptUUID: payment.receiptUUID,
-          customer: {
-            email: email,
-            token_card: token ? token.id : null,
-          },
-          payment_method: paymentMethod == "credit_card" ? "card" : "cash",
-          signature: payment.gatewaySignature,
-          restaurantData: {},
-          receiptAmount: totalAmount,
-        };
-
-        console.log(payPayload);
-
-        let credits = await ProcessPayment(payPayload).then((res: any) => {
-          console.log(res);
-          return res;
+    if (sendResponse && sendResponse.success) {
+      try {
+        const emailResult: any = EmailSchema.validate(email, {
+          abortEarly: false,
         });
 
-        let { data } = credits;
+        if (emailResult.error == null) {
+          console.log("Procesando cobro .... espere porfavor");
 
-        if (data && data.status == "processing") {
-          console.log("Procesando cobro");
-          //await setupConfig();
-          setDisable(false);
-        } else {
-          //await setupConfig();
+          let token = null;
+          if (paymentMethod == "credit_card") {
+            token = await createTokenOfcard();
+            console.log("token", token);
+            if (token == null || token == undefined) {
+              setDisable(false);
+              console.log("La tarjeta no se pudo tokenizar");
+              console.warn(
+                `La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.`
+              );
+              setErrors((prev) => [
+                ...prev,
+                "La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.",
+              ]);
 
-          let apiData = credits.data;
-
-          if (
-            apiData.operationResponse.object &&
-            apiData.operationResponse.object === "error"
-          ) {
-            let errors = apiData.operationResponse.tracer.data.details.map(
-              (element: any) => element.message || "Error desconocido"
-            );
-            setErrors((prev) => [...prev, ...errors]);
-
-            errors.forEach((element: any) => {
-              console.warn(element);
-            });
-          } else {
-            console.warn("El cobro no pudo ser efectuado");
-            setErrors((prev) => [...prev, "El cobro no pudo ser efectuado"]);
+              return;
+            }
           }
+
+          const sessionData = getSessionData();
+          const cartId = sessionData?.cart.id || null;
+
+          let payPayload = {
+            receiptUUID: payment.receiptUUID,
+            customer: {
+              email: email,
+              token_card: token ? token.id : null,
+            },
+            payment_method: paymentMethod == "credit_card" ? "card" : "cash",
+            signature: payment.gatewaySignature,
+            restaurantData: {},
+            receiptAmount: totalAmount,
+            metadata: {
+              action: "CREATE-ORDERING-IA",
+              order_id: cartId || "",
+              customerAmount: 35,
+              storeAmount: 24,
+              deliveryFeeAmount: parseFloat(
+                deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
+              ).toFixed(2),
+            },
+          };
+
+          console.log(payPayload);
+
+          let credits = await ProcessPayment(payPayload).then((res: any) => {
+            console.log(res);
+            return res;
+          });
+
+          console.log(credits);
+          let { data } = credits;
+
+          if (data && data.status == "processing") {
+            console.log("Procesando cobro");
+            //await setupConfig();
+            setDisable(false);
+          } else {
+            //await setupConfig();
+
+            let apiData = credits.data;
+
+            if (
+              apiData.operationResponse.object &&
+              apiData.operationResponse.object === "error"
+            ) {
+              let errors = apiData.operationResponse.tracer.data.details.map(
+                (element: any) => element.message || "Error desconocido"
+              );
+              setErrors((prev) => [...prev, ...errors]);
+
+              errors.forEach((element: any) => {
+                console.warn(element);
+              });
+            } else {
+              console.warn("El cobro no pudo ser efectuado");
+              setErrors((prev) => [...prev, "El cobro no pudo ser efectuado"]);
+            }
+            setDisable(false);
+          }
+
+          console.log("token", token);
+        } else {
           setDisable(false);
+          let errors = [...emailResult.error?.details];
+          setErrors((prev) => [...prev, ...errors]);
+
+          console.log(`${emailResult.error.message}`);
         }
-
-        console.log("token", token);
-      } else {
+      } catch (error: any) {
+        console.log(error);
+        console.error(
+          "Error cobro no pudo ser relizado, no se puede obtener la causa del error."
+        );
+        setErrors((prev) => [
+          ...prev,
+          "Error: No se puede obtener la causa del error.",
+        ]);
         setDisable(false);
-        let errors = [...emailResult.error?.details];
-        setErrors((prev) => [...prev, ...errors]);
-
-        console.warn(`${emailResult.error.message}`);
       }
-    } catch (error: any) {
-      console.log(error);
-      console.error(
-        "Error cobro no pudo ser relizado, no se puede obtener la causa del error."
-      );
-      setErrors((prev) => [
-        ...prev,
-        "Error: No se puede obtener la causa del error.",
-      ]);
-      setDisable(false);
     }
   }
 
@@ -513,7 +532,7 @@ export default function PaymentModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
       <Script src="https://cdn.conekta.io/js/latest/conekta.js" />
@@ -551,10 +570,10 @@ export default function PaymentModal({
         </header>
 
         {/* Main Content */}
-        <main className="flex flex-1 flex-col gap-6 overflow-y-auto px-2 py-4 sm:px-4">
+        <main className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-4 sm:px-4">
           {/* Email Section */}
           <div
-            className="flex flex-col gap-4 rounded-lg p-5 shadow-lg"
+            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.6)",
               backdropFilter: "blur(12px)",
@@ -577,7 +596,7 @@ export default function PaymentModal({
 
           {/* Payment Method Section */}
           <div
-            className="flex flex-col gap-4 rounded-lg p-5 shadow-lg"
+            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.6)",
               backdropFilter: "blur(12px)",
@@ -797,16 +816,66 @@ export default function PaymentModal({
 
           {/* Total Amount Section */}
           <div
-            className="flex flex-col gap-3 rounded-lg p-5 shadow-lg"
+            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.6)",
               backdropFilter: "blur(12px)",
               border: "1px solid rgba(255, 255, 255, 0.2)",
             }}
           >
-            <div className="flex justify-between text-lg font-bold text-slate-900 dark:text-white">
-              <span>Total a pagar</span>
-              <span>${totalAmount.toFixed(2)}</span>
+            {/* Row 1: Orden */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-gray-600/50">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-slate-600 dark:text-slate-400 text-lg">
+                  shopping_cart
+                </span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Subtotal
+                </span>
+              </div>
+              <span className="text-base font-semibold text-slate-900 dark:text-white">
+                ${totalAmount.toFixed(2)}
+              </span>
+            </div>
+
+            {/* Row 2: Delivery */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-gray-600/50">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-slate-600 dark:text-slate-400 text-lg">
+                  local_shipping
+                </span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Envío
+                </span>
+              </div>
+              <span className="text-base font-semibold text-slate-900 dark:text-white">
+                $
+                {parseFloat(
+                  deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
+                ).toFixed(2)}
+              </span>
+            </div>
+
+            {/* Row 3: Total */}
+            <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-lg">
+                  account_balance_wallet
+                </span>
+                <span className="text-base font-bold text-slate-900 dark:text-white">
+                  Total a Pagar
+                </span>
+              </div>
+              <span className="text-xl font-bold" style={{ color: "#65A30D" }}>
+                $
+                {(
+                  (totalAmount || 0) +
+                  parseFloat(
+                    deliveryStore.quoteData?.overloadAmountFee.toString() ||
+                      "0.0"
+                  )
+                ).toFixed(2)}
+              </span>
             </div>
           </div>
         </main>
@@ -838,12 +907,12 @@ export default function PaymentModal({
           >
             Confirmar Pago
           </button>
-          <button
+          {/* <button
             onClick={testTokenization}
             className="mt-3 w-full text-center text-sm text-slate-600 hover:underline dark:text-slate-400"
           >
             test tokenization
-          </button>
+          </button> */}
         </footer>
       </div>
     </div>

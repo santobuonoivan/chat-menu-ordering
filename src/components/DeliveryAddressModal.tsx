@@ -373,7 +373,8 @@ export default function DeliveryAddressModal({
     }
     setFindQuoteLoading(true);
     getDeliveryQuote()
-      .then(() => {
+      .then((result) => {
+        console.log("Delivery quote result:", result);
         setTimeout(() => {
           if (hasQuote) {
             onConfirm(address);
