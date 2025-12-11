@@ -1,6 +1,6 @@
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "",
+  BASE_URL: "/api-main",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -10,7 +10,7 @@ const API_CONFIG = {
 };
 
 const API_CONFIG_CORE = {
-  BASE_URL: process.env.NEXT_PUBLIC_URL_CORE_API,
+  BASE_URL: "/api-core",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const WEBHOOK_CONFIG = {
   },
 };
 const DELIVERY_API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_URL_API_BACKEND,
+  BASE_URL: "/api-delivery",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const DELIVERY_API_CONFIG = {
 };
 
 const DUCK_API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL,
+  BASE_URL: "/api-duck",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
