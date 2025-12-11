@@ -22,6 +22,8 @@ export interface DeliveryAddress {
   phoneNumber: string;
   latitude: number;
   longitude: number;
+  neighborhood?: string;
+  county?: string;
 }
 
 declare global {
@@ -50,6 +52,8 @@ export default function DeliveryAddressModal({
     phoneNumber: "",
     latitude: 0,
     longitude: 0,
+    neighborhood: "",
+    county: "",
   });
 
   const mapRef = useRef<HTMLDivElement>(null);
@@ -75,6 +79,8 @@ export default function DeliveryAddressModal({
         phoneNumber: storedAddress.phoneNumber || "",
         latitude: storedAddress.latitude || 0,
         longitude: storedAddress.longitude || 0,
+        neighborhood: storedAddress.neighborhood || "",
+        county: storedAddress.county || "",
       });
     }
 
@@ -102,6 +108,8 @@ export default function DeliveryAddressModal({
     address.phoneNumber,
     address.latitude,
     address.longitude,
+    address.neighborhood,
+    address.county,
     setStoredAddress,
   ]);
 
@@ -225,8 +233,11 @@ export default function DeliveryAddressModal({
         let city = "";
         let state = "";
         let zip = "";
+        let neighborhood = "";
+        let county = "";
 
         // Extraer componentes de dirección
+
         addressComponents.forEach((component: any) => {
           const types = component.types;
 
@@ -248,6 +259,15 @@ export default function DeliveryAddressModal({
           if (types.includes("postal_code")) {
             zip = component.long_name;
           }
+          if (types.includes("neighborhood")) {
+            neighborhood = component.long_name;
+          }
+          if (
+            types.includes("administrative_area_level_3") ||
+            types.includes("administrative_area_level_4")
+          ) {
+            county = component.long_name;
+          }
         });
 
         setAddress((prev) => ({
@@ -256,6 +276,8 @@ export default function DeliveryAddressModal({
           city: city || "",
           state: state || "",
           zip: zip || "",
+          neighborhood: neighborhood || "",
+          county: county || "",
         }));
       }
     } catch (error) {

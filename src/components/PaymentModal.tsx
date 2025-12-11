@@ -3,6 +3,9 @@
 import { CreditCardSchema } from "@/schemas/ credit-card.schema";
 import { EmailSchema } from "@/schemas/email.schema";
 import { GetPaymentGateway, ProcessPayment } from "@/services";
+import { useCartStore } from "@/stores/cartStore";
+import { useSessionStore } from "@/stores/sessionStore";
+import { useDeliveryStore } from "@/stores/deliveryStore";
 import Script from "next/script";
 import { useState } from "react";
 
@@ -48,11 +51,81 @@ export default function PaymentModal({
   const [disable, setDisable] = useState<any>(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [payment, setPayment] = useState<any>({});
+  const cartStore = useCartStore();
+  const { getSessionData } = useSessionStore();
+  const deliveryStore = useDeliveryStore();
+
+  const convertCartToAutomateOrder = () => {
+    const items = cartStore.items.map((item: any) => ({
+      id: item.menuItem.dish_id?.toString() || "1768",
+      name: item.menuItem.name,
+      unit_price: (item.menuItem.dish_price || "0").toString(),
+      quantity: item.quantity.toString(),
+      price: item.totalPrice.toFixed(0),
+      modificadores:
+        item.modifiers?.map((mod: any) => ({
+          name: mod.modifierName,
+          price: mod.priceAdjustment,
+          qty: 1,
+          sku: "",
+          modifier_id: mod.modifierId,
+        })) || [],
+      mod_price: (
+        item.modifiers?.reduce(
+          (sum: number, mod: any) => sum + mod.priceAdjustment,
+          0
+        ) || 0
+      ).toFixed(2),
+    }));
+    const sessionData = getSessionData();
+    const cartId = sessionData?.cart.id || null;
+
+    // Armar address desde deliveryStore
+    const address = {
+      status: "pending",
+      user_mobile: deliveryStore.address?.phoneNumber || "",
+      street: deliveryStore.address?.street || "",
+      ext: deliveryStore.address?.streetNumber || "",
+      int: "",
+      neighborhood: deliveryStore.address?.neighborhood || "",
+      county: deliveryStore.address?.county || "",
+      city: deliveryStore.address?.city || "",
+      state: deliveryStore.address?.state || "",
+      zip: deliveryStore.address?.zip || "",
+      lat: deliveryStore.address?.latitude || 0,
+      lng: deliveryStore.address?.longitude || 0,
+      special_instructions: deliveryStore.address?.references || null,
+      comment: null,
+      quote: deliveryStore.quoteData?.overloadAmountFee || 0,
+      expires: null,
+      shipping_method: "DELIVERY_BY_PLATFORM",
+      quoteUUID: deliveryStore.quoteData?.quoteUUID || null,
+      quoteId: null,
+    };
+
+    if (!cartId) return null;
+    const order = {
+      cart_id: cartId,
+      items,
+      address,
+    };
+
+    return order;
+  };
+
+  const sendOrderToAutomate = () => {
+    const cartoAutomate = convertCartToAutomateOrder();
+    if (!cartoAutomate) {
+      console.error("No se pudo convertir el carrito a orden de Automate");
+      return;
+    }
+  };
 
   async function handleProcess(e: any): Promise<void> {
     setDisable(true);
     setErrors([]);
 
+    sendOrderToAutomate();
     try {
       const emailResult: any = EmailSchema.validate(email, {
         abortEarly: false,
