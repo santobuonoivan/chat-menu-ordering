@@ -6,6 +6,7 @@ import { IMessage } from "@/types/chat";
 import { generateUUID, rankAndFilterDishes } from "@/utils";
 import { useState } from "react";
 import { useMenuStore } from "@/stores/menuStore";
+import { ApiCallFindDishesByName } from "@/handlers/agentAI/findDishes";
 
 interface MessageComposerProps {
   onSendMessage?: (
@@ -51,16 +52,10 @@ export default function MessageComposer({
       data: { DISH_LIST: filteredDishes, INPUT: input },
     };
 
-    fetch("/api/agentAI/findDishesByName", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
+    ApiCallFindDishesByName(payload)
       .then(async (res) => {
-        const result = await res.json();
-        return { success: res.ok, data: result.data?.output };
+        console.log("Find Dishes Response Status:", res);
+        return { success: res.status === 200, data: res.data?.output };
       })
       .then((response) => {
         handleDishesResponse(response);

@@ -95,16 +95,10 @@ export default function Home() {
       };
       const sessionResponse = await ApiCallProcessIncomingMessage(payload);
 
-      const sessionResult = await sessionResponse.json();
-      const response = {
-        success: sessionResponse.ok,
-        data: sessionResult.data,
-      };
-      console.log("Session Data Response:", response);
       // Guardar datos de sesión en el store
-      if (response?.data?.rest) {
-        setSessionData(response.data);
-        console.log(response.data.cart);
+      if (sessionResponse?.data?.rest) {
+        setSessionData(sessionResponse.data);
+        console.log(sessionResponse.data.cart);
       }
 
       if (restNumberParam) setRestNumber(restNumberParam);
