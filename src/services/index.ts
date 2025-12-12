@@ -1,17 +1,23 @@
-import { api, agentAIApi, duckApi, deliveryApi, coreApi } from "@/lib/api";
+import {
+  standarApi,
+  agentAIApi,
+  duckApi,
+  deliveryApi,
+  coreApi,
+} from "@/lib/api";
 import { rankAndFilterDishes } from "@/utils";
 
 // Menu API Service
 export const menuService = {
   // Get all menu items
   async getMenuItems(phone: string) {
-    return await api.get(`/automate/core/menu/${phone}`);
+    return await standarApi.get(`/automate/core/menu/${phone}`);
   },
 };
 
 export const sendOrderCartToAutomate = async (order: any) => {
   // Get all menu items
-  return await api.post(`/automate/core/orders`, order);
+  return await standarApi.post(`/automate/core/orders`, order);
 };
 
 export const getDishesByInput = async (
