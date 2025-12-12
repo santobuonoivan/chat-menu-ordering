@@ -1,6 +1,6 @@
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: "/api-main",
+  BASE_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "",
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -10,7 +10,7 @@ const API_CONFIG = {
 };
 
 const API_CONFIG_CORE = {
-  BASE_URL: "/api-core",
+  BASE_URL: process.env.NEXT_PUBLIC_URL_CORE_API,
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const WEBHOOK_CONFIG = {
   },
 };
 const DELIVERY_API_CONFIG = {
-  BASE_URL: "/api-delivery",
+  BASE_URL: process.env.NEXT_PUBLIC_URL_API_BACKEND,
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const DELIVERY_API_CONFIG = {
 };
 
 const DUCK_API_CONFIG = {
-  BASE_URL: "/api-duck",
+  BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL,
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
   HEADERS: {
     "Content-Type": "application/json",
@@ -252,7 +252,7 @@ export const agentAIApi = {
 };
 // Specific API functions examples
 
-export const api = {
+export const standarApi = {
   // GET request example
   get: <T = any>(endpoint: string, headers?: Record<string, string>) =>
     apiCall<T>(endpoint, { method: "GET", headers: API_CONFIG.HEADERS }),

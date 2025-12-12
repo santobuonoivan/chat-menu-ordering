@@ -16,34 +16,6 @@ const nextConfig: NextConfig = {
   env: {
     //CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
-
-  // API Rewrites for CORS bypass
-  async rewrites() {
-    return {
-      beforeFiles: [
-        // Core API
-        {
-          source: "/api-core/:path*",
-          destination: `${process.env.NEXT_PUBLIC_URL_CORE_API}/:path*`,
-        },
-        // Delivery API
-        {
-          source: "/api-delivery/:path*",
-          destination: `${process.env.NEXT_PUBLIC_URL_API_BACKEND}/:path*`,
-        },
-        // Duck API
-        {
-          source: "/api-duck/:path*",
-          destination: `${process.env.NEXT_PUBLIC_DUCK_API_URL}/:path*`,
-        },
-        // Main Backend API
-        {
-          source: "/api-main/:path*",
-          destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
-        },
-      ],
-    };
-  },
 };
 
 export default nextConfig;
