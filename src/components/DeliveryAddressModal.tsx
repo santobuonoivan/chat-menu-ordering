@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useDeliveryStore } from "@/stores/deliveryStore";
-import { GetDeliveryCost } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
-import { get } from "http";
 
 interface DeliveryAddressModalProps {
   isOpen: boolean;
@@ -397,11 +395,22 @@ export default function DeliveryAddressModal({
     return new Promise((resolve, reject) => {
       const menuData = getMenuData();
       if (menuData && menuData.rest_id) {
-        GetDeliveryCost({
+        const payload = {
+          rest_id: parseInt(menuData.rest_id.toString()),
           lat: address.latitude,
           lng: address.longitude,
-          rest_id: parseInt(menuData.rest_id.toString()),
+        };
+        fetch('/api/delivery/quoteByRestId', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         })
+          .then(async (res) => {
+            const result = await res.json();
+            return { success: res.ok, data: result.data };
+          })
           .then((response) => {
             if (response.success) {
               const quoteUUID = response.data?.data?.quote?.data?.quoteUUID;

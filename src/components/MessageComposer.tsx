@@ -3,9 +3,8 @@
 import { useChatStore } from "@/stores/chatStore";
 import { useCartStore } from "@/stores/cartStore";
 import { IMessage } from "@/types/chat";
-import { generateUUID } from "@/utils";
+import { generateUUID, rankAndFilterDishes } from "@/utils";
 import { useState } from "react";
-import { getDishesByInput } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
 
 interface MessageComposerProps {
@@ -34,38 +33,74 @@ export default function MessageComposer({
     // Lógica para buscar platos por entrada de usuario
     const dishList: string[] =
       menuData?.menu.map((item) => item.dish_name) || [];
-    getDishesByInput(input, dishList).then((response) => {
-      if (response.success) {
-        console.log("Dishes by Input:", response.data);
-        const dishesFound = menuData?.menu.filter((item) =>
-          response.data.includes(item.dish_name)
+
+    // Filtrar localmente primero
+    const filteredDishes = rankAndFilterDishes(dishList, input);
+    console.log("Filtered Dishes:", filteredDishes);
+
+    // Si solo hay uno, devolver directamente
+    if (filteredDishes.length === 1) {
+      const response = { success: true, data: filteredDishes };
+      handleDishesResponse(response);
+      return;
+    }
+
+    // Si hay más, consultar al agente AI
+    const payload = {
+      type: "FIND_DISH_BY_NAME",
+      data: { DISH_LIST: filteredDishes, INPUT: input },
+    };
+
+    fetch("/api/agentAI/findDishesByName", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(async (res) => {
+        const result = await res.json();
+        return { success: res.ok, data: result.data?.output };
+      })
+      .then((response) => {
+        handleDishesResponse(response);
+      });
+  };
+
+  const handleDishesResponse = (response: {
+    success: boolean;
+    data: string[];
+  }) => {
+    if (response.success) {
+      console.log("Dishes by Input:", response.data);
+      const dishesFound = menuData?.menu.filter((item) =>
+        response.data.includes(item.dish_name)
+      );
+      if (dishesFound && dishesFound.length > 0) {
+        const newListDishes: IMessage = {
+          id: generateUUID(),
+          text: "", //"He encontrado esto para ti.",
+          sender: "assistant",
+          timestamp: new Date(),
+          data: {
+            items: dishesFound,
+            action: "add_dish",
+          },
+        };
+        setItemListUUID?.(newListDishes.id);
+        onSendMessage?.(
+          `He encontrado ${dishesFound.length} plato(s) que coinciden con tu búsqueda.`,
+          "assistant",
+          newListDishes
         );
-        if (dishesFound && dishesFound.length > 0) {
-          const newListDishes: IMessage = {
-            id: generateUUID(),
-            text: "", //"He encontrado esto para ti.",
-            sender: "assistant",
-            timestamp: new Date(),
-            data: {
-              items: dishesFound,
-              action: "add_dish",
-            },
-          };
-          setItemListUUID?.(newListDishes.id);
-          onSendMessage?.(
-            `He encontrado ${dishesFound.length} plato(s) que coinciden con tu búsqueda.`,
-            "assistant",
-            newListDishes
-          );
-        } else {
-          onSendMessage?.(
-            `Lo siento, no he encontrado ningún plato que coincida con "${input}". ¿Quieres intentar con otro nombre?`,
-            "assistant",
-            null
-          );
-        }
+      } else {
+        onSendMessage?.(
+          `Lo siento, no he encontrado ningún plato que coincida con tu búsqueda. ¿Quieres intentar con otro nombre?`,
+          "assistant",
+          null
+        );
       }
-    });
+    }
   };
   const handleSend = () => {
     // Mock data temporalmente deshabilitado para compatibilidad v2
