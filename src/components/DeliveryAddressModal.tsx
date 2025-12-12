@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, use } from "react";
 import { useDeliveryStore } from "@/stores/deliveryStore";
 import { useMenuStore } from "@/stores/menuStore";
+import { ApiCallQuoteByRestId } from "@/handlers/delivery/quotes";
+import { useSessionStore } from "@/stores/sessionStore";
 
 interface DeliveryAddressModalProps {
   isOpen: boolean;
@@ -40,6 +42,7 @@ export default function DeliveryAddressModal({
   const { getMenuData } = useMenuStore();
   const { setQuoteData } = useDeliveryStore();
   const [findQuoteLoading, setFindQuoteLoading] = useState(false);
+  const { clientPhone } = useSessionStore();
   const [address, setAddress] = useState<DeliveryAddress>({
     street: "",
     streetNumber: "",
@@ -392,51 +395,38 @@ export default function DeliveryAddressModal({
   };
 
   const getDeliveryQuote = async () => {
-    return new Promise((resolve, reject) => {
-      const menuData = getMenuData();
-      if (menuData && menuData.rest_id) {
-        const payload = {
-          rest_id: parseInt(menuData.rest_id.toString()),
-          lat: address.latitude,
-          lng: address.longitude,
-        };
-        fetch('/api/delivery/quoteByRestId', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
+    const menuData = getMenuData();
+    if (menuData && menuData.rest_id) {
+      const payload = {
+        rest_id: parseInt(menuData.rest_id.toString()),
+        lat: address.latitude,
+        lng: address.longitude,
+      };
+      ApiCallQuoteByRestId(payload)
+        .then(async (res) => {
+          return { success: [200, 201].includes(res.status), data: res.data };
         })
-          .then(async (res) => {
-            const result = await res.json();
-            return { success: res.ok, data: result.data };
-          })
-          .then((response) => {
-            if (response.success) {
-              const quoteUUID = response.data?.data?.quote?.data?.quoteUUID;
-              const summary = response.data?.data?.quote?.data?.summary;
-              console.log("Quote UUID:", quoteUUID);
-              console.log("Summary:", summary);
-              const { overloadAmountFee } = summary;
-              setQuoteData({
-                quoteUUID,
-                overloadAmountFee,
-              });
-              setHasQuote(true);
-              resolve(true);
-            } else {
-              console.error("Error obteniendo costo de entrega", response);
-              reject(new Error("No se pudo obtener cotización"));
-            }
-          })
-          .catch((error) => {
-            console.error("Error en GetDeliveryCost:", error);
-            reject(error);
-          });
-      } else {
-        reject(new Error("No hay datos de restaurante"));
-      }
-    });
+        .then((response) => {
+          if (response.success) {
+            const quoteUUID = response.data?.data?.quote?.data?.quoteUUID;
+            const summary = response.data?.data?.quote?.data?.summary;
+            console.log("Quote UUID:", quoteUUID);
+            console.log("Summary:", summary);
+            const { overloadAmountFee } = summary;
+            setQuoteData({
+              quoteUUID,
+              overloadAmountFee,
+            });
+            setHasQuote(true);
+          } else {
+            console.error("Error obteniendo costo de entrega", response);
+          }
+        })
+        .catch((error) => {
+          console.error("Error en GetDeliveryCost:", error);
+        });
+    } else {
+    }
   };
 
   if (!isOpen) return null;
@@ -489,7 +479,7 @@ export default function DeliveryAddressModal({
                 <input
                   type="tel"
                   placeholder="Teléfono"
-                  value={address.phoneNumber}
+                  value={clientPhone || ""}
                   onChange={(e) =>
                     handleAddressChange("phoneNumber", e.target.value)
                   }
@@ -624,7 +614,7 @@ export default function DeliveryAddressModal({
             disabled={findQuoteLoading}
             onClick={handleConfirm}
             className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            style={{ backgroundColor: "#65A30D" }}
+            style={{ backgroundColor: "#8E2653" }}
           >
             {findQuoteLoading ? (
               <>

@@ -8,6 +8,7 @@ import { useDeliveryStore } from "@/stores/deliveryStore";
 import Script from "next/script";
 import { useState } from "react";
 import { ICartItem } from "@/types/cart";
+import { ApiCallGetPaymentGateway } from "@/handlers/delivery/quotes";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -221,15 +222,21 @@ export default function PaymentModal({
 
             console.log(payPayload);
 
-            const paymentResponse = await fetch('/api/duck-payments/processPayment', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(payPayload),
-            });
+            const paymentResponse = await fetch(
+              "/api/duck-payments/processPayment",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payPayload),
+              }
+            );
             const paymentResult = await paymentResponse.json();
-            let processPaymentResponse = { success: paymentResponse.ok, data: paymentResult.data };
+            let processPaymentResponse = {
+              success: paymentResponse.ok,
+              data: paymentResult.data,
+            };
             console.log(processPaymentResponse);
 
             console.log(processPaymentResponse);
@@ -269,14 +276,9 @@ export default function PaymentModal({
 
   async function createTokenOfcard() {
     try {
-      const response = await fetch('/api/delivery/getPaymentGateway?signature=CNKT', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const result = await response.json();
-      const gateway = { success: response.ok, data: result.data };
+      const response = await ApiCallGetPaymentGateway("CNKT");
+      console.log("response", response);
+      const gateway = { success: true, data: response.data };
       console.log(gateway);
 
       if (typeof Conekta !== "undefined" && gateway.success) {
@@ -488,12 +490,15 @@ export default function PaymentModal({
 
   const testTokenization = async () => {
     try {
-      const response = await fetch('/api/delivery/getPaymentGateway?signature=CNKT', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        "/api/delivery/getPaymentGateway?signature=CNKT",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const result = await response.json();
       const gateway = { success: response.ok, data: result.data };
       console.log(gateway);

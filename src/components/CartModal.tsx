@@ -294,8 +294,8 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
             </div>
             <button
               onClick={handleFinalizePurchase}
-              className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)]"
-              style={{ backgroundColor: "#65A30D" }}
+              className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(139,195,74,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(139,195,74,0.23)]"
+              style={{ backgroundColor: "#8E2653" }}
             >
               Ordenar
             </button>
