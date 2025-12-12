@@ -2,11 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const payload = await request.json();
+    let payload = await request.json();
+    console.log("Received payload:", payload);
 
     const url = `${process.env.NEXT_PUBLIC_URL_API_BACKEND}/v2/delivery/booking/quote-by-rest-id`;
     const token = process.env.NEXT_PUBLIC_KEY_API_BACKEND as string;
 
+    console.log("Backend URL:", url);
+    console.log("Token exists:", !!token);
+
+    payload = {
+      rest_id: 163,
+      lat: 19.432608,
+      lng: -99.133209,
+    };
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -32,6 +41,7 @@ export async function POST(request: NextRequest) {
       );
     }
   } catch (error: any) {
+    console.error("Error in quoteByRestId:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

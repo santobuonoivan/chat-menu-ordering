@@ -19,18 +19,27 @@ export default async function handler(
       Accept: "application/json",
     },
     body: JSON.stringify(payload),
-  }).then(async (res) => {
-    const { status } = res;
-    const data = await res.json().catch(() => null);
-    if (res.ok) {
-      return { status, data };
-    } else {
+  })
+    .then(async (res) => {
+      const { status } = res;
+      const data = await res.json().catch(() => null);
+      console.log("Quote By Rest ID Response Data:", data);
+      if (res.ok) {
+        return { status, data };
+      } else {
+        return {
+          status,
+          error: data?.message || res.statusText || "Unknown error",
+        };
+      }
+    })
+    .catch((error) => {
+      console.error("Fetch error in Quote By Rest ID:", error);
       return {
-        status,
-        error: data?.message || res.statusText || "Unknown error",
+        status: 500,
+        error: "Internal Server Error",
       };
-    }
-  });
+    });
 
   res.status(200).json(response);
 }

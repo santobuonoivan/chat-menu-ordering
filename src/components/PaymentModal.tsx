@@ -9,6 +9,8 @@ import Script from "next/script";
 import { useState } from "react";
 import { ICartItem } from "@/types/cart";
 import { ApiCallGetPaymentGateway } from "@/handlers/delivery/quotes";
+import { ApiCallSendOrder } from "@/handlers/standar/orders";
+import { ApiCallProcessPayment } from "@/handlers/duck-payments/payments";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -122,16 +124,12 @@ export default function PaymentModal({
       console.log("cartoAutomate", cartoAutomate);
 
       // Llamada directa al endpoint de la API
-      const response = await fetch("/api/standar/sendOrder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cartoAutomate),
-      });
+      const response = await ApiCallSendOrder(cartoAutomate);
 
-      const result = await response.json();
-      return { success: response.ok, data: result.data };
+      return {
+        success: [200, 201].includes(response.status),
+        data: response.data,
+      };
     }
     return null;
   };
@@ -222,20 +220,10 @@ export default function PaymentModal({
 
             console.log(payPayload);
 
-            const paymentResponse = await fetch(
-              "/api/duck-payments/processPayment",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payPayload),
-              }
-            );
-            const paymentResult = await paymentResponse.json();
+            const paymentResponse = await ApiCallProcessPayment(payPayload);
             let processPaymentResponse = {
-              success: paymentResponse.ok,
-              data: paymentResult.data,
+              success: [200, 201].includes(paymentResponse.status),
+              data: paymentResponse.data,
             };
             console.log(processPaymentResponse);
 
@@ -596,7 +584,7 @@ export default function PaymentModal({
         <header className="flex shrink-0 items-center justify-between gap-2 px-4 py-3">
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8E2653] text-slate-900 transition-transform hover:scale-105 dark:bg-black/50 dark:text-slate-200"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8E2653] text-white transition-transform hover:scale-105 dark:bg-black/50 dark:text-slate-200"
             style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
           >
             <span className="material-symbols-outlined text-2xl">
@@ -700,10 +688,10 @@ export default function PaymentModal({
                 className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 p-3 transition-all hover:border-primary/50 dark:bg-slate-800/80 dark:hover:border-primary/50"
                 style={{
                   borderColor:
-                    paymentMethod === "cash" ? "#65A30D" : "transparent",
+                    paymentMethod === "cash" ? "#8E2653" : "transparent",
                   backgroundColor:
                     paymentMethod === "cash"
-                      ? "rgba(101, 163, 13, 0.2)"
+                      ? "rgba(142, 38, 83, 0.2)"
                       : "rgba(255, 255, 255, 0.8)",
                 }}
               >
@@ -722,7 +710,7 @@ export default function PaymentModal({
                     className="material-symbols-outlined text-2xl"
                     style={{
                       color:
-                        paymentMethod === "cash" ? "#65A30D" : "text-slate-600",
+                        paymentMethod === "cash" ? "#8E2653" : "text-slate-600",
                     }}
                   >
                     payments
@@ -737,10 +725,10 @@ export default function PaymentModal({
                 className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all"
                 style={{
                   borderColor:
-                    paymentMethod === "credit_card" ? "#65A30D" : "transparent",
+                    paymentMethod === "credit_card" ? "#8E2653" : "transparent",
                   backgroundColor:
                     paymentMethod === "credit_card"
-                      ? "rgba(101, 163, 13, 0.2)"
+                      ? "rgba(142, 38, 83, 0.2)"
                       : "rgba(255, 255, 255, 0.8)",
                 }}
               >
@@ -757,7 +745,7 @@ export default function PaymentModal({
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
                   <span
                     className="material-symbols-outlined text-2xl"
-                    style={{ color: "#65A30D" }}
+                    style={{ color: "#8E2653" }}
                   >
                     credit_card
                   </span>
@@ -944,14 +932,14 @@ export default function PaymentModal({
             {/* Row 3: Total */}
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-lg">
+                <span className="material-symbols-outlined text-[#8E2653] dark:text-white text-lg">
                   account_balance_wallet
                 </span>
                 <span className="text-base font-bold text-slate-900 dark:text-white">
                   Total a Pagar
                 </span>
               </div>
-              <span className="text-xl font-bold" style={{ color: "#65A30D" }}>
+              <span className="text-xl font-bold" style={{ color: "#8E2653" }}>
                 $
                 {(
                   (totalAmount || 0) +
@@ -989,8 +977,8 @@ export default function PaymentModal({
             }
             className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             style={{
-              backgroundColor: "#65A30D",
-              boxShadow: "0 8px 16px rgba(101, 163, 13, 0.3)",
+              backgroundColor: "#8E2653",
+              boxShadow: "0 8px 16px rgba(142, 38, 83, 0.3)",
             }}
           >
             {disable ? "Procesando..." : "Confirmar Pago"}

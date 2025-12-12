@@ -13,6 +13,7 @@ import { useEffect, useState, useRef } from "react";
 import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
 import { ApiCallProcessIncomingMessage } from "@/handlers/core/getSessionData";
+import { ApiCallGetMenu } from "@/handlers/standar/orders";
 
 export default function Home() {
   const router = useRouter();
@@ -111,15 +112,10 @@ export default function Home() {
   useEffect(() => {
     console.log("Fetching menu for rest number:", restNumber);
     if (restNumber) {
-      fetch(`/api/standar/getMenu?phone=${restNumber}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      ApiCallGetMenu(restNumber)
         .then(async (res) => {
-          const result = await res.json();
-          return { success: res.ok, data: result.data };
+          console.log("Get Menu Response Status:", res);
+          return { success: res.status === 200, data: res.data };
         })
         .then((response) => {
           if (response.success) {

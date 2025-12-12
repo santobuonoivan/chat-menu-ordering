@@ -376,17 +376,15 @@ export default function DeliveryAddressModal({
     getDeliveryQuote()
       .then((result) => {
         console.log("Delivery quote result:", result);
-        setTimeout(() => {
-          if (hasQuote) {
-            onConfirm(address);
-            setFindQuoteLoading(false);
-          } else {
-            console.log(
-              "No se pudo obtener una cotización de entrega. Por favor verifica tu dirección."
-            );
-            setFindQuoteLoading(false);
-          }
-        }, 500);
+        if (result) {
+          onConfirm(address);
+          setFindQuoteLoading(false);
+        } else {
+          console.log(
+            "No se pudo obtener una cotización de entrega. Por favor verifica tu dirección."
+          );
+          setFindQuoteLoading(false);
+        }
       })
       .catch((error) => {
         console.error("Error obteniendo cotización de entrega:", error);
@@ -402,7 +400,7 @@ export default function DeliveryAddressModal({
         lat: address.latitude,
         lng: address.longitude,
       };
-      ApiCallQuoteByRestId(payload)
+      return await ApiCallQuoteByRestId(payload)
         .then(async (res) => {
           return { success: [200, 201].includes(res.status), data: res.data };
         })
@@ -418,14 +416,17 @@ export default function DeliveryAddressModal({
               overloadAmountFee,
             });
             setHasQuote(true);
+            return true;
           } else {
             console.error("Error obteniendo costo de entrega", response);
           }
         })
         .catch((error) => {
           console.error("Error en GetDeliveryCost:", error);
+          return false;
         });
     } else {
+      return false;
     }
   };
 
