@@ -9,9 +9,10 @@ import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { generateUUID, groupModifiers, sleep } from "@/utils";
-import { use, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
+import { ApiCallProcessIncomingMessage } from "@/handlers/core/getSessionData";
 
 export default function Home() {
   const router = useRouter();
@@ -92,13 +93,8 @@ export default function Home() {
         customer_name: "Customer Name",
         platform: "evolution",
       };
-      const sessionResponse = await fetch("/api/core/processIncomingMessage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const sessionResponse = await ApiCallProcessIncomingMessage(payload);
+
       const sessionResult = await sessionResponse.json();
       const response = {
         success: sessionResponse.ok,
@@ -119,6 +115,7 @@ export default function Home() {
   }, [setClientPhone, setRestPhone, setSessionData]);
 
   useEffect(() => {
+    console.log("Fetching menu for rest number:", restNumber);
     if (restNumber) {
       fetch(`/api/standar/getMenu?phone=${restNumber}`, {
         method: "GET",
@@ -151,6 +148,9 @@ export default function Home() {
           } else {
             console.error("Error fetching menu items:", response);
           }
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
         });
     }
   }, [restNumber]);

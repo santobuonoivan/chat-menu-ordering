@@ -4,12 +4,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log("Received request for menu");
   if (req.method !== "GET") return res.status(405).end();
 
   const { phone } = req.query;
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/automate/core/menu/${phone}`;
   const token = process.env.NEXT_PUBLIC_API_KEY as string;
+
+  console.log("Fetching menu for phone:", phone);
+  console.log("Using URL:", url);
+  console.log("Using Token:", token);
 
   const response = await fetch(url, {
     method: "GET",

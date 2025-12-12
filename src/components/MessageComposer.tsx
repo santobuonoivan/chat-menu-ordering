@@ -33,7 +33,7 @@ export default function MessageComposer({
     // Lógica para buscar platos por entrada de usuario
     const dishList: string[] =
       menuData?.menu.map((item) => item.dish_name) || [];
-
+    console.log("Dish List:", dishList);
     // Filtrar localmente primero
     const filteredDishes = rankAndFilterDishes(dishList, input);
     console.log("Filtered Dishes:", filteredDishes);

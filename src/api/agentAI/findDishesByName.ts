@@ -9,6 +9,7 @@ export default async function handler(
   const payload = req.body;
 
   const url = `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff`;
+  console.log("Webhook URL:", url);
 
   const response = await fetch(url, {
     method: "POST",
@@ -20,6 +21,7 @@ export default async function handler(
   }).then(async (res) => {
     const { status } = res;
     const data = await res.json().catch(() => null);
+    console.log("Webhook Response Data:", data);
     if (res.ok) {
       return { status, data };
     } else {
