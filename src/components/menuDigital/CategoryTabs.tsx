@@ -34,8 +34,7 @@ export default function CategoryTabs({
                 : "text-gray-800 dark:text-gray-200"
             }`}
           >
-            {category.charAt(0).toUpperCase() +
-              category.slice(1).toLocaleUpperCase()}
+            {category}
           </p>
         </div>
       ))}

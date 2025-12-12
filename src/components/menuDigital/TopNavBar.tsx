@@ -3,7 +3,6 @@ import { RiRobot3Line } from "react-icons/ri";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCartStore } from "@/stores/cartStore";
 import CartModal from "@/components/CartModal";
-import router from "next/router";
 
 interface TopNavBarProps {
   onClose?: () => void;
@@ -12,6 +11,7 @@ interface TopNavBarProps {
 export default function TopNavBar({ onClose }: TopNavBarProps) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
+  const [showMenuPopover, setShowMenuPopover] = useState(false);
   const { getTotalItems, items } = useCartStore();
 
   useEffect(() => {
@@ -27,7 +27,8 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
   };
 
   const handdleGoToDigitalMenu = async () => {
-    router.push(`/menu${window.location.search}`);
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = `/menu?${params.toString()}`;
   };
   return (
     <>
@@ -52,14 +53,16 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
         </div>
         <div className="flex items-center gap-3">
           <button
-            className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"
+            className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-[#8E2653] dark:text-text-white transition-colors"
             onClick={handdleGoToDigitalMenu}
           >
-            <span className="material-symbols-outlined text-xl">restaurant_menu</span>
+            <span className="material-symbols-outlined text-xl">
+              restaurant_menu
+            </span>
           </button>
           <button
             onClick={handleCartClick}
-            className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"
+            className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-[#8E2653] dark:text-text-white transition-colors"
           >
             <FaShoppingCart />
             {totalItems > 0 && (
@@ -70,7 +73,7 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
           </button>
           <button
             onClick={onClose}
-            className="flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"
+            className="flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-[#8E2653] dark:text-text-white transition-colors"
           >
             <span className="material-symbols-outlined text-xl">close</span>
           </button>
