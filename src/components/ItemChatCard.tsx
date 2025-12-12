@@ -70,7 +70,7 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
         <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
           {item.dish_name}
         </h4>
-        <p className="text-sm font-semibold text-[#65A30D]">
+        <p className="text-sm font-semibold text-[#8E2653]">
           ${item.dish_price.toLocaleString()}
         </p>
       </div>
@@ -78,7 +78,7 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
       {/* Botón de acción */}
       <button
         onClick={handleActionClick}
-        className="flex items-center justify-center w-8 h-8 bg-[#65A30D] hover:bg-green-600 text-white rounded-full transition-colors"
+        className="flex items-center justify-center w-8 h-8 bg-[#8E2653] hover:bg-[#7E2653] text-white rounded-full transition-colors"
         title="Agregar al carrito"
       >
         <span className="material-symbols-outlined text-sm">add</span>

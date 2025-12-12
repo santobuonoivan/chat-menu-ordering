@@ -3,6 +3,7 @@ import { RiRobot3Line } from "react-icons/ri";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCartStore } from "@/stores/cartStore";
 import CartModal from "@/components/CartModal";
+import router from "next/router";
 
 interface TopNavBarProps {
   onClose?: () => void;
@@ -25,6 +26,9 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
     setIsCartOpen(false);
   };
 
+  const handdleGoToDigitalMenu = async () => {
+    router.push(`/menu${window.location.search}`);
+  };
   return (
     <>
       <header className="flex items-center justify-between whitespace-nowrap border-b border-slate-200/80 dark:border-slate-700/80 p-4 shrink-0">
@@ -47,6 +51,12 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
           </h2>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"
+            onClick={handdleGoToDigitalMenu}
+          >
+            <span className="material-symbols-outlined text-xl">restaurant_menu</span>
+          </button>
           <button
             onClick={handleCartClick}
             className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"

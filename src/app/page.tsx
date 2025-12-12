@@ -171,7 +171,7 @@ export default function Home() {
     handleSendMessage(chip);
     await sleep(2000);
     if (chip === "Ver Menú Digital") {
-      router.push("/menu");
+      router.push(`/menu${window.location.search}`);
     }
   };
 

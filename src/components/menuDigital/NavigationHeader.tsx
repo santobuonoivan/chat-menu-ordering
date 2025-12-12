@@ -10,11 +10,11 @@ export default function NavigationHeader({
   showBackButton = true,
 }: NavigationHeaderProps) {
   return (
-    <div className="flex items-center justify-between gap-2 px-4 py-3">
+    <div className="flex items-center justify-between gap-2 px-6 py-3">
       {showBackButton ? (
         <button
           onClick={onBack}
-          className="p-2 text-gray-800 dark:text-gray-200"
+          className="flex h-10 w-10 items-center justify-center p-2 text-white dark:text-white bg-[#8E2653] rounded-full hover:bg-[#7E2653] transition-colors"
         >
           <span className="material-symbols-outlined">arrow_back</span>
         </button>
@@ -22,7 +22,7 @@ export default function NavigationHeader({
         <div className="w-10 h-10"></div>
       )}
       <div className="flex-1 text-center">
-        <p className="text-gray-800 dark:text-gray-100 text-lg font-bold leading-tight tracking-[-0.015em]">
+        <p className="text-[#8E2653] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
           {title}
         </p>
       </div>
