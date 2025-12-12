@@ -158,7 +158,7 @@ export default function MessageComposer({
         </div>
         <button
           onClick={handleSend}
-          className="flex items-center justify-center size-12 cursor-pointer overflow-hidden rounded-full bg-green-600 text-white shadow-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+          className="flex items-center justify-center size-12 cursor-pointer overflow-hidden rounded-full bg-[#8E2653] text-white shadow-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
         >
           <span className="material-symbols-outlined text-2xl">
             arrow_upward

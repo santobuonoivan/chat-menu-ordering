@@ -591,7 +591,7 @@ export default function PaymentModal({
         <header className="flex shrink-0 items-center justify-between gap-2 px-4 py-3">
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/50 text-slate-900 transition-transform hover:scale-105 dark:bg-black/50 dark:text-slate-200"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8E2653] text-slate-900 transition-transform hover:scale-105 dark:bg-black/50 dark:text-slate-200"
             style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
           >
             <span className="material-symbols-outlined text-2xl">

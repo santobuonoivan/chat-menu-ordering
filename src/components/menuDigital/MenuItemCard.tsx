@@ -46,7 +46,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             </p>
             <p
               className="text-sm font-bold leading-normal pt-1"
-              style={{ color: "#65A30D" }}
+              style={{ color: "#8E2653" }}
             >
               ${parseFloat(item.dish_price).toFixed(2)}
             </p>
@@ -57,8 +57,8 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
               disabled={false}
               className="flex size-9 items-center justify-center rounded-full transition-colors hover:opacity-80"
               style={{
-                backgroundColor: "rgba(101, 163, 13, 0.2)",
-                color: "#65A30D",
+                backgroundColor: "rgba(142, 38, 83, 0.2)",
+                color: "#8E2653",
               }}
             >
               <span className="material-symbols-outlined">add</span>

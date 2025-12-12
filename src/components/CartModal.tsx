@@ -150,8 +150,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
         <header className="flex shrink-0 items-center justify-between gap-2 p-4">
           <button
             onClick={onClose}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-text-light dark:text-text-dark soft-shadow transition-all active:soft-shadow-inset"
-            style={{ backgroundColor: "#f3f4f6" }}
+            className="bg-[#8E2653] flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white soft-shadow transition-all active:soft-shadow-inset"
           >
             <span className="material-symbols-outlined">arrow_back</span>
           </button>

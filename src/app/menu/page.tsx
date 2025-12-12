@@ -10,7 +10,6 @@ import { IMenuItem, IMenuData } from "./../../types/menu";
 import { useMenuStore } from "../../stores/menuStore";
 
 export default function MenuPage() {
-  const router = useRouter();
   const { setMenuData, getMenuData } = useMenuStore();
   const [selectedCategory, setSelectedCategory] = useState<string>("ENTRADAS");
   const [menuItems, setMenuItems] = useState<IMenuItem[]>([]);
@@ -39,7 +38,8 @@ export default function MenuPage() {
   }, [menuItems, selectedCategory]);
 
   const handleBack = () => {
-    router.push("/");
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = `/?${params.toString()}`;
   };
 
   return (
@@ -51,8 +51,8 @@ export default function MenuPage() {
         {/* Content */}
         <div className="overflow-y-auto px-4">
           {/* Title */}
-          <div className="flex flex-wrap justify-between gap-3 pt-4 pb-2">
-            <p className="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">
+          <div className="flex justify-center gap-3 pt-4 pb-2">
+            <p className="text-gray-700 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">
               Selección de Productos
             </p>
           </div>
@@ -66,7 +66,7 @@ export default function MenuPage() {
 
           {/* Menu Items */}
           <div className="flex flex-col gap-3 pb-6">
-            <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">
+            <h2 className="text-[#8E2653] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">
               {selectedCategory}
             </h2>
 
