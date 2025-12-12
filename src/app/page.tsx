@@ -10,7 +10,6 @@ import { useChatStore } from "@/stores/chatStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { generateUUID, groupModifiers, sleep } from "@/utils";
 import { use, useEffect, useState, useRef } from "react";
-import { GetSessionData, menuService } from "@/services";
 import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
 
@@ -85,13 +84,26 @@ export default function Home() {
       if (restNumberParam) setRestPhone(restNumberParam);
 
       // Obtener datos de sesión
-      const response = await GetSessionData(
-        clientNumberParam || "",
-        restNumberParam || "",
-        "Customer Name",
-        "Iniciar conversación",
-        "evolution"
-      );
+      const payload = {
+        user_phone: clientNumberParam || "",
+        rest_phone: restNumberParam || "",
+        sessionId: `${clientNumberParam || ""}||${restNumberParam || ""}`,
+        chatInput: "Iniciar conversación",
+        customer_name: "Customer Name",
+        platform: "evolution",
+      };
+      const sessionResponse = await fetch("/api/core/processIncomingMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const sessionResult = await sessionResponse.json();
+      const response = {
+        success: sessionResponse.ok,
+        data: sessionResult.data,
+      };
       console.log("Session Data Response:", response);
       // Guardar datos de sesión en el store
       if (response?.data?.rest) {
@@ -108,28 +120,38 @@ export default function Home() {
 
   useEffect(() => {
     if (restNumber) {
-      menuService.getMenuItems(restNumber).then((response) => {
-        if (response.success) {
-          const menu = response.data.menu.map((item: IMenuItem) => {
-            let modifiers =
-              item.modifiers && typeof item.modifiers === "string"
-                ? JSON.parse(item.modifiers)
-                : [];
+      fetch(`/api/standar/getMenu?phone=${restNumber}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(async (res) => {
+          const result = await res.json();
+          return { success: res.ok, data: result.data };
+        })
+        .then((response) => {
+          if (response.success) {
+            const menu = response.data.menu.map((item: IMenuItem) => {
+              let modifiers =
+                item.modifiers && typeof item.modifiers === "string"
+                  ? JSON.parse(item.modifiers)
+                  : [];
 
-            modifiers = groupModifiers(modifiers);
+              modifiers = groupModifiers(modifiers);
 
-            return {
-              ...item,
-              modifiers,
-            };
-          });
+              return {
+                ...item,
+                modifiers,
+              };
+            });
 
-          console.log("Menu Items:", menu[0].modifiers);
-          setMenuData({ menu, rest_id: response.data.rest_id });
-        } else {
-          console.error("Error fetching menu items:", response.error);
-        }
-      });
+            console.log("Menu Items:", menu[0].modifiers);
+            setMenuData({ menu, rest_id: response.data.rest_id });
+          } else {
+            console.error("Error fetching menu items:", response);
+          }
+        });
     }
   }, [restNumber]);
 
