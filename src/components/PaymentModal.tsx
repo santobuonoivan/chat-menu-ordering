@@ -2,11 +2,7 @@
 
 import { CreditCardSchema } from "@/schemas/ credit-card.schema";
 import { EmailSchema } from "@/schemas/email.schema";
-import {
-  GetPaymentGateway,
-  ProcessPayment,
-  sendOrderCartToAutomate,
-} from "@/services";
+import { GetPaymentGateway, ProcessPayment } from "@/services";
 import { useCartStore } from "@/stores/cartStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { useDeliveryStore } from "@/stores/deliveryStore";
@@ -124,7 +120,18 @@ export default function PaymentModal({
     const cartoAutomate = convertCartToAutomateOrder();
     if (cartoAutomate) {
       console.log("cartoAutomate", cartoAutomate);
-      return await sendOrderCartToAutomate(cartoAutomate);
+
+      // Llamada directa al endpoint de la API
+      const response = await fetch("/api/standar/sendOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartoAutomate),
+      });
+
+      const result = await response.json();
+      return { success: response.ok, data: result.data };
     }
     return null;
   };
