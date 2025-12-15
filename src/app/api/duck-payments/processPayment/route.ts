@@ -3,10 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const paymentData = await request.json();
-    const recipeUUID = process.env.NEXT_PUBLIC_RECIPE_UUID;
+    const cart_id = paymentData.cart_id;
+    const payload = paymentData.payload;
 
-    const url = `${process.env.NEXT_PUBLIC_DUCK_API_URL}/v1/payments/CNKT/order/${recipeUUID}`;
-    const token = process.env.NEXT_PUBLIC_TOKEN as string;
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/payments/CNKT/order/${cart_id}}`;
+    const token = process.env.NEXT_PUBLIC_API_KEY as string;
 
     const response = await fetch(url, {
       method: "POST",
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(paymentData),
+      body: JSON.stringify(payload),
     });
 
     const { status } = response;

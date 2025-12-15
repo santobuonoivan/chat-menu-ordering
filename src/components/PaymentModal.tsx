@@ -180,6 +180,12 @@ export default function PaymentModal({
           const restId = sessionData?.rest.rest_id || null;
           const restEmail = sessionData?.rest.email || "operaciones@appio.ai";
 
+          if (!cartId) {
+            setErrors((prev) => [...prev, "Error: faltan datos del carrito."]);
+            setDisable(false);
+            return;
+          }
+
           if (paymentMethod == "credit_card" && token) {
             let payPayload = {
               customer: {
@@ -209,7 +215,7 @@ export default function PaymentModal({
               },
               metadata: {
                 action: "CREATE-ORDERING-IA",
-                order_id: cartId || "",
+                order_id: cartId,
                 customerAmount: 35,
                 storeAmount: 24,
                 deliveryFeeAmount: parseFloat(
@@ -220,7 +226,10 @@ export default function PaymentModal({
 
             console.log(payPayload);
 
-            const paymentResponse = await ApiCallProcessPayment(payPayload);
+            const paymentResponse = await ApiCallProcessPayment({
+              cart_id: cartId,
+              payload: payPayload,
+            });
             let processPaymentResponse = {
               success: [200, 201].includes(paymentResponse.status),
               data: paymentResponse.data,
