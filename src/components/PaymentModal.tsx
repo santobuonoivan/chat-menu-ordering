@@ -6,11 +6,12 @@ import { useCartStore } from "@/stores/cartStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { useDeliveryStore } from "@/stores/deliveryStore";
 import Script from "next/script";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ICartItem } from "@/types/cart";
 import { ApiCallGetPaymentGateway } from "@/handlers/delivery/quotes";
 import { ApiCallSendOrder } from "@/handlers/standar/orders";
 import { ApiCallProcessPayment } from "@/handlers/duck-payments/payments";
+import { useAbly, useAblyPublish } from "@/hooks/useAbly";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -55,10 +56,97 @@ export default function PaymentModal({
   const [errors, setErrors] = useState<string[]>([]);
   const [payment, setPayment] = useState<any>({});
   const [syncCart, setSyncCart] = useState<boolean>(false);
+  const [paymentStatus, setPaymentStatus] = useState<
+    "idle" | "processing" | "waiting" | "success" | "failed"
+  >("idle");
   const cartStore = useCartStore();
   const { getSessionData, clientPhone, restPhone, clientName } =
     useSessionStore();
   const deliveryStore = useDeliveryStore();
+
+  // Canal único de Ably por transacción
+  const transactionId = useMemo(
+    () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    []
+  );
+  const channelName = `payment-${clientPhone}-${restPhone}-${transactionId}`;
+
+  // Suscribirse a respuestas de pago
+  const { messages, isConnected, clearMessages } = useAbly(
+    channelName,
+    "payment-response"
+  );
+  const { publish } = useAblyPublish(channelName);
+
+  // Manejar respuestas de pago en tiempo real
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      console.log("Respuesta de pago recibida vía Ably:", lastMessage);
+
+      if (lastMessage.data.status === "success") {
+        console.log("✅ Pago confirmado:", lastMessage.data);
+        setPaymentStatus("success");
+        setDisable(false);
+        setErrors([]);
+
+        // Llamar a onConfirm para pasar a la siguiente página
+        setTimeout(() => {
+          onConfirm({
+            paymentMethod: "credit_card",
+            cardData: {
+              cardNumber: cardNumber.replace(/\s/g, ""),
+              expiryDate,
+              cvv,
+              cardholderName,
+            },
+          });
+          clearMessages();
+        }, 1500); // Mostrar éxito brevemente antes de continuar
+      } else if (lastMessage.data.status === "failed") {
+        console.error("❌ Pago rechazado:", lastMessage.data);
+        setPaymentStatus("failed");
+        setErrors([
+          lastMessage.data.message || "El pago no pudo ser procesado",
+        ]);
+        setDisable(false);
+      }
+    }
+  }, [
+    messages,
+    clearMessages,
+    onConfirm,
+    cardNumber,
+    expiryDate,
+    cvv,
+    cardholderName,
+  ]);
+
+  // Timeout para pagos que tardan demasiado
+  useEffect(() => {
+    if (paymentStatus === "waiting") {
+      const timeout = setTimeout(() => {
+        if (disable && messages.length === 0) {
+          console.warn("⏱️ Timeout: El pago está tardando más de lo esperado");
+          setErrors([
+            "El pago está tardando más de lo esperado. Por favor verifica tu orden.",
+          ]);
+          setPaymentStatus("idle");
+          setDisable(false);
+        }
+      }, 45000); // 45 segundos
+
+      return () => clearTimeout(timeout);
+    }
+  }, [paymentStatus, disable, messages.length]);
+
+  // Limpiar mensajes cuando se cierra el modal
+  useEffect(() => {
+    if (!isOpen) {
+      clearMessages();
+      setPaymentStatus("idle");
+    }
+  }, [isOpen, clearMessages]);
 
   const convertCartToAutomateOrder = () => {
     const items = cartStore.items.map((item: ICartItem) => ({
@@ -137,6 +225,7 @@ export default function PaymentModal({
   async function handleProcess(e: any): Promise<void> {
     setDisable(true);
     setErrors([]);
+    setPaymentStatus("processing");
 
     let sync = syncCart;
     if (!syncCart) {
@@ -161,6 +250,7 @@ export default function PaymentModal({
             console.log("token", token);
             if (token == null || token == undefined) {
               setDisable(false);
+              setPaymentStatus("idle");
               console.log("La tarjeta no se pudo tokenizar");
               console.warn(
                 `La tarjeta presenta inconvenientes para tokenizar, revisa que los datos ingresados sean correctos.`
@@ -183,6 +273,7 @@ export default function PaymentModal({
           if (!cartId) {
             setErrors((prev) => [...prev, "Error: faltan datos del carrito."]);
             setDisable(false);
+            setPaymentStatus("idle");
             return;
           }
 
@@ -221,10 +312,15 @@ export default function PaymentModal({
                 deliveryFeeAmount: parseFloat(
                   deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
                 ).toFixed(2),
+                // Ably real-time configuration
+                ably_channel: channelName,
+                ably_event: "payment-response",
+                transaction_id: transactionId,
               },
             };
 
-            console.log(payPayload);
+            console.log("💳 Procesando pago con Ably channel:", channelName);
+            console.log("Payload:", payPayload);
 
             const paymentResponse = await ApiCallProcessPayment({
               cart_id: cartId,
@@ -234,13 +330,32 @@ export default function PaymentModal({
               success: [200, 201].includes(paymentResponse.status),
               data: paymentResponse.data,
             };
-            console.log(processPaymentResponse);
+            console.log(
+              "Respuesta inicial del backend:",
+              processPaymentResponse
+            );
 
-            console.log(processPaymentResponse);
             let { data } = processPaymentResponse;
 
             if (data && data.status == "processing") {
-              console.log("Procesando cobro");
+              console.log(
+                "🕐 Pago enviado, esperando confirmación vía Ably..."
+              );
+              setPaymentStatus("waiting");
+              // No deshabilitamos aquí, esperamos la respuesta de Ably
+              // El useEffect manejará la respuesta cuando llegue
+            } else if (data && data.status == "success") {
+              // Si la respuesta es inmediata (sin Ably)
+              console.log("✅ Pago confirmado inmediatamente");
+              setPaymentStatus("success");
+              setDisable(false);
+              alert("¡Pago procesado exitosamente!");
+              onClose();
+            } else {
+              // Error inmediato
+              console.error("❌ Error en el pago");
+              setPaymentStatus("failed");
+              setErrors([data?.message || "Error al procesar el pago"]);
               setDisable(false);
             }
           } else {
@@ -249,6 +364,7 @@ export default function PaymentModal({
           console.log("token", token);
         } else {
           setDisable(false);
+          setPaymentStatus("idle");
           // Extraer mensajes de error del email
           const emailErrors = emailResult.error?.details?.map(
             (detail: any) => detail.message
@@ -267,6 +383,7 @@ export default function PaymentModal({
           "Error: No se puede obtener la causa del error.",
         ]);
         setDisable(false);
+        setPaymentStatus("idle");
       }
     }
   }
@@ -573,6 +690,59 @@ export default function PaymentModal({
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
       <Script src="https://cdn.conekta.io/js/latest/conekta.js" />
+
+      {/* Spinner overlay durante procesamiento */}
+      {(paymentStatus === "processing" ||
+        paymentStatus === "waiting" ||
+        paymentStatus === "success") && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-4 rounded-xl bg-white/95 p-8 shadow-2xl dark:bg-slate-900/95">
+            {paymentStatus === "success" ? (
+              <>
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                  <span className="material-symbols-outlined text-5xl text-green-600 dark:text-green-400">
+                    check_circle
+                  </span>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                    ¡Pago Exitoso!
+                  </h3>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                    Tu pedido ha sido confirmado
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="relative h-20 w-20">
+                  <div className="absolute inset-0 animate-spin rounded-full border-4 border-gray-200 border-t-[#8E2653] dark:border-gray-700 dark:border-t-[#8E2653]"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-3xl text-[#8E2653]">
+                      credit_card
+                    </span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                    {paymentStatus === "processing"
+                      ? "Procesando Pago"
+                      : "Esperando Confirmación"}
+                  </h3>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                    {paymentStatus === "processing"
+                      ? "Tokenizando tarjeta..."
+                      : "Verificando con el banco..."}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-500">
+                    Por favor no cierres esta ventana
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       <div
         className="absolute inset-0 z-0 h-full w-full bg-cover bg-center"
         style={{
@@ -990,7 +1160,11 @@ export default function PaymentModal({
               boxShadow: "0 8px 16px rgba(142, 38, 83, 0.3)",
             }}
           >
-            {disable ? "Procesando..." : "Confirmar Pago"}
+            {paymentStatus === "processing" && "Procesando tarjeta..."}
+            {paymentStatus === "waiting" && "Esperando confirmación..."}
+            {paymentStatus === "success" && "✓ Pago Confirmado"}
+            {paymentStatus === "failed" && "Pago Rechazado"}
+            {paymentStatus === "idle" && "Confirmar Pago"}
           </button>
           {/* <button
             onClick={testTokenization}
