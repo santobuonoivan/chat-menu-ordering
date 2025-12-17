@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import type Ably from "ably";
 import {
   getAblyChannel,
@@ -40,9 +40,9 @@ export const useAbly = (channelName: string, eventName?: string) => {
     };
   }, [channelName, eventName]);
 
-  const clearMessages = () => {
+  const clearMessages = useCallback(() => {
     setMessages([]);
-  };
+  }, []);
 
   return {
     isConnected,

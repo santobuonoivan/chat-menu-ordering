@@ -278,6 +278,7 @@ export default function PaymentModal({
           }
 
           if (paymentMethod == "credit_card" && token) {
+            const miliseconds = new Date().getTime();
             let payPayload = {
               customer: {
                 name: clientName || "Cliente",
@@ -285,13 +286,15 @@ export default function PaymentModal({
                 email: email,
                 token_card: token ? token.id : null,
               },
-              reference: `AI-ORDER-${cartId}`,
+              reference: parseInt(`${miliseconds}0${cartId}`),
               concept: "ORDER_PAYMENT",
               description: "Pago de pedido vía IA",
               currency: "MXN",
               receipt_amount: parseFloat(
-                deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
-              ).toFixed(2),
+                parseFloat(
+                  deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
+                ).toFixed(2)
+              ),
               type_charge: "direct",
               payment_method: "card",
               service: "PAYMENT",
@@ -337,20 +340,20 @@ export default function PaymentModal({
 
             let { data } = processPaymentResponse;
 
-            if (data && data.status == "processing") {
+            if (data && data.status == 201) {
               console.log(
                 "🕐 Pago enviado, esperando confirmación vía Ably..."
               );
               setPaymentStatus("waiting");
               // No deshabilitamos aquí, esperamos la respuesta de Ably
               // El useEffect manejará la respuesta cuando llegue
-            } else if (data && data.status == "success") {
+              /*} else if (data && data.status == "success") {
               // Si la respuesta es inmediata (sin Ably)
               console.log("✅ Pago confirmado inmediatamente");
               setPaymentStatus("success");
               setDisable(false);
               alert("¡Pago procesado exitosamente!");
-              onClose();
+              onClose();*/
             } else {
               // Error inmediato
               console.error("❌ Error en el pago");
