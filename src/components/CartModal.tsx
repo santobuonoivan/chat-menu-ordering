@@ -69,8 +69,8 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
     setIsPaymentModalOpen(true);
   };
 
-  const handlePaymentConfirm = (paymentData: PaymentData) => {
-    console.log("Pago confirmado:", paymentData);
+  const handlePaymentConfirm = (paymentMethod: "credit_card" | "cash") => {
+    console.log("Pago confirmado:", paymentMethod);
     console.log("Dirección de entrega:", deliveryAddress);
     console.log("Productos del pedido:", items);
 
@@ -104,7 +104,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
       subtotal,
       taxes,
       total,
-      paymentMethod: paymentData.paymentMethod,
+      paymentMethod: paymentMethod,
       createdAt: now,
       estimatedDeliveryDate,
     };

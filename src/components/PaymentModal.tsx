@@ -11,13 +11,13 @@ import { ICartItem } from "@/types/cart";
 import { ApiCallGetPaymentGateway } from "@/handlers/delivery/quotes";
 import { ApiCallSendOrder } from "@/handlers/standar/orders";
 import { ApiCallProcessPayment } from "@/handlers/duck-payments/payments";
-import { useAbly, useAblyPublish } from "@/hooks/useAbly";
+import { useAblyStore } from "@/stores/ablyStore";
 
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   totalAmount: number;
-  onConfirm: (paymentData: PaymentData) => void;
+  onConfirm: (paymentMethod: "credit_card" | "cash") => void;
 }
 
 export interface PaymentData {
@@ -57,12 +57,15 @@ export default function PaymentModal({
   const [payment, setPayment] = useState<any>({});
   const [syncCart, setSyncCart] = useState<boolean>(false);
   const [paymentStatus, setPaymentStatus] = useState<
-    "idle" | "processing" | "waiting" | "success" | "failed"
+    "idle" | "processing" | "success" | "failed"
   >("idle");
   const cartStore = useCartStore();
   const { getSessionData, clientPhone, restPhone, clientName } =
     useSessionStore();
   const deliveryStore = useDeliveryStore();
+
+  // Store de Ably para gestión global
+  const { addPendingPayment, subscribeToChannel } = useAblyStore();
 
   // Canal único de Ably por transacción
   const transactionId = useMemo(
@@ -71,82 +74,21 @@ export default function PaymentModal({
   );
   const channelName = `payment-${clientPhone}-${restPhone}-${transactionId}`;
 
-  // Suscribirse a respuestas de pago
-  const { messages, isConnected, clearMessages } = useAbly(
-    channelName,
-    "payment-response"
-  );
-  const { publish } = useAblyPublish(channelName);
-
-  // Manejar respuestas de pago en tiempo real
+  // Suscribirse al canal cuando se abre el modal
   useEffect(() => {
-    if (messages.length > 0) {
-      const lastMessage = messages[messages.length - 1];
-      console.log("Respuesta de pago recibida vía Ably:", lastMessage);
-
-      if (lastMessage.data.status === "success") {
-        console.log("✅ Pago confirmado:", lastMessage.data);
-        setPaymentStatus("success");
-        setDisable(false);
-        setErrors([]);
-
-        // Llamar a onConfirm para pasar a la siguiente página
-        setTimeout(() => {
-          onConfirm({
-            paymentMethod: "credit_card",
-            cardData: {
-              cardNumber: cardNumber.replace(/\s/g, ""),
-              expiryDate,
-              cvv,
-              cardholderName,
-            },
-          });
-          clearMessages();
-        }, 1500); // Mostrar éxito brevemente antes de continuar
-      } else if (lastMessage.data.status === "failed") {
-        console.error("❌ Pago rechazado:", lastMessage.data);
-        setPaymentStatus("failed");
-        setErrors([
-          lastMessage.data.message || "El pago no pudo ser procesado",
-        ]);
-        setDisable(false);
-      }
+    if (isOpen && channelName) {
+      subscribeToChannel(channelName, "payment-response");
+      console.log("🔔 Subscribed to payment channel:", channelName);
     }
-  }, [
-    messages,
-    clearMessages,
-    onConfirm,
-    cardNumber,
-    expiryDate,
-    cvv,
-    cardholderName,
-  ]);
+  }, [isOpen, channelName, subscribeToChannel]);
 
-  // Timeout para pagos que tardan demasiado
-  useEffect(() => {
-    if (paymentStatus === "waiting") {
-      const timeout = setTimeout(() => {
-        if (disable && messages.length === 0) {
-          console.warn("⏱️ Timeout: El pago está tardando más de lo esperado");
-          setErrors([
-            "El pago está tardando más de lo esperado. Por favor verifica tu orden.",
-          ]);
-          setPaymentStatus("idle");
-          setDisable(false);
-        }
-      }, 45000); // 45 segundos
-
-      return () => clearTimeout(timeout);
-    }
-  }, [paymentStatus, disable, messages.length]);
-
-  // Limpiar mensajes cuando se cierra el modal
+  // Limpiar estado cuando se cierra el modal
   useEffect(() => {
     if (!isOpen) {
-      clearMessages();
       setPaymentStatus("idle");
+      setErrors([]);
     }
-  }, [isOpen, clearMessages]);
+  }, [isOpen]);
 
   const convertCartToAutomateOrder = () => {
     const items = cartStore.items.map((item: ICartItem) => ({
@@ -341,19 +283,28 @@ export default function PaymentModal({
             let { data } = processPaymentResponse;
 
             if (data && data.status == 201) {
-              console.log(
-                "🕐 Pago enviado, esperando confirmación vía Ably..."
-              );
-              setPaymentStatus("waiting");
-              // No deshabilitamos aquí, esperamos la respuesta de Ably
-              // El useEffect manejará la respuesta cuando llegue
-              /*} else if (data && data.status == "success") {
-              // Si la respuesta es inmediata (sin Ably)
-              console.log("✅ Pago confirmado inmediatamente");
+              console.log("✅ Pago enviado exitosamente");
               setPaymentStatus("success");
-              setDisable(false);
-              alert("¡Pago procesado exitosamente!");
-              onClose();*/
+
+              // Guardar pago pendiente en el store de Ably
+              addPendingPayment({
+                transactionId,
+                cartId,
+                channelName,
+                amount: parseFloat(
+                  parseFloat(
+                    deliveryStore.quoteData?.overloadAmountFee.toString() ||
+                      "0.0"
+                  ).toFixed(2)
+                ),
+                timestamp: Date.now(),
+                metadata: payPayload,
+              });
+
+              // Llamar a onConfirm inmediatamente para continuar el flujo
+              setTimeout(() => {
+                onConfirm("credit_card");
+              }, 1000); // Breve delay para mostrar animación de éxito
             } else {
               // Error inmediato
               console.error("❌ Error en el pago");
@@ -589,19 +540,9 @@ export default function PaymentModal({
   const handleConfirmPayment = () => {
     if (paymentMethod === "credit_card") {
       if (!validateCardData()) return;
-      onConfirm({
-        paymentMethod: "credit_card",
-        cardData: {
-          cardNumber: cardNumber.replace(/\s/g, ""),
-          expiryDate,
-          cvv,
-          cardholderName,
-        },
-      });
+      onConfirm("credit_card");
     } else {
-      onConfirm({
-        paymentMethod: "cash",
-      });
+      onConfirm("cash");
     }
   };
 
@@ -695,9 +636,7 @@ export default function PaymentModal({
       <Script src="https://cdn.conekta.io/js/latest/conekta.js" />
 
       {/* Spinner overlay durante procesamiento */}
-      {(paymentStatus === "processing" ||
-        paymentStatus === "waiting" ||
-        paymentStatus === "success") && (
+      {(paymentStatus === "processing" || paymentStatus === "success") && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-4 rounded-xl bg-white/95 p-8 shadow-2xl dark:bg-slate-900/95">
             {paymentStatus === "success" ? (
@@ -728,14 +667,10 @@ export default function PaymentModal({
                 </div>
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                    {paymentStatus === "processing"
-                      ? "Procesando Pago"
-                      : "Esperando Confirmación"}
+                    Procesando Pago
                   </h3>
                   <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    {paymentStatus === "processing"
-                      ? "Tokenizando tarjeta..."
-                      : "Verificando con el banco..."}
+                    Enviando información al banco...
                   </p>
                   <p className="mt-1 text-xs text-slate-500 dark:text-slate-500">
                     Por favor no cierres esta ventana
@@ -1163,9 +1098,8 @@ export default function PaymentModal({
               boxShadow: "0 8px 16px rgba(142, 38, 83, 0.3)",
             }}
           >
-            {paymentStatus === "processing" && "Procesando tarjeta..."}
-            {paymentStatus === "waiting" && "Esperando confirmación..."}
-            {paymentStatus === "success" && "✓ Pago Confirmado"}
+            {paymentStatus === "processing" && "Procesando pago..."}
+            {paymentStatus === "success" && "✓ Pago Enviado"}
             {paymentStatus === "failed" && "Pago Rechazado"}
             {paymentStatus === "idle" && "Confirmar Pago"}
           </button>
