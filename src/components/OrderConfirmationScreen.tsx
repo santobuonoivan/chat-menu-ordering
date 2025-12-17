@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useOrderStore, Order } from "@/stores/orderStore";
+import { useOrderStore } from "@/stores/orderStore";
 import { useCartStore } from "@/stores/cartStore";
 
 interface OrderConfirmationScreenProps {
@@ -51,23 +51,23 @@ export default function OrderConfirmationScreen({
     >
       <div className="layout-container flex w-full max-w-[450px] flex-col pt-8 pb-55">
         <div className="layout-content-container flex w-full flex-col items-center gap-6">
-          {/* Confirmation Icon */}
-          {/* <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/20 dark:bg-primary/30">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
-              <span className="material-symbols-outlined text-4xl text-white">
-                check
+          {/* Processing Icon */}
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#8E2653]/20 dark:bg-[#8E2653]/30">
+            <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#8E2653]">
+              <span className="material-symbols-outlined text-4xl text-white animate-[spin_1s_linear_infinite_reverse]">
+                sync
               </span>
             </div>
-          </div> */}
+          </div>
 
           {/* Headline & Body Text */}
           <div className="flex flex-col items-center gap-2 text-center">
             <h1 className="text-[#151811] dark:text-white tracking-tight text-[32px] font-bold leading-tight">
-              ¡Tu pedido está confirmado!
+              ¡Recibimos tu pedido!
             </h1>
             <p className="text-[#151811]/80 dark:text-white/80 text-base font-normal leading-normal max-w-sm">
-              Gracias por tu compra. Te mantendremos informado sobre el estado
-              de tu envío.
+              Estamos procesando tu orden. Te notificaremos cuando esté lista
+              para su entrega.
             </p>
           </div>
 
@@ -98,10 +98,10 @@ export default function OrderConfirmationScreen({
               </div>
               <div className="flex justify-between gap-x-6">
                 <p className="text-[#798961] dark:text-gray-300 text-sm font-normal leading-normal">
-                  Entrega estimada
+                  Estado
                 </p>
-                <p className="text-[#151811] dark:text-white text-sm font-medium leading-normal text-right">
-                  {formatDate(order.estimatedDeliveryDate)}
+                <p className="text-[#8E2653] dark:text-[#8E2653] text-sm font-medium leading-normal text-right">
+                  Procesando...
                 </p>
               </div>
             </div>
@@ -212,12 +212,6 @@ export default function OrderConfirmationScreen({
 
           {/* Action Buttons */}
           <div className="w-full flex flex-col gap-3 pt-4">
-            <button
-              onClick={handleViewOrderStatus}
-              className="flex items-center justify-center gap-2 h-14 w-full rounded-full bg-[#8E2653] text-white font-bold text-base leading-normal transition-transform duration-200 ease-in-out hover:scale-[1.02] active:scale-95"
-            >
-              Ver Estado del Pedido
-            </button>
             <button
               onClick={handleBackToChat}
               className="flex items-center justify-center gap-2 h-14 w-full rounded-full bg-[#8E2653] text-white font-bold text-base leading-normal transition-transform duration-200 ease-in-out hover:scale-[1.02] active:scale-95"
