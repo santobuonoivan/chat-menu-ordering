@@ -49,7 +49,7 @@ export default function OrderConfirmationScreen({
           "radial-gradient(circle at top left, hsla(90, 70%, 80%, 0.2), transparent 40%), radial-gradient(circle at bottom right, hsla(90, 70%, 80%, 0.2), transparent 40%)",
       }}
     >
-      <div className="layout-container flex w-full max-w-[450px] flex-col py-8 pb-20">
+      <div className="layout-container flex w-full max-w-[450px] flex-col pt-8 pb-55">
         <div className="layout-content-container flex w-full flex-col items-center gap-6">
           {/* Confirmation Icon */}
           {/* <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/20 dark:bg-primary/30">
@@ -220,7 +220,7 @@ export default function OrderConfirmationScreen({
             </button>
             <button
               onClick={handleBackToChat}
-              className="flex items-center justify-center gap-2 h-14 w-full rounded-full bg-[#8E2653] text-primary font-bold text-base leading-normal transition-colors duration-200 hover:bg-primary/30 dark:hover:bg-primary/40"
+              className="flex items-center justify-center gap-2 h-14 w-full rounded-full bg-[#8E2653] text-white font-bold text-base leading-normal transition-transform duration-200 ease-in-out hover:scale-[1.02] active:scale-95"
             >
               Volver al Chat
             </button>
