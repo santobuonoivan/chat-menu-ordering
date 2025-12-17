@@ -70,6 +70,9 @@ interface SessionState {
   setSessionData: (data: SessionData) => void;
   getSessionData: () => SessionData | null;
   clearSessionData: () => void;
+  sessionChannelName: string | null;
+  generateSessionChannel: () => string;
+  getSessionChannelName: () => string | null;
 }
 
 export const useSessionStore = create<SessionState>()(
@@ -79,6 +82,7 @@ export const useSessionStore = create<SessionState>()(
       restPhone: null,
       sessionData: null,
       clientName: null,
+      sessionChannelName: null,
 
       setClientPhone: (phone: string) => {
         set({ clientPhone: phone });
@@ -99,10 +103,31 @@ export const useSessionStore = create<SessionState>()(
           sessionData: null,
           clientPhone: null,
           restPhone: null,
+          sessionChannelName: null,
         });
       },
+
       setClientName: (name: string) => {
         set({ clientName: name });
+      },
+
+      generateSessionChannel: () => {
+        const state = get();
+        const clientPhone = state.clientPhone || "guest";
+        const restPhone = state.restPhone || "unknown";
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substr(2, 9);
+        const channelName = `session-${clientPhone}-${restPhone}-${timestamp}-${random}`;
+        set({ sessionChannelName: channelName });
+        return channelName;
+      },
+
+      getSessionChannelName: () => {
+        const state = get();
+        if (!state.sessionChannelName) {
+          return state.generateSessionChannel();
+        }
+        return state.sessionChannelName;
       },
     }),
     {
@@ -112,6 +137,7 @@ export const useSessionStore = create<SessionState>()(
         clientName: state.clientName,
         restPhone: state.restPhone,
         sessionData: state.sessionData,
+        sessionChannelName: state.sessionChannelName,
       }),
     }
   )

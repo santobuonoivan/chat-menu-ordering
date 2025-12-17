@@ -60,27 +60,29 @@ export default function PaymentModal({
     "idle" | "processing" | "success" | "failed"
   >("idle");
   const cartStore = useCartStore();
-  const { getSessionData, clientPhone, restPhone, clientName } =
-    useSessionStore();
+  const {
+    getSessionData,
+    clientPhone,
+    restPhone,
+    clientName,
+    getSessionChannelName,
+  } = useSessionStore();
   const deliveryStore = useDeliveryStore();
 
   // Store de Ably para gestión global
-  const { addPendingPayment, subscribeToChannel } = useAblyStore();
+  const { addPendingPayment } = useAblyStore();
 
-  // Canal único de Ably por transacción
+  // Usar el canal único de la sesión
+  const channelName = useMemo(
+    () => getSessionChannelName() || "",
+    [getSessionChannelName]
+  );
+
+  // Transaction ID único para este pago específico
   const transactionId = useMemo(
     () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     []
   );
-  const channelName = `payment-${clientPhone}-${restPhone}-${transactionId}`;
-
-  // Suscribirse al canal cuando se abre el modal
-  useEffect(() => {
-    if (isOpen && channelName) {
-      subscribeToChannel(channelName, "payment-response");
-      console.log("🔔 Subscribed to payment channel:", channelName);
-    }
-  }, [isOpen, channelName, subscribeToChannel]);
 
   // Limpiar estado cuando se cierra el modal
   useEffect(() => {

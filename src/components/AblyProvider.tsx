@@ -15,6 +15,7 @@
 
 import { useEffect } from "react";
 import { useAblyStore } from "@/stores/ablyStore";
+import { useSessionStore } from "@/stores/sessionStore";
 
 interface AblyProviderProps {
   children: React.ReactNode;
@@ -23,12 +24,21 @@ interface AblyProviderProps {
 export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
   const { initialize, cleanup, clearExpiredPayments, subscribeToChannel } =
     useAblyStore();
+  const { getSessionChannelName } = useSessionStore();
 
   useEffect(() => {
     // Inicializar Ably al montar
     initialize();
 
-    // 🧪 En desarrollo, suscribirse automáticamente al canal de pruebas
+    // 🔐 Suscribirse al canal único de la sesión
+    const sessionChannel = getSessionChannelName();
+    if (sessionChannel) {
+      console.log("🔐 Auto-suscripción al canal de sesión:", sessionChannel);
+      subscribeToChannel(sessionChannel, "payment-response");
+      subscribeToChannel(sessionChannel, "order-update");
+    }
+
+    // 🧪 En desarrollo, también suscribirse al canal de pruebas
     if (process.env.NODE_ENV === "development") {
       console.log("🧪 [DEV] Auto-suscripción a test-channel");
       subscribeToChannel("test-channel", "test-event");
@@ -44,7 +54,13 @@ export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
       clearInterval(cleanupInterval);
       cleanup();
     };
-  }, [initialize, cleanup, clearExpiredPayments, subscribeToChannel]);
+  }, [
+    initialize,
+    cleanup,
+    clearExpiredPayments,
+    subscribeToChannel,
+    getSessionChannelName,
+  ]);
 
   return <>{children}</>;
 };
