@@ -167,6 +167,7 @@ export const useAblyStore = create<AblyStore>()(
             get().addMessage(receivedMessage);
 
             // Si es un mensaje de pago, procesar automáticamente
+            console.log(message.data);
             if (
               message.name === "payment-response" &&
               message.data?.transaction_id
@@ -184,8 +185,26 @@ export const useAblyStore = create<AblyStore>()(
                 // Aquí puedes agregar lógica adicional según el status
                 if (message.data.status === "success") {
                   console.log("✅ Payment successful");
+                  console.log("✅ Payment successful");
+
+                  // 🔴 TODO: AGREGAR MENSAJE AL CHAT AQUÍ
+                  // Importa useChatStore arriba y usa:
+                  // useChatStore.getState().addMessage({
+                  //   id: generateUUID(),
+                  //   text: "¡Tu pago ha sido confirmado! ✅",
+                  //   sender: "assistant",
+                  //   timestamp: new Date(),
+                  // });
                 } else if (message.data.status === "failed") {
                   console.error("❌ Payment failed:", message.data.message);
+
+                  // 🔴 TODO: AGREGAR MENSAJE DE ERROR AL CHAT AQUÍ
+                  // useChatStore.getState().addMessage({
+                  //   id: generateUUID(),
+                  //   text: "Hubo un problema con tu pago. Por favor intenta nuevamente.",
+                  //   sender: "assistant",
+                  //   timestamp: new Date(),
+                  // });
                 }
 
                 // Marcar mensaje como procesado

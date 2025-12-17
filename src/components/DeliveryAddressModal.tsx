@@ -77,19 +77,26 @@ export default function DeliveryAddressModal({
         state: storedAddress.state || "",
         zip: storedAddress.zip || "",
         references: storedAddress.references || "",
-        phoneNumber: storedAddress.phoneNumber || "",
+        phoneNumber: storedAddress.phoneNumber || clientPhone || "",
         latitude: storedAddress.latitude || 0,
         longitude: storedAddress.longitude || 0,
         neighborhood: storedAddress.neighborhood || "",
         county: storedAddress.county || "",
       });
+    } else if (isOpen && !storedAddress && !hasInitialized.current) {
+      // Si no hay dirección guardada pero hay clientPhone, usarlo
+      hasInitialized.current = true;
+      setAddress((prev) => ({
+        ...prev,
+        phoneNumber: clientPhone || "",
+      }));
     }
 
     // Reset cuando se cierra el modal
     if (!isOpen) {
       hasInitialized.current = false;
     }
-  }, [isOpen, storedAddress]);
+  }, [isOpen, storedAddress, clientPhone]);
 
   // Guardar dirección en el store cada vez que cambia (pero no en la carga inicial)
   useEffect(() => {
@@ -369,6 +376,13 @@ export default function DeliveryAddressModal({
       !address.zip ||
       !address.phoneNumber
     ) {
+      console.log(address.street);
+      console.log(address.streetNumber);
+      console.log(address.city);
+      console.log(address.state);
+      console.log(address.zip);
+      console.log(address.phoneNumber);
+
       alert("Por favor completa todos los campos requeridos");
       return;
     }
@@ -480,7 +494,7 @@ export default function DeliveryAddressModal({
                 <input
                   type="tel"
                   placeholder="Teléfono"
-                  value={clientPhone || ""}
+                  value={address.phoneNumber}
                   onChange={(e) =>
                     handleAddressChange("phoneNumber", e.target.value)
                   }
