@@ -21,11 +21,18 @@ interface AblyProviderProps {
 }
 
 export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
-  const { initialize, cleanup, clearExpiredPayments } = useAblyStore();
+  const { initialize, cleanup, clearExpiredPayments, subscribeToChannel } =
+    useAblyStore();
 
   useEffect(() => {
     // Inicializar Ably al montar
     initialize();
+
+    // 🧪 En desarrollo, suscribirse automáticamente al canal de pruebas
+    if (process.env.NODE_ENV === "development") {
+      console.log("🧪 [DEV] Auto-suscripción a test-channel");
+      subscribeToChannel("test-channel", "test-event");
+    }
 
     // Limpiar pagos expirados cada minuto
     const cleanupInterval = setInterval(() => {
@@ -37,7 +44,7 @@ export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
       clearInterval(cleanupInterval);
       cleanup();
     };
-  }, [initialize, cleanup, clearExpiredPayments]);
+  }, [initialize, cleanup, clearExpiredPayments, subscribeToChannel]);
 
   return <>{children}</>;
 };
