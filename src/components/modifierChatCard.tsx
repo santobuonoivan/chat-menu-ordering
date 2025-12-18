@@ -118,7 +118,7 @@ export default function ModifierChatCard({
           <h4 className="text-sm font-medium text-gray-900 dark:text-white">
             {item.dish_name}
           </h4>
-          <p className="text-sm font-semibold text-[#65A30D]">
+          <p className="text-sm font-semibold text-[#8E2653]">
             ${parseFloat(item.dish_price).toLocaleString()}
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function ModifierChatCard({
                     flex items-center justify-between p-3 rounded-lg border transition-all duration-200
                     ${
                       isSelected
-                        ? "border-[#65A30D] bg-green-50 dark:bg-green-900/20"
+                        ? "border-[#8E2653] bg-green-50 dark:bg-green-900/20"
                         : "border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 cursor-pointer"
                     }
                   `}
@@ -159,13 +159,13 @@ export default function ModifierChatCard({
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-[#65A30D]">
+                    <span className="text-sm font-semibold text-[#8E2653]">
                       {modifier.mod_price > 0
                         ? `+$${modifier.mod_price.toLocaleString()}`
                         : "Gratis"}
                     </span>
                     {isSelected && (
-                      <span className="material-symbols-outlined text-[#65A30D] text-lg">
+                      <span className="material-symbols-outlined text-[#8E2653] text-lg">
                         check_circle
                       </span>
                     )}
@@ -185,7 +185,7 @@ export default function ModifierChatCard({
           w-full py-3 px-4 rounded-lg font-semibold text-white 
           ${
             canAddToCart()
-              ? "bg-[#65A30D] hover:bg-green-600 cursor-pointer"
+              ? "bg-[#8E2653] hover:bg-[#7A2347] cursor-pointer"
               : "bg-gray-400 cursor-not-allowed"
           }
         `}

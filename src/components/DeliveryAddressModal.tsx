@@ -64,6 +64,8 @@ export default function DeliveryAddressModal({
   const mapInitialized = useRef(false);
   const hasInitialized = useRef(false);
   const [hasQuote, setHasQuote] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isUpdatingFromMap = useRef(false);
 
   // Cargar dirección guardada si existe (solo una vez al abrir)
   useEffect(() => {
@@ -229,6 +231,7 @@ export default function DeliveryAddressModal({
     if (!geocoderInstance.current) return;
 
     try {
+      isUpdatingFromMap.current = true; // Marcar que viene del mapa
       const response = await geocoderInstance.current.geocode({
         location: { lat, lng },
       });
@@ -275,6 +278,8 @@ export default function DeliveryAddressModal({
           ]
         */
 
+        let streetNumber = "";
+
         addressComponents.forEach((component: any) => {
           const types = component.types;
 
@@ -282,7 +287,7 @@ export default function DeliveryAddressModal({
             street = component.long_name;
           }
           if (types.includes("street_number")) {
-            street += ` ${component.long_name}`;
+            streetNumber = component.long_name;
           }
           if (
             types.includes("locality") ||
@@ -307,46 +312,128 @@ export default function DeliveryAddressModal({
         setAddress((prev) => ({
           ...prev,
           street: street || result.formatted_address,
+          streetNumber: streetNumber || prev.streetNumber,
           city: city || "",
           state: state || "",
           zip: zip || "",
           neighborhood: neighborhood || "",
           county: county || "",
         }));
+
+        setTimeout(() => {
+          isUpdatingFromMap.current = false; // Resetear después de actualizar
+        }, 100);
       }
     } catch (error) {
       console.error("Error en geocoding inverso:", error);
+      isUpdatingFromMap.current = false;
     }
   };
 
   // Geocoding: buscar dirección y mover marcador
-  const searchAddress = async (query: string) => {
-    if (!query.trim() || !geocoderInstance.current) return;
+  const searchAddress = async (data: {
+    street: string;
+    number: string;
+    city?: string;
+    province?: string;
+    postalCode?: string;
+    country?: string;
+  }) => {
+    if (!geocoderInstance.current) return;
+
+    // Construimos el string base (Calle + Altura)
+    const mainAddress = `${data.street} ${data.number}`;
+
+    const request = {
+      address: mainAddress,
+      // Aquí es donde sucede la magia: restringimos por componentes exactos
+      componentRestrictions: {
+        route: data.street,
+        locality: data.city,
+        administrativeArea: data.province,
+        postalCode: data.postalCode,
+        country: "AR",
+      },
+    };
 
     try {
-      const response = await geocoderInstance.current.geocode({
-        address: query,
-      });
+      console.log("🔍 Buscando con restricciones:", request);
+      const response = await geocoderInstance.current.geocode(request);
 
       if (response.results && response.results.length > 0) {
         const result = response.results[0];
         const location = result.geometry.location;
         const lat = location.lat();
         const lng = location.lng();
+        const addressComponents = result.address_components;
+
+        console.log("📍 Resultado encontrado:", result.formatted_address);
+        console.log("🗺️ Coordenadas:", lat, lng);
 
         // Mover marcador y mapa
         markerInstance.current.setPosition({ lat, lng });
         mapInstance.current.setCenter({ lat, lng });
 
-        // Actualizar coordenadas
+        // Procesar componentes de dirección directamente
+        let street = "";
+        let streetNumber = "";
+        let city = "";
+        let state = "";
+        let zip = "";
+        let neighborhood = "";
+        let county = "";
+
+        console.log("Address Components:", addressComponents);
+        addressComponents.forEach((component: any) => {
+          const types = component.types;
+
+          if (types.includes("route")) {
+            street = component.long_name;
+          }
+          if (types.includes("street_number")) {
+            streetNumber = component.long_name;
+          }
+          if (
+            types.includes("locality") ||
+            types.includes("administrative_area_level_2")
+          ) {
+            city = component.long_name;
+          }
+          if (types.includes("administrative_area_level_1")) {
+            state = component.long_name;
+          }
+          if (types.includes("postal_code")) {
+            zip = component.long_name;
+          }
+          if (types.includes("neighborhood")) {
+            neighborhood = component.long_name;
+          }
+          if (types.includes("country")) {
+            county = component.long_name;
+          }
+        });
+
+        // Actualizar TODOS los campos con lo que Google Maps encontró
         setAddress((prev) => ({
           ...prev,
+          street: street || result.formatted_address,
+          streetNumber: streetNumber || prev.streetNumber,
+          city: city || "",
+          state: state || "",
+          zip: zip || "",
+          neighborhood: neighborhood || "",
+          county: county || "",
           latitude: lat,
           longitude: lng,
         }));
 
-        // Obtener dirección detallada
-        reverseGeocode(lat, lng);
+        console.log("✅ Dirección actualizada:", {
+          street,
+          streetNumber,
+          city,
+          state,
+          zip,
+        });
       }
     } catch (error) {
       console.error("Error en búsqueda de dirección:", error);
@@ -360,10 +447,31 @@ export default function DeliveryAddressModal({
     }));
   };
 
-  const handleStreetSearch = async (value: string) => {
+  const handleStreetSearch = (value: string) => {
+    // Solo actualizar el campo, NO buscar automáticamente
     handleAddressChange("street", value);
-    if (value.length > 3) {
-      await searchAddress(value);
+
+    // Cancelar búsqueda anterior
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // NO hacer búsqueda automática para evitar el loop
+    // El usuario puede presionar Enter o un botón para buscar
+  };
+
+  const handleSearchManually = async () => {
+    // Búsqueda manual cuando el usuario lo solicite
+    if (address.street.length > 3) {
+      console.log(address);
+      await searchAddress({
+        street: address.street,
+        number: address.streetNumber,
+        city: address.city,
+        province: address.state,
+        postalCode: address.zip, // Asegúrate de tener este campo en tu estado
+        country: address.county, // Opcional: Restringir a Argentina mejora mucho la velocidad
+      });
     }
   };
 
@@ -508,21 +616,39 @@ export default function DeliveryAddressModal({
                 </label>
               </div>
 
-              {/* Street Input */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Calle"
-                  value={address.street}
-                  onChange={(e) => handleStreetSearch(e.target.value)}
-                  className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  style={{ backgroundColor: "#f3f4f6" }}
-                />
-                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
-                  <span className="material-symbols-outlined text-lg">
-                    signpost
+              {/* Street Input with Search Button */}
+              <div className="relative flex gap-2">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Escribe la dirección y presiona buscar"
+                    value={address.street}
+                    onChange={(e) => handleStreetSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchManually();
+                      }
+                    }}
+                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    style={{ backgroundColor: "#f3f4f6" }}
+                  />
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
+                      signpost
+                    </span>
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSearchManually}
+                  className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full transition-all hover:scale-105"
+                  style={{ backgroundColor: "#8E2653" }}
+                  title="Buscar dirección"
+                >
+                  <span className="material-symbols-outlined text-white text-xl">
+                    search
                   </span>
-                </label>
+                </button>
               </div>
 
               {/* Street Number and Apartment */}
