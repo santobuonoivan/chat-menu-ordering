@@ -30,12 +30,14 @@ export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
     // Inicializar Ably al montar
     initialize();
 
-    // 🔐 Suscribirse al canal único de la sesión
+    // 🔐 Suscribirse al canal único de la sesión (basado en teléfonos)
     const sessionChannel = getSessionChannelName();
     if (sessionChannel) {
-      console.log("🔐 Auto-suscripción al canal de sesión:", sessionChannel);
+      console.log("🔐 Suscripción al canal de pago:", sessionChannel);
+      // Solo un evento: payment-response
       subscribeToChannel(sessionChannel, "payment-response");
-      subscribeToChannel(sessionChannel, "order-update");
+    } else {
+      console.warn("⚠️ No se puede suscribir: faltan clientPhone o restPhone");
     }
 
     // 🧪 En desarrollo, también suscribirse al canal de pruebas

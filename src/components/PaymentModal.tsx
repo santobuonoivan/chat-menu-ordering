@@ -223,6 +223,7 @@ export default function PaymentModal({
 
           if (paymentMethod == "credit_card" && token) {
             const miliseconds = new Date().getTime();
+
             let payPayload = {
               customer: {
                 name: clientName || "Cliente",
@@ -260,9 +261,9 @@ export default function PaymentModal({
                   deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
                 ).toFixed(2),
                 // Ably real-time configuration
-                ably_channel: channelName,
+                ably_channel: channelName, // payment-{clientPhone}-{restPhone}
                 ably_event: "payment-response",
-                transaction_id: transactionId,
+                transaction_id: transactionId, // Generado en este momento
               },
             };
 

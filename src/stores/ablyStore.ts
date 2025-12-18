@@ -155,6 +155,14 @@ export const useAblyStore = create<AblyStore>()(
 
         try {
           const handleMessage = (message: Ably.Message) => {
+            console.log("🔥 MENSAJE RECIBIDO EN CANAL:", channelName);
+            console.log("📬 Evento:", message.name);
+            console.log("📦 Data completa:", message.data);
+            console.log(
+              "⏰ Timestamp:",
+              new Date(message.timestamp || Date.now()).toISOString()
+            );
+
             const receivedMessage: AblyReceivedMessage = {
               id: `${channelName}-${message.id || Date.now()}`,
               channelName,
@@ -167,7 +175,6 @@ export const useAblyStore = create<AblyStore>()(
             get().addMessage(receivedMessage);
 
             // Si es un mensaje de pago, procesar automáticamente
-            console.log(message.data);
             if (
               message.name === "payment-response" &&
               message.data?.transaction_id

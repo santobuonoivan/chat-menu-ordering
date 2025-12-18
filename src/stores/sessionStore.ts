@@ -115,19 +115,23 @@ export const useSessionStore = create<SessionState>()(
         const state = get();
         const clientPhone = state.clientPhone || "guest";
         const restPhone = state.restPhone || "unknown";
-        const timestamp = Date.now();
-        const random = Math.random().toString(36).substr(2, 9);
-        const channelName = `session-${clientPhone}-${restPhone}-${timestamp}-${random}`;
+        // Canal fijo basado solo en los teléfonos (sin timestamp ni random)
+        const channelName = `payment-${clientPhone}-${restPhone}`;
         set({ sessionChannelName: channelName });
         return channelName;
       },
 
       getSessionChannelName: () => {
         const state = get();
-        if (!state.sessionChannelName) {
+        // Si ya existe, devolverlo
+        if (state.sessionChannelName) {
+          return state.sessionChannelName;
+        }
+        // Si no existe y tenemos los teléfonos, generarlo
+        if (state.clientPhone && state.restPhone) {
           return state.generateSessionChannel();
         }
-        return state.sessionChannelName;
+        return null;
       },
     }),
     {
