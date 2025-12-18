@@ -127,7 +127,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   };
 
   const subtotal = getTotalPrice();
-  const taxes = subtotal * 0.08;
+  const taxes = subtotal * 0.0;
   const total = subtotal + taxes;
 
   if (!isOpen) return null;
@@ -154,7 +154,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
           >
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <h1 className="text-2xl font-black tracking-tight text-text-light dark:text-text-dark">
+          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-text-dark">
             Tu Pedido
           </h1>
           <div className="w-12"></div>
@@ -270,20 +270,20 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               className="space-y-2 rounded-lg p-4 soft-shadow-inset"
               style={{ backgroundColor: "#f3f4f6" }}
             >
-              <div
+              {/* <div
                 className="flex justify-between text-sm"
                 style={{ color: "#6b7280" }}
               >
                 <span>Subtotal</span>
                 <span>${subtotal.toLocaleString()}</span>
-              </div>
-              <div
+              </div> */}
+              {/* <div
                 className="flex justify-between text-sm"
                 style={{ color: "#6b7280" }}
               >
                 <span>Impuestos (8%)</span>
                 <span>${taxes.toLocaleString()}</span>
-              </div>
+              </div> */}
               <div
                 className="flex justify-between text-lg font-bold"
                 style={{ color: "#151811" }}

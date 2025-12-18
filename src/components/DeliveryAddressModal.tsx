@@ -464,7 +464,7 @@ export default function DeliveryAddressModal({
           >
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <h1 className="text-2xl font-black tracking-tight text-text-light dark:text-text-dark">
+          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-text-dark">
             Dirección de Entrega
           </h1>
           <div className="w-12"></div>
