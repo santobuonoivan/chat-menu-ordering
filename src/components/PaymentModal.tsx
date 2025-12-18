@@ -12,6 +12,8 @@ import { ApiCallGetPaymentGateway } from "@/handlers/delivery/quotes";
 import { ApiCallSendOrder } from "@/handlers/standar/orders";
 import { ApiCallProcessPayment } from "@/handlers/duck-payments/payments";
 import { useAblyStore } from "@/stores/ablyStore";
+import { useChatStore } from "@/stores/chatStore";
+import { generateUUID } from "@/utils";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -286,9 +288,15 @@ export default function PaymentModal({
             let { data } = processPaymentResponse;
 
             if (data && data.status == 201) {
-              console.log("✅ Pago enviado exitosamente");
+              console.log("✅ Tu pago ha sido procesado exitosamente");
               setPaymentStatus("success");
 
+              useChatStore.getState().addMessage({
+                id: generateUUID(),
+                text: "¡Tu pago está siendo procesado! ✅ aguarde unos minutos que ya vamos a confirmar tu pedido.",
+                sender: "assistant",
+                timestamp: new Date(),
+              });
               // Guardar pago pendiente en el store de Ably
               addPendingPayment({
                 transactionId,

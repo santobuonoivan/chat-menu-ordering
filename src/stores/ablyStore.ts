@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type Ably from "ably";
 import { getAblyInstance, subscribeToChannel } from "@/lib/ably";
+import { useChatStore } from "./chatStore";
+import { generateUUID } from "@/utils";
 
 /**
  * Interface para mensajes de Ably recibidos
@@ -183,7 +185,7 @@ export const useAblyStore = create<AblyStore>()(
                 message.data.transaction_id
               );
 
-              if (pendingPayment) {
+              if (pendingPayment || true) {
                 console.log(
                   "💰 Payment response received for:",
                   message.data.transaction_id
@@ -196,22 +198,22 @@ export const useAblyStore = create<AblyStore>()(
 
                   // 🔴 TODO: AGREGAR MENSAJE AL CHAT AQUÍ
                   // Importa useChatStore arriba y usa:
-                  // useChatStore.getState().addMessage({
-                  //   id: generateUUID(),
-                  //   text: "¡Tu pago ha sido confirmado! ✅",
-                  //   sender: "assistant",
-                  //   timestamp: new Date(),
-                  // });
+                  useChatStore.getState().addMessage({
+                    id: generateUUID(),
+                    text: "¡Tu pago ha sido confirmado! ✅ y tu pedido está siendo preparado.",
+                    sender: "assistant",
+                    timestamp: new Date(),
+                  });
                 } else if (message.data.status === "failed") {
                   console.error("❌ Payment failed:", message.data.message);
 
                   // 🔴 TODO: AGREGAR MENSAJE DE ERROR AL CHAT AQUÍ
-                  // useChatStore.getState().addMessage({
-                  //   id: generateUUID(),
-                  //   text: "Hubo un problema con tu pago. Por favor intenta nuevamente.",
-                  //   sender: "assistant",
-                  //   timestamp: new Date(),
-                  // });
+                  useChatStore.getState().addMessage({
+                    id: generateUUID(),
+                    text: "Hubo un problema con tu pago. Por favor intenta nuevamente.",
+                    sender: "assistant",
+                    timestamp: new Date(),
+                  });
                 }
 
                 // Marcar mensaje como procesado
