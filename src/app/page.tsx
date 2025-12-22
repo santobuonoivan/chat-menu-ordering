@@ -205,18 +205,31 @@ export default function Home() {
     clientPhone=5491130881719
   */
   const validateConfiguration = (): boolean => {
-    return (
-      !clientPhone ||
-      !restNumber ||
-      restNumber.length !== 13 ||
+    // Retorna true si TODO está CORRECTO
+    if (!clientPhone || !restPhone) {
+      console.error("❌ Faltan números de teléfono");
+      return false;
+    }
+
+    if (restPhone.length !== 13 || !restPhone.startsWith("521")) {
+      console.error("❌ Número de restaurante (MX) inválido:", restPhone);
+      return false;
+    }
+
+    if (
       clientPhone.length !== 13 ||
-      restNumber.slice(0, 3) !== "521" ||
       !["521", "549"].includes(clientPhone.slice(0, 3))
-    );
+    ) {
+      console.error("❌ Número de cliente inválido:", clientPhone);
+      return false;
+    }
+
+    return true; // Todo correcto
   };
+
   return (
     <>
-      {validateConfiguration() ? (
+      {!validateConfiguration() ? (
         <div>
           se detectó un problema con la configuración inicial. ponte en contacto
           con el equipo de soporte
