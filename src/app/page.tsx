@@ -207,12 +207,12 @@ export default function Home() {
   const validateConfiguration = (): boolean => {
     // Retorna true si TODO está CORRECTO
     if (!clientPhone || !restPhone) {
-      console.error("❌ Faltan números de teléfono");
+      console.log("❌ Faltan números de teléfono");
       return false;
     }
 
     if (restPhone.length !== 13 || !restPhone.startsWith("521")) {
-      console.error("❌ Número de restaurante (MX) inválido:", restPhone);
+      console.log("❌ Número de restaurante (MX) inválido:", restPhone);
       return false;
     }
 
@@ -220,7 +220,7 @@ export default function Home() {
       clientPhone.length !== 13 ||
       !["521", "549"].includes(clientPhone.slice(0, 3))
     ) {
-      console.error("❌ Número de cliente inválido:", clientPhone);
+      console.log("❌ Número de cliente inválido:", clientPhone);
       return false;
     }
 
@@ -272,7 +272,6 @@ export default function Home() {
                   />
                 );
               })}
-
               {/* Show action chips only after first assistant message and no user messages yet */}
               {messages.length === 2 && messages[0].sender === "assistant" && (
                 <ActionChips chips={[]} onChipClick={handleChipClick} />
