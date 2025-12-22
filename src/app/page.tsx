@@ -14,6 +14,7 @@ import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
 import { ApiCallProcessIncomingMessage } from "@/handlers/core/getSessionData";
 import { ApiCallGetMenu } from "@/handlers/standar/orders";
+import { boolean } from "joi";
 
 export default function Home() {
   const router = useRouter();
@@ -199,79 +200,102 @@ export default function Home() {
     console.log("Adjuntar archivo");
   };
 
+  /* ejemplo
+    restNumber=5215620968350
+    clientPhone=5491130881719
+  */
+  const validateConfiguration = (): boolean => {
+    return (
+      !clientPhone ||
+      !restNumber ||
+      restNumber.length !== 13 ||
+      clientPhone.length !== 13 ||
+      restNumber.slice(0, 3) !== "521" ||
+      !["521", "549"].includes(clientPhone.slice(0, 3))
+    );
+  };
   return (
-    <div
-      className="relative flex min-h-screen w-full flex-col items-center justify-center p-4 bg-cover bg-center"
-      style={{
-        backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUS07Salyth6YzkzPu71sHz48EUBchGU_Qob9Rv9tvBpfkxpsuazuf893TmH6ISvawVOZgVqQ5PbJFsOrgDJeD8AyTbq6PKwk58C5lDrKosF--yDXSvQ01JPDezON_tgYSkVQw3o3bjehcBJBJWpAaSiaIIeeXgoQJ5AR5mZlQNezkBQhyAo42XoVWyX-KE1T6oCK-nPq5E9vpEHqdO4VCOdA0j8UwMOn_6wmSt023l69Q5Q2u-pfh2EmX-MwxID1LXPOEUGiHpK1_')`,
-      }}
-    >
-      {/* Backdrop Blur */}
-      <div className="absolute inset-0 bg-background-light/30 dark:bg-background-dark/30 backdrop-blur-md"></div>
-
-      {/* Chat Container */}
-      <div className="relative flex flex-col w-full max-w-[450px] h-[90vh] max-h-[800px] bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-xl shadow-2xl overflow-hidden">
-        {/* Top Navigation */}
-        <TopNavBar onClose={handleClose} />
-
-        {/* Chat Area */}
-        <div
-          ref={chatContainerRef}
-          onScroll={handleScroll}
-          className="flex-1 overflow-y-auto p-4 space-y-6 relative"
-        >
-          {messages.map((message, index) => {
-            if (index === 0) {
-              afterSender = null;
-            } else {
-              afterSender = messages[index - 1].sender;
-            }
-            return (
-              <MessageBubble
-                key={message.id}
-                messageId={message.id}
-                message={message.text}
-                sender={message.sender}
-                afterSender={afterSender}
-                data={message.data}
-              />
-            );
-          })}
-
-          {/* Show action chips only after first assistant message and no user messages yet */}
-          {messages.length === 2 && messages[0].sender === "assistant" && (
-            <ActionChips chips={[]} onChipClick={handleChipClick} />
-          )}
-
-          {/* Indicador de mensajes nuevos */}
-          {!isAtBottom && unreadCount > 0 && (
-            <button
-              onClick={scrollToBottom}
-              className="fixed bottom-24 right-8 flex items-center justify-center w-12 h-12 rounded-full bg-primary shadow-lg hover:shadow-xl transition-all active:scale-95 z-40 animate-bounce"
-              style={{ backgroundColor: "#65A30D" }}
-              aria-label={`${unreadCount} mensajes nuevos`}
-            >
-              <div className="flex flex-col items-center">
-                <span className="material-symbols-outlined text-white text-xl">
-                  arrow_downward
-                </span>
-                {unreadCount > 0 && (
-                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                    {unreadCount > 9 ? "9+" : unreadCount}
-                  </span>
-                )}
-              </div>
-            </button>
-          )}
+    <>
+      {validateConfiguration() ? (
+        <div>
+          se detectó un problema con la configuración inicial. ponte en contacto
+          con el equipo de soporte
         </div>
+      ) : (
+        <div
+          className="relative flex min-h-screen w-full flex-col items-center justify-center p-4 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUS07Salyth6YzkzPu71sHz48EUBchGU_Qob9Rv9tvBpfkxpsuazuf893TmH6ISvawVOZgVqQ5PbJFsOrgDJeD8AyTbq6PKwk58C5lDrKosF--yDXSvQ01JPDezON_tgYSkVQw3o3bjehcBJBJWpAaSiaIIeeXgoQJ5AR5mZlQNezkBQhyAo42XoVWyX-KE1T6oCK-nPq5E9vpEHqdO4VCOdA0j8UwMOn_6wmSt023l69Q5Q2u-pfh2EmX-MwxID1LXPOEUGiHpK1_')`,
+          }}
+        >
+          {/* Backdrop Blur */}
+          <div className="absolute inset-0 bg-background-light/30 dark:bg-background-dark/30 backdrop-blur-md"></div>
 
-        {/* Message Composer */}
-        <MessageComposer
-          onSendMessage={handleSendMessage}
-          onMicClick={handleMicClick}
-          onAttachClick={handleAttachClick}
-        />
-      </div>
-    </div>
+          {/* Chat Container */}
+          <div className="relative flex flex-col w-full max-w-[450px] h-[90vh] max-h-[800px] bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-xl shadow-2xl overflow-hidden">
+            {/* Top Navigation */}
+            <TopNavBar onClose={handleClose} />
+
+            {/* Chat Area */}
+            <div
+              ref={chatContainerRef}
+              onScroll={handleScroll}
+              className="flex-1 overflow-y-auto p-4 space-y-6 relative"
+            >
+              {messages.map((message, index) => {
+                if (index === 0) {
+                  afterSender = null;
+                } else {
+                  afterSender = messages[index - 1].sender;
+                }
+                return (
+                  <MessageBubble
+                    key={message.id}
+                    messageId={message.id}
+                    message={message.text}
+                    sender={message.sender}
+                    afterSender={afterSender}
+                    data={message.data}
+                  />
+                );
+              })}
+
+              {/* Show action chips only after first assistant message and no user messages yet */}
+              {messages.length === 2 && messages[0].sender === "assistant" && (
+                <ActionChips chips={[]} onChipClick={handleChipClick} />
+              )}
+
+              {/* Indicador de mensajes nuevos */}
+              {!isAtBottom && unreadCount > 0 && (
+                <button
+                  onClick={scrollToBottom}
+                  className="fixed bottom-24 right-8 flex items-center justify-center w-12 h-12 rounded-full bg-primary shadow-lg hover:shadow-xl transition-all active:scale-95 z-40 animate-bounce"
+                  style={{ backgroundColor: "#65A30D" }}
+                  aria-label={`${unreadCount} mensajes nuevos`}
+                >
+                  <div className="flex flex-col items-center">
+                    <span className="material-symbols-outlined text-white text-xl">
+                      arrow_downward
+                    </span>
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                        {unreadCount > 9 ? "9+" : unreadCount}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              )}
+            </div>
+
+            {/* Message Composer */}
+            <MessageComposer
+              onSendMessage={handleSendMessage}
+              onMicClick={handleMicClick}
+              onAttachClick={handleAttachClick}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
