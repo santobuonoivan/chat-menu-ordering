@@ -19,7 +19,8 @@ import { boolean } from "joi";
 
 export default function Home() {
   const router = useRouter();
-  const { messages, addMessage } = useChatStore();
+  const { messages, addMessage, isAssistantTyping, setIsAssistantTyping } =
+    useChatStore();
   const { setMenuData } = useMenuStore();
   const {
     clientPhone,
@@ -30,7 +31,6 @@ export default function Home() {
     setSessionData,
   } = useSessionStore();
   const [restNumber, setRestNumber] = useState("");
-  const [isAssistantTyping, setIsAssistantTyping] = useState(false);
 
   // Refs y estados para control de scroll
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -62,7 +62,10 @@ export default function Home() {
     const newMessageCount = messages.length;
 
     // Si hay nuevo mensaje
-    if (newMessageCount > previousMessageCountRef.current) {
+    if (
+      newMessageCount > previousMessageCountRef.current ||
+      isAssistantTyping
+    ) {
       previousMessageCountRef.current = newMessageCount;
 
       // Si estamos al final, hacer auto-scroll
@@ -75,7 +78,7 @@ export default function Home() {
         setUnreadCount((prev) => prev + 1);
       }
     }
-  }, [messages, isAtBottom]);
+  }, [messages, isAtBottom, isAssistantTyping]);
 
   /** Tomar de la URL y obtener session data */
   useEffect(() => {
@@ -148,7 +151,7 @@ export default function Home() {
     }
   }, [restNumber]);
 
-  const handleSendMessage = (
+  const handleSendMessage = async (
     message: string,
     sender: "user" | "assistant" = "user",
     messageBody?: IMessage | null
@@ -160,7 +163,17 @@ export default function Home() {
       timestamp: new Date(),
     };
     addMessage(newMessage);
-
+    if (sender === "user") {
+      setTimeout(() => {
+        setIsAssistantTyping(true);
+      }, 500);
+    } else if (sender === "assistant") {
+      setIsAssistantTyping(false);
+    } /*else {
+      setIsAssistantTyping(true);
+      await sleep(1500);
+      setIsAssistantTyping(false);
+    }*/
     if (message.toLowerCase() == "ver menú digital") {
       // Simular respuesta del asistente después de un breve delay
       setTimeout(() => {

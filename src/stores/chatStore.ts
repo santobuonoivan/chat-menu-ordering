@@ -9,6 +9,8 @@ interface ChatState {
   setShowListMenuItems: (show: boolean) => void;
   showListModifiers: boolean;
   setShowListModifiers: (show: boolean) => void;
+  isAssistantTyping: boolean;
+  setIsAssistantTyping: (typing: boolean) => void;
   addMessage: (message: IMessage) => void;
   setMessages: (messages: IMessage[]) => void;
   clearMessages: () => void;
@@ -76,6 +78,10 @@ export const useChatStore = create<ChatState>()(
       setShowListModifiers: (show: boolean) => {
         set({ showListModifiers: show });
       },
+      isAssistantTyping: false,
+      setIsAssistantTyping: (typing: boolean) => {
+        set({ isAssistantTyping: typing });
+      },
       setItemListUUID: (uuid: string | undefined) => {
         set({ itemListUUID: uuid });
       },
@@ -87,7 +93,7 @@ export const useChatStore = create<ChatState>()(
     }),
     {
       name: "chat-store",
-      partialize: (state) => ({ 
+      partialize: (state) => ({
         messages: state.messages,
         itemListUUID: state.itemListUUID,
         modifierListUUID: state.modifierListUUID,
