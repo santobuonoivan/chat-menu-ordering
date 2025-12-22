@@ -5,6 +5,7 @@ import TopNavBar from "@/components/menuDigital/TopNavBar";
 import MessageBubble from "@/components/MessageBubble";
 import ActionChips from "@/components/menuDigital/ActionChips";
 import MessageComposer from "@/components/MessageComposer";
+import TypingIndicator from "@/components/TypingIndicator";
 import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
 import { useSessionStore } from "@/stores/sessionStore";
@@ -29,6 +30,7 @@ export default function Home() {
     setSessionData,
   } = useSessionStore();
   const [restNumber, setRestNumber] = useState("");
+  const [isAssistantTyping, setIsAssistantTyping] = useState(false);
 
   // Refs y estados para control de scroll
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -74,6 +76,15 @@ export default function Home() {
       }
     }
   }, [messages, isAtBottom]);
+
+  // Demo para ver el TypingIndicator en acción
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAssistantTyping((prev) => !prev);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   /** Tomar de la URL y obtener session data */
   useEffect(() => {
@@ -248,7 +259,6 @@ export default function Home() {
           <div className="relative flex flex-col w-full max-w-[450px] h-[90vh] max-h-[800px] bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-xl shadow-2xl overflow-hidden">
             {/* Top Navigation */}
             <TopNavBar onClose={handleClose} />
-
             {/* Chat Area */}
             <div
               ref={chatContainerRef}
@@ -277,6 +287,9 @@ export default function Home() {
                 <ActionChips chips={[]} onChipClick={handleChipClick} />
               )}
 
+              {/* Typing Indicator */}
+              <TypingIndicator isTyping={isAssistantTyping} />
+
               {/* Indicador de mensajes nuevos */}
               {!isAtBottom && unreadCount > 0 && (
                 <button
@@ -298,8 +311,8 @@ export default function Home() {
                 </button>
               )}
             </div>
-
             {/* Message Composer */}
+
             <MessageComposer
               onSendMessage={handleSendMessage}
               onMicClick={handleMicClick}

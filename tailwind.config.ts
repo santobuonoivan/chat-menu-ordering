@@ -27,6 +27,20 @@ const config: Config = {
           950: "#8E2653", // Color oficial de Appio
         },
       },
+      keyframes: {
+        "typing-dot": {
+          "0%, 60%, 100%": { transform: "translateY(0)", opacity: "0.4" },
+          "30%": { transform: "translateY(-10px)", opacity: "1" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "typing-dot": "typing-dot 1.4s infinite ease-in-out",
+        "fade-in": "fade-in 0.3s ease-out",
+      },
     },
   },
   plugins: [],
