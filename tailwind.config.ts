@@ -28,9 +28,15 @@ const config: Config = {
         },
       },
       keyframes: {
-        "typing-dot": {
-          "0%, 60%, 100%": { transform: "translateY(0)", opacity: "0.4" },
-          "30%": { transform: "translateY(-10px)", opacity: "1" },
+        bounce: {
+          "0%, 100%": {
+            transform: "translateY(-25%)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "50%": {
+            transform: "translateY(0)",
+            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
         },
         "fade-in": {
           "0%": { opacity: "0", transform: "translateY(10px)" },
@@ -38,7 +44,6 @@ const config: Config = {
         },
       },
       animation: {
-        "typing-dot": "typing-dot 1.4s infinite ease-in-out",
         "fade-in": "fade-in 0.3s ease-out",
       },
     },

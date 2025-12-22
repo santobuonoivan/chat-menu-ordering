@@ -17,11 +17,12 @@ export default function TypingIndicator({ isTyping }: TypingIndicatorProps) {
       </div>
 
       {/* Typing bubble */}
-      <div className="max-w-[70%] bg-white dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3 shadow-md border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3 shadow-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 animate-typing-dot animation-delay-0"></div>
-          <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 animate-typing-dot animation-delay-200"></div>
-          <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 animate-typing-dot animation-delay-400"></div>
+          <span className="sr-only">Escribiendo...</span>
+          <div className="w-2 h-2 rounded-full bg-gray-600 dark:bg-gray-400 animate-[bounce_1.4s_infinite_0ms]"></div>
+          <div className="w-2 h-2 rounded-full bg-gray-600 dark:bg-gray-400 animate-[bounce_1.4s_infinite_200ms]"></div>
+          <div className="w-2 h-2 rounded-full bg-gray-600 dark:bg-gray-400 animate-[bounce_1.4s_infinite_400ms]"></div>
         </div>
       </div>
     </div>

@@ -77,15 +77,6 @@ export default function Home() {
     }
   }, [messages, isAtBottom]);
 
-  // Demo para ver el TypingIndicator en acción
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAssistantTyping((prev) => !prev);
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   /** Tomar de la URL y obtener session data */
   useEffect(() => {
     const loadSessionData = async () => {
