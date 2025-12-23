@@ -1,5 +1,5 @@
 import { IMessage } from "@/types/chat";
-import ItemChatCard from "./ItemChatCard";
+import ItemChatCardList from "./ItemChatCardList";
 import { useChatStore } from "@/stores/chatStore";
 import ModifierChatCard from "./modifierChatCard";
 import { IMenuItem } from "@/types/menu";
@@ -50,15 +50,7 @@ export default function AssistantChatBubble({
           data &&
           data.items &&
           data.items.length > 0 && (
-            <div className="flex flex-col gap-2 mt-2 max-w-xs">
-              {data.items.map((item, index) => (
-                <ItemChatCard
-                  key={item.dish_id || index}
-                  item={item}
-                  action={data.action || ""}
-                />
-              ))}
-            </div>
+            <ItemChatCardList items={data.items} action={data.action || ""} />
           )}
         {/* Renderizar ModifierChatCard si hay data de modificadores */}
         {data &&
