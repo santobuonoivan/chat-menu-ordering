@@ -5,55 +5,20 @@ import { generateUUID, sleep } from "@/utils";
 interface ItemChatProps {
   item: IMenuItem;
   action: string;
+  selectedQuantity?: number;
+  onAdd?: (item: IMenuItem) => void;
+  onRemove?: (dishId: number) => void;
+  onUpdateQuantity?: (dishId: number, delta: number) => void;
 }
 
-export default function ItemChatCard({ item, action }: ItemChatProps) {
-  const { addMessage } = useChatStore();
-  const {
-    itemListUUID,
-    modifierListUUID,
-    setModifierListUUID,
-    setItemListUUID,
-  } = useChatStore();
-  const handleActionClick = async () => {
-    // Esta función será utilizada más adelante para manejar acciones del carrito
-    console.log("Action clicked:", action, "for item:", item);
-
-    addMessage({
-      id: generateUUID(),
-      text: `quiero un ${item.dish_name}`,
-      sender: "user",
-      timestamp: new Date(),
-    });
-    setItemListUUID?.(undefined);
-
-    await sleep(100);
-    if (item.modifiers && item.modifiers.length > 0) {
-      console.log(item.modifiers);
-      const id = generateUUID();
-      // Postear el nombre del item en formato {itemname}
-      setModifierListUUID?.(id);
-      addMessage({
-        id,
-        text: `Puedo agregarle a tu ${item.dish_name} :`,
-        sender: "assistant",
-        timestamp: new Date(),
-        data: {
-          modifiers: item.modifiers,
-          itemSelected: item,
-          action: "add_modifier",
-        },
-      });
-    } else {
-      addMessage({
-        id: generateUUID(),
-        text: `He agregado ${item.dish_name} a tu pedido. Puedo ayudarte con algo más?`,
-        sender: "assistant",
-        timestamp: new Date(),
-      });
-    }
-  };
-
+export default function ItemChatCard({
+  item,
+  action,
+  selectedQuantity = 0,
+  onAdd,
+  onRemove,
+  onUpdateQuantity,
+}: ItemChatProps) {
   return (
     <div className="flex items-center gap-3 p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-600 hover:shadow-sm transition-shadow">
       {/* Imagen del producto */}
@@ -75,14 +40,40 @@ export default function ItemChatCard({ item, action }: ItemChatProps) {
         </p>
       </div>
 
-      {/* Botón de acción */}
-      <button
-        onClick={handleActionClick}
-        className="flex items-center justify-center w-8 h-8 bg-[#8E2653] hover:bg-[#7E2653] text-white rounded-full transition-colors"
-        title="Agregar al carrito"
-      >
-        <span className="material-symbols-outlined text-sm">add</span>
-      </button>
+      {/* Botón de acción o botonera de cantidad */}
+      {selectedQuantity > 0 ? (
+        // Botonera cuando está seleccionado
+        <div className="flex items-center gap-2 bg-white dark:bg-slate-700 rounded-full border border-gray-200 dark:border-slate-600 px-1 py-1">
+          <button
+            onClick={() => onUpdateQuantity?.(item.dish_id, -1)}
+            className="flex items-center justify-center w-6 h-6 rounded-full text-[#8E2653] hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
+            title="Quitar uno"
+          >
+            <span className="material-symbols-outlined text-sm">remove</span>
+          </button>
+
+          <span className="text-sm font-semibold text-gray-900 dark:text-white min-w-[20px] text-center">
+            {selectedQuantity}
+          </span>
+
+          <button
+            onClick={() => onUpdateQuantity?.(item.dish_id, 1)}
+            className="flex items-center justify-center w-6 h-6 rounded-full text-[#8E2653] hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
+            title="Agregar uno más"
+          >
+            <span className="material-symbols-outlined text-sm">add</span>
+          </button>
+        </div>
+      ) : (
+        // Botón "+" cuando no está seleccionado
+        <button
+          onClick={() => onAdd?.(item)}
+          className="flex items-center justify-center w-8 h-8 bg-[#8E2653] hover:bg-[#7E2653] text-white rounded-full transition-colors"
+          title="Agregar al carrito"
+        >
+          <span className="material-symbols-outlined text-sm">add</span>
+        </button>
+      )}
     </div>
   );
 }

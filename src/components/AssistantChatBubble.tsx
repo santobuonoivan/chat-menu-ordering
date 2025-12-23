@@ -63,6 +63,7 @@ export default function AssistantChatBubble({
                 item={data.itemSelected}
                 modifiers={data.modifiers}
                 action={data.action || ""}
+                quantity={data.quantity || 1}
               />
             </div>
           ) : (

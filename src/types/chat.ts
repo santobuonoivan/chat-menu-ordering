@@ -9,6 +9,7 @@ export interface IMessage {
     items?: IMenuItem[];
     modifiers?: IModifierGroup[];
     itemSelected?: IMenuItem;
+    quantity?: number;
     action: //ordering actions
     | "add_dish"
       | "add_modifier"

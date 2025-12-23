@@ -9,6 +9,7 @@ interface ModifierChatProps {
   item: IMenuItem;
   modifiers: IModifierGroup[];
   action: string;
+  quantity?: number;
 }
 
 interface SelectedModifier {
@@ -20,6 +21,7 @@ export default function ModifierChatCard({
   item,
   modifiers,
   action,
+  quantity = 1,
 }: ModifierChatProps) {
   const { addMessage, setModifierListUUID } = useChatStore();
   const { addItem } = useCartStore();
@@ -81,22 +83,24 @@ export default function ModifierChatCard({
       }
     });
 
-    // Agregar al carrito con los modificadores seleccionados
-    addItem(item, cartModifiers, 1);
+    // Agregar al carrito con los modificadores seleccionados (con cantidad)
+    addItem(item, cartModifiers, quantity);
 
     addMessage({
       id: generateUUID(),
       text: `Quiero agregarle ${cartModifiers
         .map((modifier) => modifier.optionName)
-        .join(", ")} a mi ${item.dish_name}`,
+        .join(", ")} a ${quantity > 1 ? `mis ${quantity}` : "mi"} ${
+        item.dish_name
+      }`,
       sender: "user",
       timestamp: new Date(),
     });
 
     addMessage({
       id: generateUUID(),
-      text: `He agregado ${
-        cartModifiers.length > 0 ? "los adicionales a tu" : ""
+      text: `He agregado ${quantity > 1 ? `${quantity} ` : ""}${
+        cartModifiers.length > 0 ? "con los adicionales a tu" : ""
       } ${item.dish_name} al carrito. ¿Puedo ayudarte con algo más?`,
       sender: "assistant",
       timestamp: new Date(),
