@@ -56,7 +56,7 @@ export default function AssistantChatBubble({
         {/* Renderizar ModifierChatCard si hay data de modificadores */}
         {data &&
           data.itemSelected &&
-          /*modifierListUUID == messageId*/ (1 == 1 ? (
+          (modifierListUUID == messageId ? (
             <div className="flex flex-col gap-2 mt-2 max-w-xs">
               <ModifierChatCard
                 items={data.itemSelected}

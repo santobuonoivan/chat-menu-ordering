@@ -93,15 +93,16 @@ export default function ItemChatCardList({
       sender: "user",
       timestamp: new Date(),
     });
-
+    const modMsgUUID = generateUUID();
+    setModifierListUUID?.(modMsgUUID);
     await sleep(500);
 
     addMessage({
-      id: generateUUID(),
+      id: modMsgUUID,
       text:
         selectedArray.length == 1
-          ? "Puedo agregarle a tu "
-          : "Puedo agregarle a tus ",
+          ? "Puedo agregarle algo a tu platillo"
+          : "Puedo agregarle algo a tus platillos",
       sender: "assistant",
       timestamp: new Date(),
       data: {

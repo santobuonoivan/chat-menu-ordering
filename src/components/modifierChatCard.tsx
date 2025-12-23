@@ -75,86 +75,98 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
   };
 
   const handleItemClick = (index: number, item: IMenuItem) => {
-    if (expandedItemIndex === index) {
-      setExpandedItemIndex(null);
-    } else {
+    // No colapsar si ya está expandido, solo permitir expandir otros
+    if (expandedItemIndex !== index) {
       setExpandedItemIndex(index);
       initializeModifiers(index, item);
     }
   };
 
   const handleSkipModifiers = (itemIndex: number) => {
-    const item = items[itemIndex];
-    addItem(item, [], 1);
-
-    addMessage({
-      id: generateUUID(),
-      text: `Quiero mi ${item.dish_name} sin adicionales`,
-      sender: "user",
-      timestamp: new Date(),
-    });
-
+    // Solo marcar como procesado, no agregar al carrito aún
     // Si hay más items, pasar al siguiente
     if (itemIndex < items.length - 1) {
       setExpandedItemIndex(itemIndex + 1);
       initializeModifiers(itemIndex + 1, items[itemIndex + 1]);
     } else {
-      // Finalizar
-      setModifierListUUID?.(undefined);
-      addMessage({
-        id: generateUUID(),
-        text: `He agregado todo a tu carrito. ¿Puedo ayudarte con algo más?`,
-        sender: "assistant",
-        timestamp: new Date(),
-      });
+      // Finalizar y agregar todos al carrito
+      finalizarYAgregarTodos();
     }
   };
 
   const handleAddToCart = async (itemIndex: number) => {
-    const item = items[itemIndex];
-    const itemMods = selectedModifiersPerItem[itemIndex] || [];
-
-    // Convertir modificadores seleccionados al formato del carrito
-    const cartModifiers: ICartModifier[] = [];
-    itemMods.forEach((selected) => {
-      if (selected.selectedModifier) {
-        cartModifiers.push({
-          modifierId: selected.selectedModifier.modifier_id.toString(),
-          modifierName: selected.selectedModifier.group_code,
-          optionName: selected.selectedModifier.mod_name,
-          priceAdjustment: selected.selectedModifier.mod_price,
-        });
-      }
-    });
-
-    // Agregar al carrito
-    addItem(item, cartModifiers, 1);
-
-    if (cartModifiers.length > 0) {
-      addMessage({
-        id: generateUUID(),
-        text: `Quiero agregarle ${cartModifiers
-          .map((modifier) => modifier.optionName)
-          .join(", ")} a mi ${item.dish_name}`,
-        sender: "user",
-        timestamp: new Date(),
-      });
-    }
-
-    // Si hay más items, pasar al siguiente
+    // Solo avanzar al siguiente item, no agregar al carrito aún
     if (itemIndex < items.length - 1) {
       setExpandedItemIndex(itemIndex + 1);
       initializeModifiers(itemIndex + 1, items[itemIndex + 1]);
     } else {
-      // Finalizar
-      setModifierListUUID?.(undefined);
-      addMessage({
-        id: generateUUID(),
-        text: `He agregado todo a tu carrito. ¿Puedo ayudarte con algo más?`,
-        sender: "assistant",
-        timestamp: new Date(),
-      });
+      // Finalizar y agregar todos al carrito
+      finalizarYAgregarTodos();
     }
+  };
+
+  const finalizarYAgregarTodos = () => {
+    const itemsAgregados: string[] = [];
+    const itemsAgregadosByClient: string[] = [];
+
+    // Procesar todos los items y agregar al carrito
+    items.forEach((item, itemIndex) => {
+      const itemMods = selectedModifiersPerItem[itemIndex] || [];
+
+      // Convertir modificadores seleccionados
+      const cartModifiers: ICartModifier[] = [];
+      itemMods.forEach((selected) => {
+        if (selected.selectedModifier) {
+          cartModifiers.push({
+            modifierId: selected.selectedModifier.modifier_id.toString(),
+            modifierName: selected.selectedModifier.group_code,
+            optionName: selected.selectedModifier.mod_name,
+            priceAdjustment: selected.selectedModifier.mod_price,
+          });
+        }
+      });
+
+      // Agregar al carrito
+      addItem(item, cartModifiers, 1);
+
+      // Construir texto para el mensaje final
+      if (cartModifiers.length > 0) {
+        itemsAgregados.push(
+          `${item.dish_name} con ${cartModifiers
+            .map((m) => m.optionName)
+            .join(", ")}`
+        );
+        itemsAgregadosByClient.push(
+          ` ${cartModifiers.map((m) => m.optionName).join(", ")} para mi ${
+            item.dish_name
+          }  `
+        );
+      } else {
+        itemsAgregadosByClient.push(` ${item.dish_name} sin adicionales `);
+        itemsAgregados.push(`${item.dish_name}`);
+      }
+    });
+
+    // Mensaje del usuario describiendo lo que pidió
+    addMessage({
+      id: generateUUID(),
+      text: `Quiero agregar ${itemsAgregadosByClient.join(" y ")} a mi pedido.`,
+      sender: "user",
+      timestamp: new Date(),
+    });
+
+    // Cerrar modal
+    setModifierListUUID?.(undefined);
+
+    // Mensaje final único
+    addMessage({
+      id: generateUUID(),
+      text: `He agregado ${itemsAgregados.join(
+        ", "
+      )} a tu carrito. ¿Puedo ayudarte con algo más?`,
+      sender: "assistant",
+      timestamp: new Date(),
+    });
   };
 
   return (
