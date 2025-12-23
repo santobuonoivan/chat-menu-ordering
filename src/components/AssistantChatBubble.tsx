@@ -21,6 +21,7 @@ export default function AssistantChatBubble({
   avatarUrl,
   data,
 }: AssistantChatBubbleProps) {
+  console.log("AssistantChatBubble data:", data);
   const { itemListUUID, modifierListUUID } = useChatStore();
   const defaultAvatarUrl =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDNmKa-EkUU4XqRtnBRlyyJ_tD6KNtRHf1ETzkN_u9j8slcMXx2oPh-DbODa-9hvXgzsuKbWanRB2r0eyUO3klnXKU7Dzxm_dAVpTchJNgtVeD2UuX1Zj8vsrGRFaKoqYa3S2ez3_RWwqNZS8NartY1ePM-J48BkgaUAnYoD_Pg-Vo37_fuTLT6Z7rSfG_3yADtNcHoWl3qYX1lX3ucqnsnN4xTwTPB5jWMboZOYNpPYshT2y-o2s2xtiAWoNl4si63fykgixBuR7jl";
@@ -54,28 +55,25 @@ export default function AssistantChatBubble({
           )}
         {/* Renderizar ModifierChatCard si hay data de modificadores */}
         {data &&
-          data.modifiers &&
-          data.modifiers.length > 0 &&
           data.itemSelected &&
-          (modifierListUUID == messageId ? (
+          /*modifierListUUID == messageId*/ (1 == 1 ? (
             <div className="flex flex-col gap-2 mt-2 max-w-xs">
               <ModifierChatCard
-                item={data.itemSelected}
-                modifiers={data.modifiers}
+                items={data.itemSelected}
                 action={data.action || ""}
-                quantity={data.quantity || 1}
               />
             </div>
           ) : (
-            <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-slate-700 text-text-light dark:text-text-dark shadow-sm">
-              {!itemListUUID &&
-                !modifierListUUID &&
-                data?.itemSelected?.modifiers
-                  .map((mod) =>
-                    mod.options.map((option) => option.mod_name).join(", ")
-                  )
-                  .join(", ")}
-            </div>
+            <></>
+            // <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-slate-700 text-text-light dark:text-text-dark shadow-sm">
+            //   {!itemListUUID &&
+            //     !modifierListUUID &&
+            //     data?.itemSelected?.modifiers
+            //       .map((mod) =>
+            //         mod.options.map((option) => option.mod_name).join(", ")
+            //       )
+            //       .join(", ")}
+            // </div>
           ))}
       </div>
     </div>

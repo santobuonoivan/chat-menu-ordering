@@ -71,7 +71,13 @@ export default function ItemChatCardList({
   };
 
   const handleAddToCart = async () => {
-    const selectedArray = Object.values(selectedItems);
+    // Expandir items con quantity > 1 en el array
+    const selectedArray: IMenuItem[] = [];
+    Object.values(selectedItems).forEach((sel) => {
+      for (let i = 0; i < sel.quantity; i++) {
+        selectedArray.push(sel.item);
+      }
+    });
 
     if (selectedArray.length === 0) return;
 
@@ -79,9 +85,7 @@ export default function ItemChatCardList({
     setItemListUUID?.(undefined);
 
     // Crear mensaje del usuario con todos los items
-    const itemsText = selectedArray
-      .map((sel) => `${sel.quantity} ${sel.item.dish_name}`)
-      .join(", ");
+    const itemsText = selectedArray.map((item) => item.dish_name).join(", ");
 
     addMessage({
       id: generateUUID(),
@@ -92,58 +96,19 @@ export default function ItemChatCardList({
 
     await sleep(500);
 
-    // Separar items con y sin modificadores
-    const itemsWithModifiers = selectedArray.filter(
-      (sel) => sel.item.modifiers && sel.item.modifiers.length > 0
-    );
-    const itemsWithoutModifiers = selectedArray.filter(
-      (sel) => !sel.item.modifiers || sel.item.modifiers.length === 0
-    );
-
-    // Procesar items CON modificadores (mostrar uno por uno)
-    for (let i = 0; i < itemsWithModifiers.length; i++) {
-      const sel = itemsWithModifiers[i];
-      const id = generateUUID();
-
-      await sleep(300);
-
-      setModifierListUUID?.(id);
-      addMessage({
-        id,
-        text: `${
-          sel.quantity > 1
-            ? `Para tus ${sel.quantity} `
-            : "Puedo agregarle a tu "
-        }${sel.item.dish_name}:`,
-        sender: "assistant",
-        timestamp: new Date(),
-        data: {
-          modifiers: sel.item.modifiers,
-          itemSelected: sel.item,
-          quantity: sel.quantity,
-          action: "add_modifier",
-        },
-      });
-
-      // Solo el último debe mantener setModifierListUUID activo
-      if (i < itemsWithModifiers.length - 1) {
-        await sleep(100);
-      }
-    }
-
-    // Items SIN modificadores: agregar directo (TODO: implementar lógica de carrito)
-    if (itemsWithoutModifiers.length > 0 && itemsWithModifiers.length === 0) {
-      await sleep(300);
-      addMessage({
-        id: generateUUID(),
-        text: `He agregado ${itemsText} a tu pedido. ¿Puedo ayudarte con algo más?`,
-        sender: "assistant",
-        timestamp: new Date(),
-      });
-    }
-
-    // Limpiar selección
-    setSelectedItems({});
+    addMessage({
+      id: generateUUID(),
+      text:
+        selectedArray.length == 1
+          ? "Puedo agregarle a tu "
+          : "Puedo agregarle a tus ",
+      sender: "assistant",
+      timestamp: new Date(),
+      data: {
+        itemSelected: selectedArray,
+        action: "add_modifier",
+      },
+    });
   };
 
   const handlePrevious = () => {
