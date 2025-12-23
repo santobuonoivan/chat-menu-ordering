@@ -11,6 +11,8 @@ interface ChatState {
   setShowListModifiers: (show: boolean) => void;
   isAssistantTyping: boolean;
   setIsAssistantTyping: (typing: boolean) => void;
+  triggerScrollToBottom: boolean;
+  setTriggerScrollToBottom: (trigger: boolean) => void;
   addMessage: (message: IMessage) => void;
   setMessages: (messages: IMessage[]) => void;
   clearMessages: () => void;
@@ -81,6 +83,10 @@ export const useChatStore = create<ChatState>()(
       isAssistantTyping: false,
       setIsAssistantTyping: (typing: boolean) => {
         set({ isAssistantTyping: typing });
+      },
+      triggerScrollToBottom: false,
+      setTriggerScrollToBottom: (trigger: boolean) => {
+        set({ triggerScrollToBottom: trigger });
       },
       setItemListUUID: (uuid: string | undefined) => {
         set({ itemListUUID: uuid });

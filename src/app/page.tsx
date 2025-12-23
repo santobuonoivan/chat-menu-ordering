@@ -19,8 +19,14 @@ import { boolean } from "joi";
 
 export default function Home() {
   const router = useRouter();
-  const { messages, addMessage, isAssistantTyping, setIsAssistantTyping } =
-    useChatStore();
+  const {
+    messages,
+    addMessage,
+    isAssistantTyping,
+    setIsAssistantTyping,
+    triggerScrollToBottom,
+    setTriggerScrollToBottom,
+  } = useChatStore();
   const { setMenuData } = useMenuStore();
   const {
     clientPhone,
@@ -79,6 +85,14 @@ export default function Home() {
       }
     }
   }, [messages, isAtBottom, isAssistantTyping]);
+
+  // Escuchar trigger externo para hacer scroll al final
+  useEffect(() => {
+    if (triggerScrollToBottom) {
+      scrollToBottom();
+      setTriggerScrollToBottom(false); // Reset del trigger
+    }
+  }, [triggerScrollToBottom, setTriggerScrollToBottom]);
 
   /** Tomar de la URL y obtener session data */
   useEffect(() => {

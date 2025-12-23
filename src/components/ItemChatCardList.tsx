@@ -1,6 +1,7 @@
 import { IMenuItem } from "@/types/menu";
 import ItemChatCard from "./ItemChatCard";
 import { useState } from "react";
+import { useChatStore } from "@/stores/chatStore";
 
 interface ItemChatCardListProps {
   items: IMenuItem[];
@@ -18,10 +19,12 @@ export default function ItemChatCardList({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = items.slice(startIndex, endIndex);
+  const { setTriggerScrollToBottom } = useChatStore();
 
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      setTriggerScrollToBottom(true);
     }
   };
 
