@@ -113,6 +113,10 @@ export default function MessageComposer({
           "assistant",
           null
         );
+
+        sleep(500).then(() => {
+          setIsCartOpen(true);
+        });
       }
 
       if (action === "SHOW_CART") {
@@ -153,6 +157,14 @@ export default function MessageComposer({
       if (action === "SELECT_PAYMENT_METHOD") {
         onSendMessage?.(
           `Por favor, selecciona tu método de pago preferido.`,
+          "assistant",
+          null
+        );
+      }
+
+      if (action === "ERROR") {
+        onSendMessage?.(
+          `Lo siento, no he podido entender tu solicitud. ¿Podrías reformularla?`,
           "assistant",
           null
         );
