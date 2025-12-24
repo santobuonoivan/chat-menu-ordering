@@ -22,6 +22,8 @@ export interface ICartState {
   totalPrice: number;
   lastUpdated: Date | null;
   expiresAt: Date | null;
+  isCartOpen: boolean;
+  setIsCartOpen: (isOpen: boolean) => void;
 }
 
 export interface ICartActions {

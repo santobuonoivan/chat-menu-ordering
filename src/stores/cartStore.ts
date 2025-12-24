@@ -43,7 +43,8 @@ export const useCartStore = create<ICartStore>()(
       totalPrice: 0,
       lastUpdated: null,
       expiresAt: null,
-
+      isCartOpen: false,
+      setIsCartOpen: (isOpen: boolean) => set({ isCartOpen: isOpen }),
       addItem: (
         menuItem: IMenuItem,
         modifiers: ICartModifier[] = [],
@@ -224,6 +225,7 @@ export const useCartStore = create<ICartStore>()(
           totalPrice: 0,
           lastUpdated: null,
           expiresAt: null,
+          isCartOpen: false,
         });
       },
 

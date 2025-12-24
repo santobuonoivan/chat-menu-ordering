@@ -11,10 +11,9 @@ interface TopNavBarProps {
 }
 
 export default function TopNavBar({ onClose }: TopNavBarProps) {
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
   const [showMenuPopover, setShowMenuPopover] = useState(false);
-  const { getTotalItems, items } = useCartStore();
+  const { getTotalItems, items, setIsCartOpen, isCartOpen } = useCartStore();
   const { getSessionData } = useSessionStore();
   useEffect(() => {
     setTotalItems(getTotalItems());
