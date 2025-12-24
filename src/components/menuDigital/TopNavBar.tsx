@@ -54,11 +54,13 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
           </button>
           <button
             onClick={handleCartClick}
-            className="relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-[#8E2653] dark:text-text-white transition-colors"
+            className={`relative flex items-center justify-center size-8 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-600/50 text-[#8E2653] dark:text-text-white transition-colors ${
+              totalItems > 0 ? "animate-bounce" : ""
+            }`}
           >
             <FaShoppingCart />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full animate-pulse">
                 {totalItems > 99 ? "99+" : totalItems}
               </span>
             )}
