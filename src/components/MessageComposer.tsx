@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import { useMenuStore } from "@/stores/menuStore";
 import { ApiCallFindDishesByName } from "@/handlers/agentAI/findDishes";
 import { ApiCallAgentWorkflow } from "@/handlers/agentAI/callAgentWorkflow";
+import { useRouter } from "next/navigation";
 
 interface MessageComposerProps {
   onSendMessage?: (
@@ -26,6 +27,7 @@ export default function MessageComposer({
   onAttachClick,
   placeholder = "Escribe tu mensaje aquí...",
 }: MessageComposerProps) {
+  const router = useRouter();
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { resetToInitial, setItemListUUID, setIsAssistantTyping } =
@@ -115,7 +117,7 @@ export default function MessageComposer({
         );
 
         sleep(500).then(() => {
-          setIsCartOpen(true);
+          router.push(`/menu${window.location.search}`);
         });
       }
 
