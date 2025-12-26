@@ -205,6 +205,7 @@ export const rankAndFilterDishes = (
     "toda",
     "todos",
     "todas",
+    "con",
 
     // Palabras relacionadas con cantidad genérica
     "mas",

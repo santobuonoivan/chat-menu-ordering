@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useChatStore } from "@/stores/chatStore";
 import { useCartStore } from "@/stores/cartStore";
 import { IMenuItem, IModifier, IModifierGroup } from "@/types/menu";
@@ -24,6 +24,18 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
   const [selectedModifiersPerItem, setSelectedModifiersPerItem] =
     useState<SelectedModifiersPerItem>({});
   console.log("ModifierChatCard items:", items);
+
+  // Inicializar modificadores del primer item automáticamente
+  useEffect(() => {
+    if (items.length > 0 && items[0].modifiers) {
+      setSelectedModifiersPerItem({
+        0: items[0].modifiers.map((group) => ({
+          groupCode: group.group_code,
+          selectedModifier: null,
+        })),
+      });
+    }
+  }, []);
   // Inicializar modificadores para cada item
   const initializeModifiers = (itemIndex: number, item: IMenuItem) => {
     if (!selectedModifiersPerItem[itemIndex] && item.modifiers) {
@@ -44,6 +56,26 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
   ) => {
     setSelectedModifiersPerItem((prev) => {
       const itemMods = prev[itemIndex] || [];
+      // Si no hay modificadores inicializados, inicializar ahora
+      if (itemMods.length === 0 && items[itemIndex].modifiers) {
+        const initialized = items[itemIndex].modifiers!.map((group) => ({
+          groupCode: group.group_code,
+          selectedModifier: null,
+        }));
+        return {
+          ...prev,
+          [itemIndex]: initialized.map((selected) => {
+            if (selected.groupCode === groupCode) {
+              return {
+                ...selected,
+                selectedModifier: modifier,
+              };
+            }
+            return selected;
+          }),
+        };
+      }
+
       return {
         ...prev,
         [itemIndex]: itemMods.map((selected) => {
