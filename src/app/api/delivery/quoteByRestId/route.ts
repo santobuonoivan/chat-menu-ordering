@@ -11,11 +11,11 @@ export async function POST(request: NextRequest) {
     console.log("Backend URL:", url);
     console.log("Token exists:", !!token);
 
-    payload = {
+    /*payload = {
       rest_id: 163,
       lat: 19.432608,
       lng: -99.133209,
-    };
+    };*/
     const response = await fetch(url, {
       method: "POST",
       headers: {

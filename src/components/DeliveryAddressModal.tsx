@@ -352,7 +352,7 @@ export default function DeliveryAddressModal({
         locality: data.city,
         administrativeArea: data.province,
         postalCode: data.postalCode,
-        country: "AR",
+        country: "MX",
       },
     };
 
