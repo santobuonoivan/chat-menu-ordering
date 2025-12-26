@@ -85,11 +85,13 @@ export const useSessionStore = create<SessionState>()(
       sessionChannelName: null,
 
       setClientPhone: (phone: string) => {
-        set({ clientPhone: phone });
+        // Limpiar el canal anterior cuando cambia el teléfono
+        set({ clientPhone: phone, sessionChannelName: null });
       },
 
       setRestPhone: (phone: string) => {
-        set({ restPhone: phone });
+        // Limpiar el canal anterior cuando cambia el teléfono
+        set({ restPhone: phone, sessionChannelName: null });
       },
 
       setSessionData: (data: SessionData) => {

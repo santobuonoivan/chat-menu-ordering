@@ -22,25 +22,26 @@ interface AblyProviderProps {
 }
 
 export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
-  const { initialize, cleanup, clearExpiredPayments, subscribeToChannel } =
-    useAblyStore();
-  const { getSessionChannelName } = useSessionStore();
+  const {
+    initialize,
+    cleanup,
+    clearExpiredPayments,
+    subscribeToChannel,
+    unsubscribeFromChannel,
+    activeChannels,
+  } = useAblyStore();
+  const {
+    clientPhone,
+    restPhone,
+    getSessionChannelName,
+    generateSessionChannel,
+  } = useSessionStore();
 
+  // 🚀 Inicialización de Ably (solo una vez)
   useEffect(() => {
-    // Inicializar Ably al montar
     initialize();
 
-    // 🔐 Suscribirse al canal único de la sesión (basado en teléfonos)
-    const sessionChannel = getSessionChannelName();
-    if (sessionChannel) {
-      console.log("🔐 Suscripción al canal de pago:", sessionChannel);
-      // Solo un evento: payment-response
-      subscribeToChannel(sessionChannel, "payment-response");
-    } else {
-      console.warn("⚠️ No se puede suscribir: faltan clientPhone o restPhone");
-    }
-
-    // 🧪 En desarrollo, también suscribirse al canal de pruebas
+    // 🧪 En desarrollo, suscribirse al canal de pruebas
     if (process.env.NODE_ENV === "development") {
       console.log("🧪 [DEV] Auto-suscripción a test-channel");
       subscribeToChannel("test-channel", "test-event");
@@ -51,17 +52,54 @@ export const AblyProvider: React.FC<AblyProviderProps> = ({ children }) => {
       clearExpiredPayments();
     }, 60000); // 1 minuto
 
-    // Cleanup al desmontar
+    // Cleanup al desmontar el provider
     return () => {
       clearInterval(cleanupInterval);
       cleanup();
     };
+  }, [initialize, cleanup, clearExpiredPayments, subscribeToChannel]);
+
+  // 🔄 Re-suscripción cuando cambian los teléfonos (clientPhone o restPhone)
+  useEffect(() => {
+    // Solo proceder si ambos teléfonos están disponibles
+    if (!clientPhone || !restPhone) {
+      console.warn("⚠️ No se puede suscribir: faltan clientPhone o restPhone");
+      return;
+    }
+
+    // Regenerar el canal de sesión con los nuevos teléfonos
+    const newSessionChannel = generateSessionChannel();
+    console.log("🔐 Nuevo canal de sesión generado:", newSessionChannel);
+
+    // Desuscribirse de canales de pago anteriores (excepto test-channel)
+    const paymentChannels = activeChannels.filter((ch) =>
+      ch.startsWith("payment-")
+    );
+    paymentChannels.forEach((oldChannel) => {
+      if (oldChannel !== newSessionChannel) {
+        console.log("🔕 Desuscribiendo del canal anterior:", oldChannel);
+        unsubscribeFromChannel(oldChannel);
+      }
+    });
+
+    // Suscribirse al nuevo canal si no está ya suscrito
+    if (!activeChannels.includes(newSessionChannel)) {
+      console.log("🔐 Suscripción al nuevo canal de pago:", newSessionChannel);
+      subscribeToChannel(newSessionChannel, "payment-response");
+    }
+
+    // Cleanup: desuscribirse cuando cambien los teléfonos de nuevo
+    return () => {
+      // No hacer cleanup aquí ya que el siguiente useEffect se encargará
+      // de desuscribir el canal anterior
+    };
   }, [
-    initialize,
-    cleanup,
-    clearExpiredPayments,
+    clientPhone,
+    restPhone,
     subscribeToChannel,
-    getSessionChannelName,
+    unsubscribeFromChannel,
+    activeChannels,
+    generateSessionChannel,
   ]);
 
   return <>{children}</>;

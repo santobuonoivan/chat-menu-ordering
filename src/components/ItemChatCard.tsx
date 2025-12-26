@@ -20,7 +20,7 @@ export default function ItemChatCard({
   onUpdateQuantity,
 }: ItemChatProps) {
   return (
-    <div className="flex items-center gap-3 p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-600 hover:shadow-sm transition-shadow">
+    <div className="flex items-center gap-3 p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-600 hover:shadow-sm transition-shadow w-full">
       {/* Imagen del producto */}
       <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-700 shrink-0">
         <img
@@ -40,40 +40,42 @@ export default function ItemChatCard({
         </p>
       </div>
 
-      {/* Botón de acción o botonera de cantidad */}
-      {selectedQuantity > 0 ? (
-        // Botonera cuando está seleccionado
-        <div className="flex items-center gap-2 bg-white dark:bg-slate-700 rounded-full border border-gray-200 dark:border-slate-600 px-1 py-1">
-          <button
-            onClick={() => onUpdateQuantity?.(item.dish_id, -1)}
-            className="flex items-center justify-center w-6 h-6 rounded-full text-[#8E2653] hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
-            title="Quitar uno"
-          >
-            <span className="material-symbols-outlined text-sm">remove</span>
-          </button>
+      {/* Botón de acción o botonera de cantidad - ancho fijo */}
+      <div className="w-[100px] flex justify-end shrink-0">
+        {selectedQuantity > 0 ? (
+          // Botonera cuando está seleccionado
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-700 rounded-full border border-gray-200 dark:border-slate-600 px-1 py-1">
+            <button
+              onClick={() => onUpdateQuantity?.(item.dish_id, -1)}
+              className="flex items-center justify-center w-6 h-6 rounded-full text-[#8E2653] hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
+              title="Quitar uno"
+            >
+              <span className="material-symbols-outlined text-sm">remove</span>
+            </button>
 
-          <span className="text-sm font-semibold text-gray-900 dark:text-white min-w-[20px] text-center">
-            {selectedQuantity}
-          </span>
+            <span className="text-sm font-semibold text-gray-900 dark:text-white min-w-[20px] text-center">
+              {selectedQuantity}
+            </span>
 
+            <button
+              onClick={() => onUpdateQuantity?.(item.dish_id, 1)}
+              className="flex items-center justify-center w-6 h-6 rounded-full text-[#8E2653] hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
+              title="Agregar uno más"
+            >
+              <span className="material-symbols-outlined text-sm">add</span>
+            </button>
+          </div>
+        ) : (
+          // Botón "+" cuando no está seleccionado
           <button
-            onClick={() => onUpdateQuantity?.(item.dish_id, 1)}
-            className="flex items-center justify-center w-6 h-6 rounded-full text-[#8E2653] hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
-            title="Agregar uno más"
+            onClick={() => onAdd?.(item)}
+            className="flex items-center justify-center w-8 h-8 bg-[#8E2653] hover:bg-[#7E2653] text-white rounded-full transition-colors"
+            title="Agregar al carrito"
           >
             <span className="material-symbols-outlined text-sm">add</span>
           </button>
-        </div>
-      ) : (
-        // Botón "+" cuando no está seleccionado
-        <button
-          onClick={() => onAdd?.(item)}
-          className="flex items-center justify-center w-8 h-8 bg-[#8E2653] hover:bg-[#7E2653] text-white rounded-full transition-colors"
-          title="Agregar al carrito"
-        >
-          <span className="material-symbols-outlined text-sm">add</span>
-        </button>
-      )}
+        )}
+      </div>
     </div>
   );
 }

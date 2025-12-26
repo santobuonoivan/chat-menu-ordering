@@ -185,7 +185,7 @@ export const useAblyStore = create<AblyStore>()(
                 message.data.transaction_id
               );
 
-              if (pendingPayment || true) {
+              if (pendingPayment) {
                 console.log(
                   "💰 Payment response received for:",
                   message.data.transaction_id
