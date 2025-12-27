@@ -218,6 +218,15 @@ export const useCartStore = create<ICartStore>()(
         return state.totalPrice;
       },
 
+      getItemNames: () => {
+        const state = get();
+        if (isCartExpired(state.expiresAt)) {
+          get().resetCart();
+          return [];
+        }
+        return state.items.map((item) => item.menuItem.dish_name);
+      },
+
       resetCart: () => {
         set({
           items: [],

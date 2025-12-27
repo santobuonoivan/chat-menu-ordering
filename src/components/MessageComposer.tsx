@@ -32,7 +32,8 @@ export default function MessageComposer({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { resetToInitial, setItemListUUID, setIsAssistantTyping } =
     useChatStore();
-  const { resetCart, setIsCartOpen } = useCartStore();
+  const { resetCart, setIsCartOpen, getItemNames, removeItem, getCart } =
+    useCartStore();
   const { menuData } = useMenuStore();
 
   // Auto-resize textarea
@@ -50,11 +51,12 @@ export default function MessageComposer({
     console.log("Dish List:", dishList);
     // Filtrar localmente primero
     const filteredDishes = rankAndFilterDishes(dishList, input);
+    const isItemInCart = rankAndFilterDishes(getItemNames(), input);
     console.log("Filtered Dishes:", filteredDishes);
 
     let payload = {};
 
-    if (filteredDishes.length === 0) {
+    if (filteredDishes.length === 0 || isItemInCart.length > 0) {
       // Si no hay ninguno, devolver vacío
       payload = { type: "CATEGORIZED", data: { INPUT: input } };
       console.log(
@@ -67,7 +69,7 @@ export default function MessageComposer({
           return { success: res.status === 200, action: res.data?.action };
         })
         .then((response) => {
-          handleCategorizedResponse(response);
+          handleCategorizedResponse(response, isItemInCart);
         })
         .catch((error) => {
           console.error("Error calling Agent Workflow:", error);
@@ -102,13 +104,52 @@ export default function MessageComposer({
       });
   };
 
-  const handleCategorizedResponse = (response: {
-    success: boolean;
-    action: string;
-  }) => {
+  const handleCategorizedResponse = (
+    response: {
+      success: boolean;
+      action: string;
+    },
+    isItemInCart: string[]
+  ) => {
     if (response.success) {
       console.log("Categorized Action:", response.action);
       const action = response.action.toUpperCase();
+      if (action == "REMOVE_ITEM_CART") {
+        sleep(500).then(() => {
+          // eliminar el item del carrito
+          if ((isItemInCart.length = 0)) {
+            const cart = getCart();
+            const itemToRemove = cart.find((item) =>
+              item.menuItem.dish_name
+                .toLowerCase()
+                .includes(isItemInCart[0].toLowerCase())
+            );
+            if (itemToRemove) removeItem(itemToRemove.id);
+          } else if (isItemInCart.length > 0) {
+            //TODO rengo que crear un mensaje espcial que le muestre los items que tiene en el carrito para que elija cual eliminar
+          }
+        });
+      }
+
+      if (action == "UPDATE_ITEM_CART") {
+        sleep(500).then(() => {
+          sleep(500).then(() => {
+            // eliminar el item del carrito
+            if ((isItemInCart.length = 0)) {
+              const cart = getCart();
+              const itemToRemove = cart.find((item) =>
+                item.menuItem.dish_name
+                  .toLowerCase()
+                  .includes(isItemInCart[0].toLowerCase())
+              );
+              if (itemToRemove) removeItem(itemToRemove.id);
+            } else if (isItemInCart.length > 0) {
+              //TODO rengo que crear un mensaje espcial que le muestre los items que tiene en el carrito para que elija cual eliminar
+            }
+          });
+        });
+      }
+
       if (action === "SHOW_MENU") {
         onSendMessage?.(
           `He encontrado varios platos que podrían interesarte. Aquí tienes el menú completo para que puedas elegir.`,

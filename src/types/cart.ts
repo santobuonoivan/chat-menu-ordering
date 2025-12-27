@@ -37,6 +37,7 @@ export interface ICartActions {
   getCart: () => ICartItem[];
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  getItemNames: () => string[];
   resetCart: () => void;
   clearExpiredCart: () => void;
 }
