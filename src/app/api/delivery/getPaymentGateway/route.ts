@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const url = `${process.env.NEXT_PUBLIC_URL_API_BACKEND}/v1/finance/payment/gateway?signature=${signature}`;
-    const token = process.env.NEXT_PUBLIC_KEY_API_BACKEND as string;
+    const url = `${process.env.URL_API_BACKEND}/v1/finance/payment/gateway?signature=${signature}`;
+    const token = process.env.KEY_API_BACKEND as string;
 
     const response = await fetch(url, {
       method: "GET",

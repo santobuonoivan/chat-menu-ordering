@@ -6,8 +6,8 @@ export async function POST(request: NextRequest) {
     const cart_id = paymentData.cart_id;
     const payload = paymentData.payload;
 
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/automate/core/pay/${cart_id}`;
-    const token = process.env.NEXT_PUBLIC_API_KEY as string;
+    const url = `${process.env.BACKEND_URL}/automate/core/pay/${cart_id}`;
+    const token = process.env.API_KEY as string;
 
     const response = await fetch(url, {
       method: "POST",

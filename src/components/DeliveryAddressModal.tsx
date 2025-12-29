@@ -131,7 +131,7 @@ export default function DeliveryAddressModal({
       if (window.google && window.google.maps) {
         initializeMap();
       } else {
-        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+        const apiKey = process.env.GOOGLE_MAPS_API_KEY;
         if (!apiKey) {
           console.error("API key de Google Maps no configurada");
           return;

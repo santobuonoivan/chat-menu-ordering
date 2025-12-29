@@ -2,18 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     const phone = searchParams.get("phone");
 
     if (!phone) {
       return NextResponse.json(
-        { error: "Phone parameter is required" },
+        { error: "Phone number is required" },
         { status: 400 }
       );
     }
 
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/automate/core/menu/${phone}`;
-    const token = process.env.NEXT_PUBLIC_API_KEY as string;
+    const url = `${process.env.BACKEND_URL}/automate/core/menu/${phone}`;
+    const token = process.env.API_KEY as string;
 
     const response = await fetch(url, {
       method: "GET",

@@ -70,9 +70,9 @@ export const ProcessPayment = async (
   data: any;
 }> => {
   const response = await duckApi.post(
-    `/v1/payments/CNKT/order/${process.env.NEXT_PUBLIC_RECIPE_UUID}`,
+    `/v1/payments/CNKT/order/${process.env.RECIPE_UUID}`,
     paymentData,
-    { Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` }
+    { Authorization: `Bearer ${process.env.TOKEN}` }
   );
   const { success, data } = response;
   return { success, data: data };

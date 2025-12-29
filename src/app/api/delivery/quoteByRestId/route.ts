@@ -5,8 +5,8 @@ export async function POST(request: NextRequest) {
     let payload = await request.json();
     console.log("Received payload:", payload);
 
-    const url = `${process.env.NEXT_PUBLIC_URL_API_BACKEND}/v2/delivery/booking/quote-by-rest-id`;
-    const token = process.env.NEXT_PUBLIC_KEY_API_BACKEND as string;
+    const url = `${process.env.URL_API_BACKEND}/v2/delivery/booking/quote-by-rest-id`;
+    const token = process.env.KEY_API_BACKEND as string;
 
     console.log("Backend URL:", url);
     console.log("Token exists:", !!token);

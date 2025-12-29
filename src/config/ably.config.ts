@@ -8,8 +8,7 @@ export interface AblyConfig {
 }
 
 export const ABLY_CONFIG: AblyConfig = {
-  API_KEY:
-    process.env.NEXT_PUBLIC_ABLY_API_KEY || process.env.ABLY_API_KEY || "",
+  API_KEY: process.env.ABLY_API_KEY || "",
   options: {
     echoMessages: false,
     autoConnect: true,

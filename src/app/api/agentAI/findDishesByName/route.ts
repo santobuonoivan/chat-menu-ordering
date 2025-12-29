@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const payload = await request.json();
 
-    const url = `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff`;
+    const url = `${process.env.WEBHOOK_URL}/webhook/16d87d1c-2071-4bf6-b4ee-03873d0cc2ff`;
 
     const response = await fetch(url, {
       method: "POST",

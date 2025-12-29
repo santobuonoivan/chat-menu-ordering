@@ -21,6 +21,11 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Build arguments - NO USAR  aquí ya que Next.js standalone
+# maneja las env vars en runtime desde el servidor
+# ARG variables solo son necesarias si necesitas algo en tiempo de build
+# pero para runtime, se cargan desde Cloud Run directamente
+
 RUN npm run build
 
 # If using npm comment out above and use below instead

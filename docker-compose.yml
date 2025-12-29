@@ -1,25 +1,25 @@
-version: '3.8'
+version: "3.8"
 services:
   delivery:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    ports: 
+    ports:
       - "8080:8080"
     networks:
       - shared-appio
     environment:
       NODE_ENV: production
       PORT: 8080
-      NEXT_PUBLIC_BACKEND_URL: https://monitorapi.appio.com.mx/api/v1
-      NEXT_PUBLIC_API_KEY: Ir8JdmOWDtt95J7VoFMZgTVgwyceLAADdZm76dGDnqzSm7ej6bk6tBPK6KZJiRO2
-      NEXT_PUBLIC_TIMEOUT: 30000
-      NEXT_PUBLIC_WEBHOOK_URL: https://automate.appio.com.mx
-      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: AIzaSyBnmYmy_u7-0qSsA549Lyd4y12gQ-LwSZo
-      NEXT_PUBLIC_DUCK_API_URL: https://dev-payapi.appio.com.mx
-      NEXT_PUBLIC_DUCK_API_KEY: f34315fc-4b06-4a7d-8200-3a11bf771f28
-      NEXT_PUBLIC_DUCK_API_TIMEOUT: 10000
+      BACKEND_URL: https://monitorapi.appio.com.mx/api/v1
+      API_KEY: Ir8JdmOWDtt95J7VoFMZgTVgwyceLAADdZm76dGDnqzSm7ej6bk6tBPK6KZJiRO2
+      TIMEOUT: 30000
+      WEBHOOK_URL: https://automate.appio.com.mx
+      GOOGLE_MAPS_API_KEY: AIzaSyBnmYmy_u7-0qSsA549Lyd4y12gQ-LwSZo
+      DUCK_API_URL: https://dev-payapi.appio.com.mx
+      DUCK_API_KEY: f34315fc-4b06-4a7d-8200-3a11bf771f28
+      DUCK_API_TIMEOUT: 10000
 networks:
-  shared-appio: 
+  shared-appio:
     external: true
     name: shared-appio

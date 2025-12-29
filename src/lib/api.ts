@@ -1,44 +1,44 @@
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "",
-  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
+  BASE_URL: process.env.BACKEND_URL,
+  TIMEOUT: process.env.TIMEOUT,
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "X-Authorization": process.env.NEXT_PUBLIC_API_KEY || "",
+    "X-Authorization": process.env.API_KEY,
   },
 };
 
 const API_CONFIG_CORE = {
-  BASE_URL: process.env.NEXT_PUBLIC_URL_CORE_API,
-  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_TIMEOUT || "30000"),
+  BASE_URL: process.env.URL_CORE_API,
+  TIMEOUT: process.env.TIMEOUT,
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "HTTP-X-API-KEY": process.env.NEXT_PUBLIC_CORE_API_KEY || "",
+    "HTTP-X-API-KEY": process.env.CORE_API_KEY,
   },
 };
 
 const WEBHOOK_CONFIG = {
-  URL: process.env.NEXT_PUBLIC_WEBHOOK_URL,
+  URL: process.env.WEBHOOK_URL,
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
 };
 const DELIVERY_API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_URL_API_BACKEND,
-  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
+  BASE_URL: process.env.URL_API_BACKEND,
+  TIMEOUT: process.env.DUCK_API_TIMEOUT,
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "X-Authorization": process.env.NEXT_PUBLIC_KEY_API_BACKEND || "",
+    "X-Authorization": process.env.KEY_API_BACKEND,
   },
 };
 
 const DUCK_API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_DUCK_API_URL,
-  TIMEOUT: parseInt(process.env.NEXT_PUBLIC_DUCK_API_TIMEOUT || "10000"),
+  BASE_URL: process.env.DUCK_API_URL,
+  TIMEOUT: process.env.DUCK_API_TIMEOUT,
   HEADERS: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -57,20 +57,20 @@ export interface ApiRequestOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   headers?: Record<string, string>;
   body?: any;
-  timeout?: number;
+  timeout?: number | string;
 }
 
 // Generic API Call Function
 export async function apiCall<T = any>(
   endpoint: string,
   options: ApiRequestOptions = {},
-  host: string = API_CONFIG.BASE_URL
+  host: string = API_CONFIG.BASE_URL as string
 ): Promise<ApiResponse<T>> {
   const {
     method = "GET",
     headers = {},
     body,
-    timeout = API_CONFIG.TIMEOUT,
+    timeout = API_CONFIG.TIMEOUT as number | string,
   } = options;
 
   const url = `${host}${endpoint}`;
@@ -99,7 +99,7 @@ export async function apiCall<T = any>(
   try {
     // Create abort controller for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    const timeoutId = setTimeout(() => controller.abort(), Number(timeout));
 
     const response = await fetch(url, {
       ...requestOptions,
@@ -160,7 +160,11 @@ export const deliveryApi = {
   ): Promise<ApiResponse<T>> => {
     return apiCall<T>(
       endpoint,
-      { ...options, method: "GET", headers: DELIVERY_API_CONFIG.HEADERS },
+      {
+        ...options,
+        method: "GET",
+        headers: DELIVERY_API_CONFIG.HEADERS as any,
+      },
       DELIVERY_API_CONFIG.BASE_URL
     );
   },
@@ -174,7 +178,7 @@ export const deliveryApi = {
       {
         method: "POST",
         body: data,
-        headers: { ...DELIVERY_API_CONFIG.HEADERS, ...headers },
+        headers: { ...DELIVERY_API_CONFIG.HEADERS, ...headers } as any,
       },
       DELIVERY_API_CONFIG.BASE_URL
     );
@@ -255,7 +259,7 @@ export const agentAIApi = {
 export const standarApi = {
   // GET request example
   get: <T = any>(endpoint: string, headers?: Record<string, string>) =>
-    apiCall<T>(endpoint, { method: "GET", headers: API_CONFIG.HEADERS }),
+    apiCall<T>(endpoint, { method: "GET", headers: API_CONFIG.HEADERS as any }),
 
   // POST request example
   post: <T = any>(
@@ -266,7 +270,7 @@ export const standarApi = {
     apiCall<T>(endpoint, {
       method: "POST",
       body: data,
-      headers: API_CONFIG.HEADERS,
+      headers: API_CONFIG.HEADERS as any,
     }),
 
   // PUT request example
@@ -278,12 +282,15 @@ export const standarApi = {
     apiCall<T>(endpoint, {
       method: "PUT",
       body: data,
-      headers: API_CONFIG.HEADERS,
+      headers: API_CONFIG.HEADERS as any,
     }),
 
   // DELETE request example
   delete: <T = any>(endpoint: string, headers?: Record<string, string>) =>
-    apiCall<T>(endpoint, { method: "DELETE", headers: API_CONFIG.HEADERS }),
+    apiCall<T>(endpoint, {
+      method: "DELETE",
+      headers: API_CONFIG.HEADERS as any,
+    }),
   // PATCH request example
   patch: <T = any>(
     endpoint: string,
@@ -293,7 +300,7 @@ export const standarApi = {
     apiCall<T>(endpoint, {
       method: "PATCH",
       body: data,
-      headers: API_CONFIG.HEADERS,
+      headers: API_CONFIG.HEADERS as any,
     }),
 };
 
@@ -310,7 +317,7 @@ export const coreApi = {
 
     return apiCall<T>(
       endpoint,
-      { method: "POST", body: data, headers: API_CONFIG_CORE.HEADERS },
+      { method: "POST", body: data, headers: API_CONFIG_CORE.HEADERS as any },
       API_CONFIG_CORE.BASE_URL
     );
   },

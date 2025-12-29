@@ -106,10 +106,8 @@ export default function AblyTestComponent() {
         <ol className="list-decimal list-inside space-y-1 text-sm">
           <li>
             Asegúrate de tener configurada la variable{" "}
-            <code className="bg-yellow-100 px-1 rounded">
-              NEXT_PUBLIC_ABLY_API_KEY
-            </code>{" "}
-            en tu .env
+            <code className="bg-yellow-100 px-1 rounded">ABLY_KEY</code> en tu
+            .env
           </li>
           <li>Abre esta página en dos pestañas diferentes</li>
           <li>Envía mensajes desde una pestaña</li>

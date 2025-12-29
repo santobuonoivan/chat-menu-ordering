@@ -4,8 +4,8 @@ export async function POST(request: NextRequest) {
   try {
     const order = await request.json();
 
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/automate/core/orders`;
-    const token = process.env.NEXT_PUBLIC_API_KEY as string;
+    const url = `${process.env.BACKEND_URL}/automate/core/orders`;
+    const token = process.env.API_KEY as string;
 
     const response = await fetch(url, {
       method: "POST",
