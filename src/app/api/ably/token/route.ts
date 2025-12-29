@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const ablyApiKey = process.env.ABLY_API_KEY;
-  console.error("ENVS VALUES:", process.env);
+  console.error("ABLY_API_KEY VALUE:", process.env.ABLY_API_KEY);
+  console.error("ablyApiKey VALUE:", ablyApiKey);
   if (!ablyApiKey) {
     console.error("❌ ABLY_API_KEY not found in environment variables");
     return NextResponse.json(
