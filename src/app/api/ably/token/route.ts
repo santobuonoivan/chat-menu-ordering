@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
+import { getServerEnv } from "@/config/env.config";
 
 export async function GET() {
-  const ablyApiKey = process.env.ABLY_API_KEY;
-  console.error("ABLY_API_KEY VALUE:", process.env.ABLY_API_KEY);
-  console.error("ablyApiKey VALUE:", ablyApiKey);
-  if (!ablyApiKey) {
+  const { ABLY_API_KEY } = getServerEnv();
+  
+  if (!ABLY_API_KEY) {
     console.error("❌ ABLY_API_KEY not found in environment variables");
     return NextResponse.json(
       { error: "Ably API key not configured" },
@@ -13,6 +13,6 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    apiKey: ablyApiKey,
+    apiKey: ABLY_API_KEY,
   });
 }

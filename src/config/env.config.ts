@@ -8,21 +8,36 @@
  */
 
 // Función para obtener variables de entorno en runtime
-export const getServerEnv = () => ({
-  ABLY_API_KEY: process.env.ABLY_API_KEY || "",
-  BACKEND_URL: process.env.BACKEND_URL || "",
-  API_KEY: process.env.API_KEY || "",
-  URL_CORE_API: process.env.URL_CORE_API || "",
-  CORE_API_KEY: process.env.CORE_API_KEY || "",
-  WEBHOOK_URL: process.env.WEBHOOK_URL || "",
-  URL_API_BACKEND: process.env.URL_API_BACKEND || "",
-  KEY_API_BACKEND: process.env.KEY_API_BACKEND || "",
-  DUCK_API_URL: process.env.DUCK_API_URL || "",
-  RECIPE_UUID: process.env.RECIPE_UUID || "",
-  TOKEN: process.env.TOKEN || "",
-  TIMEOUT: parseInt(process.env.TIMEOUT || "30000"),
-  DUCK_API_TIMEOUT: parseInt(process.env.DUCK_API_TIMEOUT || "10000"),
-});
+export const getServerEnv = () => {
+  const env = {
+    ABLY_API_KEY: process.env.ABLY_API_KEY || "",
+    BACKEND_URL: process.env.BACKEND_URL || "",
+    API_KEY: process.env.API_KEY || "",
+    URL_CORE_API: process.env.URL_CORE_API || "",
+    CORE_API_KEY: process.env.CORE_API_KEY || "",
+    WEBHOOK_URL: process.env.WEBHOOK_URL || "",
+    URL_API_BACKEND: process.env.URL_API_BACKEND || "",
+    KEY_API_BACKEND: process.env.KEY_API_BACKEND || "",
+    DUCK_API_URL: process.env.DUCK_API_URL || "",
+    RECIPE_UUID: process.env.RECIPE_UUID || "",
+    TOKEN: process.env.TOKEN || "",
+    TIMEOUT: parseInt(process.env.TIMEOUT || "30000"),
+    DUCK_API_TIMEOUT: parseInt(process.env.DUCK_API_TIMEOUT || "10000"),
+  };
+
+  // Debug logging si está habilitado
+  if (process.env.DEBUG_ENV === "true") {
+    console.log("🔍 Environment variables status:", {
+      ABLY_API_KEY: env.ABLY_API_KEY ? "✅ Set" : "❌ Missing",
+      BACKEND_URL: env.BACKEND_URL ? "✅ Set" : "❌ Missing",
+      API_KEY: env.API_KEY ? "✅ Set" : "❌ Missing",
+      URL_CORE_API: env.URL_CORE_API ? "✅ Set" : "❌ Missing",
+      CORE_API_KEY: env.CORE_API_KEY ? "✅ Set" : "❌ Missing",
+    });
+  }
+
+  return env;
+};
 
 // Para compatibilidad con código existente (DEPRECATED - usar getServerEnv())
 export const serverEnv = getServerEnv();
