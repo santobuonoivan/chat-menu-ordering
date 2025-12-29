@@ -2,8 +2,13 @@
  * Server-side environment variables
  * Estas variables solo están disponibles en el servidor (API routes, server components)
  * NO están expuestas al navegador
+ *
+ * IMPORTANTE: Usar getServerEnv() en lugar de acceder directamente a serverEnv
+ * para asegurar que las variables se lean en runtime, no en build time
  */
-export const serverEnv = {
+
+// Función para obtener variables de entorno en runtime
+export const getServerEnv = () => ({
   ABLY_API_KEY: process.env.ABLY_API_KEY || "",
   BACKEND_URL: process.env.BACKEND_URL || "",
   API_KEY: process.env.API_KEY || "",
@@ -17,7 +22,10 @@ export const serverEnv = {
   TOKEN: process.env.TOKEN || "",
   TIMEOUT: parseInt(process.env.TIMEOUT || "30000"),
   DUCK_API_TIMEOUT: parseInt(process.env.DUCK_API_TIMEOUT || "10000"),
-} as const;
+});
+
+// Para compatibilidad con código existente (DEPRECATED - usar getServerEnv())
+export const serverEnv = getServerEnv();
 
 /**
  * Client-side environment variables
@@ -31,9 +39,10 @@ export const publicEnv = {
 
 // Validación básica en desarrollo
 if (process.env.NODE_ENV === "development") {
+  const env = getServerEnv();
   const requiredEnvs = ["ABLY_API_KEY", "BACKEND_URL", "API_KEY"] as const;
 
-  const missing = requiredEnvs.filter((key) => !serverEnv[key]);
+  const missing = requiredEnvs.filter((key) => !env[key]);
 
   if (missing.length > 0) {
     console.warn(`⚠️  Missing environment variables: ${missing.join(", ")}`);
