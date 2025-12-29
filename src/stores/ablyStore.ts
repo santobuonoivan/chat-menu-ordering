@@ -222,20 +222,22 @@ export const useAblyStore = create<AblyStore>()(
             }
           };
 
-          const unsubscribe = subscribeToChannel(
-            channelName,
-            eventName,
-            handleMessage
-          );
-          unsubscribeFunctions.set(channelName, unsubscribe);
+          // Suscribirse de forma asíncrona
+          subscribeToChannel(channelName, eventName, handleMessage)
+            .then((unsubscribe) => {
+              unsubscribeFunctions.set(channelName, unsubscribe);
 
-          set((state) => ({
-            activeChannels: [...state.activeChannels, channelName],
-          }));
+              set((state) => ({
+                activeChannels: [...state.activeChannels, channelName],
+              }));
 
-          console.log(
-            `🔔 Subscribed to channel: ${channelName} (event: ${eventName})`
-          );
+              console.log(
+                `🔔 Subscribed to channel: ${channelName} (event: ${eventName})`
+              );
+            })
+            .catch((error) => {
+              console.error("❌ Error subscribing to channel:", error);
+            });
         } catch (error) {
           console.error("❌ Error subscribing to channel:", error);
         }
@@ -259,17 +261,22 @@ export const useAblyStore = create<AblyStore>()(
 
       initialize: () => {
         try {
-          const ably = getAblyInstance();
+          // Inicializar de forma asíncrona
+          getAblyInstance()
+            .then((ably) => {
+              // Escuchar cambios en el estado de conexión
+              ably.connection.on((stateChange) => {
+                get().setConnectionState(
+                  stateChange.current === "connected",
+                  stateChange.current
+                );
+              });
 
-          // Escuchar cambios en el estado de conexión
-          ably.connection.on((stateChange) => {
-            get().setConnectionState(
-              stateChange.current === "connected",
-              stateChange.current
-            );
-          });
-
-          console.log("🚀 Ably store initialized");
+              console.log("🚀 Ably store initialized");
+            })
+            .catch((error) => {
+              console.error("❌ Error initializing Ably store:", error);
+            });
         } catch (error) {
           console.error("❌ Error initializing Ably store:", error);
         }

@@ -18,19 +18,25 @@ export const useAbly = (channelName: string, eventName?: string) => {
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    // Verificar estado de conexión
-    setIsConnected(isAblyConnected());
+    // Función async interna
+    const setupAbly = async () => {
+      // Verificar estado de conexión
+      const isConnected = await isAblyConnected();
+      setIsConnected(isConnected);
 
-    // Suscribirse al canal
-    const handleMessage = (message: Ably.Message) => {
-      setMessages((prev) => [...prev, message]);
+      // Suscribirse al canal
+      const handleMessage = (message: Ably.Message) => {
+        setMessages((prev) => [...prev, message]);
+      };
+
+      unsubscribeRef.current = await subscribeToChannel(
+        channelName,
+        eventName || null,
+        handleMessage
+      );
     };
 
-    unsubscribeRef.current = subscribeToChannel(
-      channelName,
-      eventName || null,
-      handleMessage
-    );
+    setupAbly();
 
     // Cleanup al desmontar
     return () => {
@@ -60,7 +66,11 @@ export const useAblyPublish = (channelName: string) => {
   const channelRef = useRef<Ably.RealtimeChannel | null>(null);
 
   useEffect(() => {
-    channelRef.current = getAblyChannel(channelName);
+    const setupChannel = async () => {
+      channelRef.current = await getAblyChannel(channelName);
+    };
+
+    setupChannel();
 
     return () => {
       channelRef.current = null;
@@ -87,7 +97,26 @@ export const useAblyPresence = (channelName: string) => {
   const channelRef = useRef<Ably.RealtimeChannel | null>(null);
 
   useEffect(() => {
-    channelRef.current = getAblyChannel(channelName);
+    const setupChannel = async () => {
+      channelRef.current = await getAblyChannel(channelName);
+
+      const updateMembers = async () => {
+        if (!channelRef.current) return;
+
+        const presence = await channelRef.current.presence.get();
+        setMembers(presence);
+      };
+
+      // Actualizar lista inicial
+      await updateMembers();
+
+      // Escuchar cambios de presencia
+      channelRef.current.presence.subscribe("enter", updateMembers);
+      channelRef.current.presence.subscribe("leave", updateMembers);
+      channelRef.current.presence.subscribe("update", updateMembers);
+    };
+
+    setupChannel();
 
     const updateMembers = async () => {
       if (!channelRef.current) return;
@@ -95,14 +124,6 @@ export const useAblyPresence = (channelName: string) => {
       const presence = await channelRef.current.presence.get();
       setMembers(presence);
     };
-
-    // Actualizar lista inicial
-    updateMembers();
-
-    // Escuchar cambios de presencia
-    channelRef.current.presence.subscribe("enter", updateMembers);
-    channelRef.current.presence.subscribe("leave", updateMembers);
-    channelRef.current.presence.subscribe("update", updateMembers);
 
     return () => {
       if (channelRef.current) {

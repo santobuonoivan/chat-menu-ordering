@@ -1,5 +1,5 @@
 import Ably from "ably";
-import { ABLY_CONFIG, validateAblyConfig } from "@/config/ably.config";
+import { getAblyConfig, validateAblyConfig } from "@/config/ably.config";
 
 /**
  * Singleton instance of Ably Realtime client
@@ -11,15 +11,17 @@ let ablyInstance: Ably.Realtime | null = null;
  * Obtiene o crea la instancia de Ably
  * @returns Instancia de Ably Realtime
  */
-export const getAblyInstance = (): Ably.Realtime => {
+export const getAblyInstance = async (): Promise<Ably.Realtime> => {
   if (!ablyInstance) {
-    if (!validateAblyConfig()) {
+    const config = await getAblyConfig();
+
+    if (!validateAblyConfig(config)) {
       throw new Error("Ably API key is not configured");
     }
 
     ablyInstance = new Ably.Realtime({
-      key: ABLY_CONFIG.API_KEY,
-      ...ABLY_CONFIG.options,
+      key: config.API_KEY,
+      ...config.options,
     });
 
     // Log de eventos de conexión (solo en desarrollo)
@@ -57,8 +59,10 @@ export const closeAblyConnection = () => {
  * @param channelName Nombre del canal
  * @returns Canal de Ably
  */
-export const getAblyChannel = (channelName: string): Ably.RealtimeChannel => {
-  const ably = getAblyInstance();
+export const getAblyChannel = async (
+  channelName: string
+): Promise<Ably.RealtimeChannel> => {
+  const ably = await getAblyInstance();
   return ably.channels.get(channelName);
 };
 
@@ -73,7 +77,7 @@ export const publishMessage = async (
   eventName: string,
   data: any
 ): Promise<void> => {
-  const channel = getAblyChannel(channelName);
+  const channel = await getAblyChannel(channelName);
   await channel.publish(eventName, data);
 };
 
@@ -84,12 +88,12 @@ export const publishMessage = async (
  * @param callback Función a ejecutar cuando llega un mensaje
  * @returns Función para desuscribirse
  */
-export const subscribeToChannel = (
+export const subscribeToChannel = async (
   channelName: string,
   eventName: string | null,
   callback: (message: Ably.Message) => void
-): (() => void) => {
-  const channel = getAblyChannel(channelName);
+): Promise<() => void> => {
+  const channel = await getAblyChannel(channelName);
 
   if (eventName) {
     channel.subscribe(eventName, callback);
@@ -111,8 +115,8 @@ export const subscribeToChannel = (
  * Obtiene el estado de la conexión actual
  * @returns Estado de la conexión
  */
-export const getConnectionState = (): Ably.ConnectionState => {
-  const ably = getAblyInstance();
+export const getConnectionState = async (): Promise<Ably.ConnectionState> => {
+  const ably = await getAblyInstance();
   return ably.connection.state;
 };
 
@@ -120,6 +124,7 @@ export const getConnectionState = (): Ably.ConnectionState => {
  * Verifica si Ably está conectado
  * @returns true si está conectado
  */
-export const isAblyConnected = (): boolean => {
-  return getConnectionState() === "connected";
+export const isAblyConnected = async (): Promise<boolean> => {
+  const state = await getConnectionState();
+  return state === "connected";
 };
