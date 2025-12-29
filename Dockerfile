@@ -21,10 +21,9 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build arguments - NO USAR  aquí ya que Next.js standalone
-# maneja las env vars en runtime desde el servidor
-# ARG variables solo son necesarias si necesitas algo en tiempo de build
-# pero para runtime, se cargan desde Cloud Run directamente
+# Build arguments para variables NEXT_PUBLIC_ que necesitan estar en el bundle del cliente
+ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
 RUN npm run build
 

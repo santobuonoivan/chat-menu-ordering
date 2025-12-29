@@ -7,6 +7,8 @@ steps:
       - 'gcr.io/$PROJECT_ID/ordering-chat-ai:$COMMIT_SHA'
       - '-t'
       - 'gcr.io/$PROJECT_ID/ordering-chat-ai:latest'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${_NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}'
       - '.'
     
   # Push the container image to Container Registry
