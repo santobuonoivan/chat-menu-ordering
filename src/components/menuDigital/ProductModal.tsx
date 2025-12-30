@@ -38,12 +38,15 @@ export default function ProductModal({
       selectedModifier: null,
     })) || []
   );
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const addItem = useCartStore((state) => state.addItem);
 
   // Actualizar valores cuando se abre el modal
   useEffect(() => {
     if (isOpen) {
+      // Capturar la posición del scroll actual
+      setScrollPosition(window.scrollY);
       setQuantity(initialQuantity);
       setSelectedModifiers(
         item.modifiers?.map((group) => ({
@@ -123,10 +126,13 @@ export default function ProductModal({
 
   return (
     <div
-      className="h-full fixed inset-0 z-[60] flex items-start justify-center p-4 rounded-xl overflow-auto"
+      className="fixed inset-0 z-[60] flex justify-center p-4 backdrop-blur-md"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
-      <div className="relative w-full max-w-[450px] rounded-xl pb-20 mt-8 mb-8 bg-[#f7f8f6] dark:bg-[#111b21] ">
+      <div
+        className="relative w-full max-w-[450px] rounded-xl pb-20 bg-[#f7f8f6] dark:bg-[#111b21] max-h-[95vh] overflow-y-auto my-0"
+        style={{ marginTop: `${scrollPosition + 20}px` }}
+      >
         {/* Header Image */}
         <div
           className="w-full h-48 bg-center bg-no-repeat bg-cover"
