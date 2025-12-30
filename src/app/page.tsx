@@ -15,7 +15,6 @@ import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
 import { ApiCallProcessIncomingMessage } from "@/handlers/core/getSessionData";
 import { ApiCallGetMenu } from "@/handlers/standar/orders";
-import { boolean } from "joi";
 
 export default function Home() {
   const router = useRouter();
@@ -37,6 +36,7 @@ export default function Home() {
     setSessionData,
   } = useSessionStore();
   const [restNumber, setRestNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Refs y estados para control de scroll
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -124,6 +124,9 @@ export default function Home() {
 
       if (restNumberParam) setRestNumber(restNumberParam);
       console.log("Rest Number:", restNumberParam);
+
+      // Marcar como cargado
+      setIsLoading(false);
     };
 
     loadSessionData();
@@ -258,10 +261,33 @@ export default function Home() {
 
   return (
     <>
-      {!validateConfiguration() ? (
-        <div>
-          se detectó un problema con la configuración inicial. ponte en contacto
-          con el equipo de soporte
+      {isLoading ? (
+        <div className="flex min-h-screen w-full items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <span className="material-symbols-outlined animate-spin text-6xl text-[#8E2653]">
+              refresh
+            </span>
+            <p className="text-lg font-medium text-gray-600">Cargando...</p>
+          </div>
+        </div>
+      ) : !validateConfiguration() ? (
+        <div className="flex min-h-screen w-full items-center justify-center p-4">
+          <div className="max-w-md rounded-xl bg-red-50 p-6 shadow-lg border border-red-200">
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-3xl text-red-600">
+                error
+              </span>
+              <div>
+                <h3 className="text-lg font-bold text-red-900 mb-2">
+                  Error de configuración
+                </h3>
+                <p className="text-red-700">
+                  Se detectó un problema con la configuración inicial. Ponte en
+                  contacto con el equipo de soporte.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div

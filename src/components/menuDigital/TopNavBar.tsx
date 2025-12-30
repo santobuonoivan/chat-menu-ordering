@@ -5,12 +5,14 @@ import { useCartStore } from "@/stores/cartStore";
 import CartModal from "@/components/CartModal";
 import { useSessionStore } from "@/stores/sessionStore";
 import { useMenuStore } from "@/stores/menuStore";
+import { useRouter } from "next/navigation";
 
 interface TopNavBarProps {
   onClose?: () => void;
 }
 
 export default function TopNavBar({ onClose }: TopNavBarProps) {
+  const router = useRouter();
   const [totalItems, setTotalItems] = useState(0);
   const [showMenuPopover, setShowMenuPopover] = useState(false);
   const { getTotalItems, items, setIsCartOpen, isCartOpen } = useCartStore();
@@ -28,8 +30,7 @@ export default function TopNavBar({ onClose }: TopNavBarProps) {
   };
 
   const handdleGoToDigitalMenu = async () => {
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = `/menu?${params.toString()}`;
+    router.push(`/menu${window.location.search}`);
   };
   return (
     <>
