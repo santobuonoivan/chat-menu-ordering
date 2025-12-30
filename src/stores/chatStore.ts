@@ -26,20 +26,7 @@ interface ChatState {
 export const useChatStore = create<ChatState>()(
   persist(
     (set, get) => ({
-      messages: [
-        {
-          id: generateUUID(),
-          text: "¡Hola! ¿Cómo estás? Soy tu Asistente Digital. ¿En qué te puedo ayudar hoy?",
-          sender: "assistant",
-          timestamp: new Date(),
-        },
-        {
-          id: generateUUID(),
-          text: "Puedes hablar conmigo para pedir algo delicioso o puedes acceder a la gestión por menú digital.",
-          sender: "assistant",
-          timestamp: new Date(),
-        },
-      ],
+      messages: [],
 
       addMessage: (message: IMessage) => {
         set((state) => ({
@@ -56,21 +43,7 @@ export const useChatStore = create<ChatState>()(
       },
 
       resetToInitial: () => {
-        const initialMessages = [
-          {
-            id: generateUUID(),
-            text: "¡Hola! ¿Cómo estás? Soy tu Asistente Digital. ¿En qué te puedo ayudar hoy?",
-            sender: "assistant" as const,
-            timestamp: new Date(),
-          },
-          {
-            id: generateUUID(),
-            text: "Puedes hablar conmigo para pedir algo delicioso o puedes acceder a la gestión por menú digital.",
-            sender: "assistant" as const,
-            timestamp: new Date(),
-          },
-        ];
-        set({ messages: initialMessages });
+        set({ messages: [] });
       },
       showListMenuItems: false,
       setShowListMenuItems: (show: boolean) => {

@@ -1,3 +1,4 @@
+import { ApiCallAgentWorkflow } from "@/handlers/agentAI/callAgentWorkflow";
 import { IMenuItem, IModifier } from "@/types/menu";
 import { v4 as uuidv4 } from "uuid";
 
@@ -47,6 +48,19 @@ export const groupModifiers = (
 
   // Convertimos el objeto agrupado de nuevo a un array para el formato final
   return Object.values(grouped);
+};
+
+export const humanizedText = async (text: string) => {
+  const payload = { type: "HUMANIZED", data: { INPUT: text } };
+  return await ApiCallAgentWorkflow(payload)
+    .then(async (res) => {
+      console.log("Agent Workflow Response Status:", res);
+      return { success: res.status === 200, output: res.data?.output || "" };
+    })
+    .catch((error) => {
+      console.error("Error calling Agent Workflow:", error);
+      return { success: false, output: "" };
+    });
 };
 
 export const rankAndFilterDishes = (

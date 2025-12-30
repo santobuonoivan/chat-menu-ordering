@@ -9,7 +9,7 @@ import TypingIndicator from "@/components/TypingIndicator";
 import { IMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chatStore";
 import { useSessionStore } from "@/stores/sessionStore";
-import { generateUUID, groupModifiers, sleep } from "@/utils";
+import { generateUUID, groupModifiers, humanizedText, sleep } from "@/utils";
 import { useEffect, useState, useRef } from "react";
 import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
@@ -52,6 +52,35 @@ export default function Home() {
     const atBottom = scrollHeight - scrollTop - clientHeight < 50; // 50px de tolerancia
     setIsAtBottom(atBottom);
   };
+
+  useEffect(() => {
+    if (messages.length === 0) {
+      const iniciarChat = async () => {
+        const initialMessages = [
+          {
+            id: generateUUID(),
+            text: "¡Hola! ¿Cómo estás? Soy tu Asistente Digital. ¿En qué te puedo ayudar hoy? Puedes hablar conmigo para pedir algo delicioso o puedes acceder a la gestión por menú digital.",
+            sender: "assistant" as const,
+            timestamp: new Date(),
+          },
+        ];
+        setIsAssistantTyping(true);
+        for (const msg of initialMessages) {
+          await humanizedText(msg.text)
+            .then((msgHumanized) => {
+              console.log("Mensaje humanizado:", msgHumanized);
+              msg.text = msgHumanized.output || msg.text;
+              addMessage(msg);
+            })
+            .catch((error) => {
+              console.error("Error al humanizar el mensaje:", error);
+            });
+        }
+        setIsAssistantTyping(false);
+      };
+      iniciarChat();
+    }
+  }, [messages]);
 
   // Hacer scroll al final
   const scrollToBottom = () => {
@@ -327,7 +356,7 @@ export default function Home() {
                 );
               })}
               {/* Show action chips only after first assistant message and no user messages yet */}
-              {messages.length === 2 && messages[0].sender === "assistant" && (
+              {messages.length === 1 && messages[0].sender === "assistant" && (
                 <ActionChips chips={[]} onChipClick={handleChipClick} />
               )}
 

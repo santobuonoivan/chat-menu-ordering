@@ -125,6 +125,7 @@ export default function MessageComposer({
         "REMOVE_ITEM_CART",
         "UPDATE_ITEM_CART",
         "HELLO",
+        "ERROR",
       ];
 
       const nextFeaturesDisavled = [
