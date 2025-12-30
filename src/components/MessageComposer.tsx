@@ -4,7 +4,7 @@ import { useChatStore } from "@/stores/chatStore";
 import { useCartStore } from "@/stores/cartStore";
 import { IMessage } from "@/types/chat";
 import { generateUUID, rankAndFilterDishes, sleep } from "@/utils";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, act } from "react";
 import { useMenuStore } from "@/stores/menuStore";
 import { ApiCallFindDishesByName } from "@/handlers/agentAI/findDishes";
 import { ApiCallAgentWorkflow } from "@/handlers/agentAI/callAgentWorkflow";
@@ -113,7 +113,20 @@ export default function MessageComposer({
   ) => {
     if (response.success) {
       console.log("Categorized Action:", response.action);
-      const action = response.action.toUpperCase();
+      let action = response.action.toUpperCase();
+      const nextFeaturesDisavled = [
+        "REMOVE_ITEM_CART",
+        "UPDATE_ITEM_CART",
+        "USER_LOCATION",
+        "CANCEL_ORDER",
+        "CONFIRM_ORDER",
+        "SELECT_PAYMENT_METHOD",
+      ];
+
+      if (nextFeaturesDisavled.includes(action)) {
+        action = "ERROR";
+      }
+
       if (action == "REMOVE_ITEM_CART") {
         sleep(500).then(() => {
           // eliminar el item del carrito
@@ -174,6 +187,7 @@ export default function MessageComposer({
       }
 
       if (action === "USER_LOCATION") {
+        // TODO necesito hacer un componente para que me pueda pasar la ubicacion del usuario
         onSendMessage?.(
           `Por favor, indícame tu ubicación para poder ofrecerte el mejor servicio.`,
           "assistant",
@@ -182,6 +196,7 @@ export default function MessageComposer({
       }
 
       if (action === "CANCEL_ORDER") {
+        // TODO Debo cancelar el pedido y el carrito
         onSendMessage?.(
           `He cancelado tu pedido. Si necesitas algo más, no dudes en decírmelo.`,
           "assistant",

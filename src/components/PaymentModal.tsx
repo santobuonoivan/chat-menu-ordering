@@ -53,6 +53,7 @@ export default function PaymentModal({
   const [cvv, setCvv] = useState("");
   const [cardholderName, setCardholderName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
   const [cardErrors, setCardErrors] = useState<CardErrors>({});
   const [disable, setDisable] = useState<any>(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -779,22 +780,26 @@ export default function PaymentModal({
                   // Limpiar errores cuando el usuario empieza a escribir
                   setErrors([]);
                 }}
+                onBlur={() => setEmailTouched(true)}
+                onFocus={() => setEmailTouched(false)}
                 className={`h-14 w-full rounded-lg border bg-white/80 dark:bg-[#2a3942] px-4 py-3 text-base font-normal placeholder:text-gray-500 dark:placeholder:text-[#8696a0] focus:outline-none focus:ring-2 text-slate-900 dark:text-[#e9edef] transition-colors ${
-                  !email
+                  !emailTouched || !email
                     ? "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
                     : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
                     ? "border-green-500 focus:border-green-600 focus:ring-green-500/50"
                     : "border-red-500 focus:border-red-600 focus:ring-red-500/50"
                 }`}
               />
-              {email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-base">
-                    error
-                  </span>
-                  Email inválido. Usa el formato: ejemplo@dominio.com
-                </p>
-              )}
+              {emailTouched &&
+                email &&
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-base">
+                      error
+                    </span>
+                    Email inválido. Usa el formato: ejemplo@dominio.com
+                  </p>
+                )}
             </label>
           </div>
 
