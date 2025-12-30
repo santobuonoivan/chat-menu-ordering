@@ -114,6 +114,19 @@ export default function MessageComposer({
     if (response.success) {
       console.log("Categorized Action:", response.action);
       let action = response.action.toUpperCase();
+
+      const featuresAccepted = [
+        "SHOW_MENU",
+        "SHOW_CART",
+        "USER_LOCATION",
+        "CANCEL_ORDER",
+        "CONFIRM_ORDER",
+        "SELECT_PAYMENT_METHOD",
+        "REMOVE_ITEM_CART",
+        "UPDATE_ITEM_CART",
+        "HELLO",
+      ];
+
       const nextFeaturesDisavled = [
         "REMOVE_ITEM_CART",
         "UPDATE_ITEM_CART",
@@ -123,7 +136,10 @@ export default function MessageComposer({
         "SELECT_PAYMENT_METHOD",
       ];
 
-      if (nextFeaturesDisavled.includes(action)) {
+      if (
+        nextFeaturesDisavled.includes(action) ||
+        !featuresAccepted.includes(action)
+      ) {
         action = "ERROR";
       }
 
@@ -218,6 +234,23 @@ export default function MessageComposer({
           "assistant",
           null
         );
+      }
+
+      if (action === "HELLO") {
+        const itemsCart = getItemNames();
+        if (itemsCart.length > 0) {
+          onSendMessage?.(
+            `¡Hola de nuevo! Veo que tienes ${itemsCart.length} artículo(s) en tu carrito. ¿En qué puedo ayudarte hoy?`,
+            "assistant",
+            null
+          );
+        } else {
+          onSendMessage?.(
+            `¡Hola! ¿En qué puedo ayudarte hoy? Por si tienes alguna duda puedo recomendarte algunos platos de nuestro menú, puedo mostrarte tu carrito de compras o mostrarte nuestro menú digital. ¿Qué te gustaría hacer?`,
+            "assistant",
+            null
+          );
+        }
       }
 
       if (action === "ERROR") {
