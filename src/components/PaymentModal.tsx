@@ -699,9 +699,7 @@ export default function PaymentModal({
             'url("data:image/svg+xml,%3csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22 fill=%22none%22%3e%3cpath d=%22M0 .5H31.5V32%22 stroke=%22%23e1e6db%22/%3e%3c/svg%3e")',
         }}
       >
-        <div
-          className="absolute inset-0 bg-[#f3f4f6]/90 dark:bg-[#0b141a]/90"
-        />
+        <div className="absolute inset-0 bg-[#f3f4f6]/90 dark:bg-[#0b141a]/90" />
       </div>
 
       <div className="relative flex h-full w-full max-w-[450px] max-h-[90vh] flex-col overflow-hidden rounded-xl border border-gray-200/50 bg-white/30 shadow-xl dark:border-[#2a3942] dark:bg-[#111b21]/95">
@@ -752,9 +750,7 @@ export default function PaymentModal({
           )}
 
           {/* Email Section */}
-          <div
-            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]"
-          >
+          <div className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]">
             <label className="flex flex-col">
               <p className="pb-2 text-base font-medium text-slate-900 dark:text-[#e9edef]">
                 Correo Electrónico *
@@ -788,9 +784,7 @@ export default function PaymentModal({
           </div>
 
           {/* Payment Method Section */}
-          <div
-            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]"
-          >
+          <div className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]">
             <h3 className="text-lg font-bold text-slate-900 dark:text-[#e9edef]">
               Método de Pago
             </h3>
@@ -1003,9 +997,7 @@ export default function PaymentModal({
           </div>
 
           {/* Total Amount Section */}
-          <div
-            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]"
-          >
+          <div className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]">
             {/* Row 1: Orden */}
             <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-[#2a3942]">
               <div className="flex items-center gap-2">

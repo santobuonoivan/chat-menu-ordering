@@ -8,6 +8,8 @@ import MenuItemCard from "../../components/menuDigital/MenuItemCard";
 import CartIndicator from "../../components/menuDigital/CartIndicator";
 import { IMenuItem, IMenuData } from "./../../types/menu";
 import { useMenuStore } from "../../stores/menuStore";
+import { ApiCallGetMenu } from "@/handlers";
+import { groupModifiers } from "@/utils";
 
 export default function MenuPage() {
   const { setMenuData, getMenuData } = useMenuStore();
@@ -16,8 +18,46 @@ export default function MenuPage() {
   // Load menu data
   useEffect(() => {
     const data = getMenuData();
+    console.log("Loaded Menu Data:", data);
     if (data) {
       setMenuItems(data.menu);
+    } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      const restNumber = urlParams.get("phone");
+
+      if (restNumber) {
+        ApiCallGetMenu(restNumber)
+          .then(async (res) => {
+            console.log("Get Menu Response Status:", res);
+            return { success: res.status === 200, data: res.data };
+          })
+          .then((response) => {
+            if (response.success) {
+              const menu = response.data.menu.map((item: IMenuItem) => {
+                let modifiers =
+                  item.modifiers && typeof item.modifiers === "string"
+                    ? JSON.parse(item.modifiers)
+                    : [];
+
+                modifiers = groupModifiers(modifiers);
+
+                return {
+                  ...item,
+                  modifiers,
+                };
+              });
+
+              console.log("Menu Items:", menu[0].modifiers);
+              setMenuData({ menu, rest_id: response.data.rest_id });
+              setMenuItems(menu);
+            } else {
+              console.error("Error fetching menu items:", response);
+            }
+          })
+          .catch((error) => {
+            console.error("Fetch error:", error);
+          });
+      }
     }
   }, [setMenuData]);
 
