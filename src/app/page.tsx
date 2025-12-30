@@ -43,6 +43,7 @@ export default function Home() {
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
   const previousMessageCountRef = useRef(0);
+  const chatInitializedRef = useRef(false);
 
   // Detectar si estamos al final del scroll
   const handleScroll = () => {
@@ -54,7 +55,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (messages.length === 0 && !isLoading) {
+    if (messages.length === 0 && !isLoading && !chatInitializedRef.current) {
+      chatInitializedRef.current = true;
       const iniciarChat = async () => {
         const initialMessages = [
           {
@@ -80,7 +82,7 @@ export default function Home() {
       };
       iniciarChat();
     }
-  }, [messages, isLoading]);
+  }, [messages.length, isLoading, addMessage, setIsAssistantTyping]);
 
   // Hacer scroll al final
   const scrollToBottom = () => {
