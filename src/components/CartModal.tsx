@@ -158,7 +158,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
         </header>
 
         {/* Order Items List */}
-        <main className="flex-1 overflow-y-auto p-4 pt-0">
+        <main className="flex-1 overflow-y-auto p-4 pt-0  custom-scrollbar">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <span className="material-symbols-outlined text-6xl text-text-muted-light dark:text-[#8696a0] mb-4">

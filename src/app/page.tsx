@@ -307,7 +307,7 @@ export default function Home() {
             <div
               ref={chatContainerRef}
               onScroll={handleScroll}
-              className="flex-1 overflow-y-auto p-4 space-y-6 relative"
+              className="flex-1 overflow-y-auto p-4 space-y-6 relative custom-scrollbar"
             >
               {messages.map((message, index) => {
                 if (index === 0) {

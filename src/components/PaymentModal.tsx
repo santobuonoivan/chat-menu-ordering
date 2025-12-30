@@ -324,6 +324,21 @@ export default function PaymentModal({
               setDisable(false);
             }
           } else {
+            // pago en efectivo
+            console.log("✅ Tu pago ha sido procesado exitosamente");
+            setPaymentStatus("success");
+
+            useChatStore.getState().addMessage({
+              id: generateUUID(),
+              text: "¡Tu orden ya está siendo procesada! ✅",
+              sender: "assistant",
+              timestamp: new Date(),
+            });
+
+            // Llamar a onConfirm inmediatamente para continuar el flujo
+            setTimeout(() => {
+              onConfirm("cash");
+            }, 1000);
           }
 
           console.log("token", token);
