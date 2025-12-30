@@ -142,19 +142,16 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
-      <div
-        className="relative flex h-full max-h-[900px] w-full max-w-[450px] flex-col overflow-hidden rounded-xl soft-shadow"
-        style={{ backgroundColor: "#f3f4f6" }}
-      >
+      <div className="relative flex h-full max-h-[900px] w-full max-w-[450px] flex-col overflow-hidden rounded-xl bg-[#f3f4f6] dark:bg-[#111b21]">
         {/* Header */}
-        <header className="flex shrink-0 items-center justify-between gap-2 p-4">
+        <header className="flex shrink-0 items-center justify-between gap-2 p-4 dark:bg-[#202c33] border-b border-transparent dark:border-[#2a3942]">
           <button
             onClick={onClose}
-            className="bg-[#8E2653] flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white soft-shadow transition-all active:soft-shadow-inset"
+            className="bg-[#8E2653] flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white  transition-all active:-inset"
           >
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-text-dark">
+          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-[#e9edef]">
             Tu Pedido
           </h1>
           <div className="w-12"></div>
@@ -164,13 +161,13 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
         <main className="flex-1 overflow-y-auto p-4 pt-0">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
-              <span className="material-symbols-outlined text-6xl text-text-muted-light dark:text-text-muted-dark mb-4">
+              <span className="material-symbols-outlined text-6xl text-text-muted-light dark:text-[#8696a0] mb-4">
                 shopping_cart
               </span>
-              <h2 className="text-xl font-bold text-text-light dark:text-text-dark mb-2">
+              <h2 className="text-xl font-bold text-text-light dark:text-[#e9edef] mb-2">
                 Tu carrito está vacío
               </h2>
-              <p className="text-text-muted-light dark:text-text-muted-dark">
+              <p className="text-text-muted-light dark:text-[#8696a0]">
                 Agrega algunos productos para comenzar tu pedido
               </p>
             </div>
@@ -179,13 +176,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col gap-4 rounded-lg p-4"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255, 255, 255, 0.3)",
-                  }}
+                  className="flex flex-col gap-4 rounded-lg p-4 bg-white/80 dark:bg-[#1f2c33] backdrop-blur-[10px] border border-white/30 dark:border-[#3a4a52]"
                 >
                   <div className="flex items-start gap-4">
                     <div
@@ -197,27 +188,18 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                       }}
                     />
                     <div className="flex flex-1 flex-col justify-center">
-                      <p
-                        className="text-base font-bold leading-normal"
-                        style={{ color: "#151811" }}
-                      >
+                      <p className="text-base font-bold leading-normal text-[#151811] dark:text-[#e9edef]">
                         {item.menuItem.dish_name}
                       </p>
-                      <p
-                        className="text-sm font-normal leading-normal"
-                        style={{ color: "#6b7280" }}
-                      >
+                      <p className="text-sm font-normal leading-normal text-[#6b7280] dark:text-[#8696a0]">
                         Cantidad: {item.quantity}
                         {item.modifiers.length > 0 &&
                           `, ${formatModifiers(item.modifiers)}`}
                       </p>
-                      <p
-                        className="mt-1 text-sm font-medium"
-                        style={{ color: "#151811" }}
-                      >
+                      <p className="mt-1 text-sm font-medium text-[#151811] dark:text-[#e9edef]">
                         ${item.totalPrice.toLocaleString()}
                         {item.quantity > 1 && (
-                          <span style={{ color: "#6b7280" }}>
+                          <span className="text-[#6b7280] dark:text-[#8696a0]">
                             {` ($${(
                               item.totalPrice / item.quantity
                             ).toLocaleString()} c/u)`}
@@ -226,17 +208,10 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                       </p>
                     </div>
                   </div>
-                  <div
-                    className="flex justify-end gap-3 border-t pt-3"
-                    style={{ borderTopColor: "rgba(255, 255, 255, 0.2)" }}
-                  >
+                  <div className="flex justify-end gap-3 border-t border-white/20 dark:border-[#3a4a52] pt-3">
                     <button
                       onClick={() => handleEditItem(item)}
-                      className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold soft-shadow transition-all active:soft-shadow-inset"
-                      style={{
-                        color: "#6b7280",
-                        backgroundColor: "rgba(255, 255, 255, 0.6)",
-                      }}
+                      className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold  transition-all active:-inset text-[#6b7280] dark:text-[#adbac1] bg-white/60 dark:bg-[#2a3942] hover:bg-white/80 dark:hover:bg-[#3a4a52]"
                     >
                       <span className="material-symbols-outlined text-base">
                         edit
@@ -245,11 +220,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                     </button>
                     <button
                       onClick={() => handleDeleteItem(item.id)}
-                      className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold soft-shadow transition-all active:soft-shadow-inset"
-                      style={{
-                        color: "#6b7280",
-                        backgroundColor: "rgba(255, 255, 255, 0.6)",
-                      }}
+                      className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold  transition-all active:-inset text-[#6b7280] dark:text-[#adbac1] bg-white/60 dark:bg-[#2a3942] hover:bg-white/80 dark:hover:bg-[#3a4a52]"
                     >
                       <span className="material-symbols-outlined text-base">
                         delete
@@ -265,11 +236,8 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
         {/* Footer with Summary and CTA */}
         {items.length > 0 && (
-          <footer className="shrink-0 space-y-4 p-4">
-            <div
-              className="space-y-2 rounded-lg p-4 soft-shadow-inset"
-              style={{ backgroundColor: "#f3f4f6" }}
-            >
+          <footer className="shrink-0 space-y-4 p-4 border-t border-transparent dark:border-[#2a3942]">
+            <div className="space-y-2 rounded-lg p-4 -inset bg-[#f3f4f6] dark:bg-[#1f2c33]">
               {/* <div
                 className="flex justify-between text-sm"
                 style={{ color: "#6b7280" }}
@@ -284,18 +252,14 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                 <span>Impuestos (8%)</span>
                 <span>${taxes.toLocaleString()}</span>
               </div> */}
-              <div
-                className="flex justify-between text-lg font-bold"
-                style={{ color: "#151811" }}
-              >
+              <div className="flex justify-between text-lg font-bold text-[#151811] dark:text-[#e9edef]">
                 <span>Total</span>
                 <span>${total.toLocaleString()}</span>
               </div>
             </div>
             <button
               onClick={handleFinalizePurchase}
-              className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(139,195,74,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(139,195,74,0.23)]"
-              style={{ backgroundColor: "#8E2653" }}
+              className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(139,195,74,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(139,195,74,0.23)] bg-[#8E2653] dark:bg-[#00a884]"
             >
               Ordenar
             </button>

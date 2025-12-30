@@ -10,12 +10,15 @@ export async function POST(request: NextRequest) {
 
     console.log("Backend URL:", url);
     console.log("Token exists:", !!token);
+    console.log("Token NODE_ENV:", process.env.NODE_ENV);
 
-    /*payload = {
-      rest_id: 163,
-      lat: 19.432608,
-      lng: -99.133209,
-    };*/
+    if (process.env.NODE_ENV == "development") {
+      payload = {
+        rest_id: 163,
+        lat: 19.432608,
+        lng: -99.133209,
+      };
+    }
     const response = await fetch(url, {
       method: "POST",
       headers: {

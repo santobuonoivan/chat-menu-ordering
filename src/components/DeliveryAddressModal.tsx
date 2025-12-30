@@ -545,20 +545,16 @@ export default function DeliveryAddressModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
-      <div
-        className="relative flex h-full max-h-[900px] w-full max-w-[450px] flex-col overflow-hidden rounded-xl soft-shadow"
-        style={{ backgroundColor: "#f3f4f6" }}
-      >
+      <div className="relative flex h-full max-h-[900px] w-full max-w-[450px] flex-col overflow-hidden rounded-xl  bg-[#f3f4f6] dark:bg-[#111b21]">
         {/* Header */}
-        <header className="flex shrink-0 items-center justify-between gap-2 p-4">
+        <header className="flex shrink-0 items-center justify-between gap-2 p-4 dark:bg-[#202c33] border-b border-transparent dark:border-[#2a3942]">
           <button
             onClick={onClose}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white soft-shadow transition-all active:soft-shadow-inset"
-            style={{ backgroundColor: "#8E2653" }}
+            className="flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white  transition-all active:-inset bg-[#8E2653] dark:bg-[#00a884]"
           >
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-text-dark">
+          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-[#e9edef]">
             Dirección de Entrega
           </h1>
           <div className="w-12"></div>
@@ -568,14 +564,14 @@ export default function DeliveryAddressModal({
         <main className="flex-1 overflow-y-auto p-4 pt-0">
           <div className="flex flex-col gap-6">
             {/* Map Container */}
-            <div className="relative h-48 w-full overflow-hidden rounded-lg soft-shadow">
+            <div className="relative h-48 w-full overflow-hidden rounded-lg ">
               <div
                 ref={mapRef}
                 className="h-full w-full"
                 style={{ backgroundColor: "#e5e7eb" }}
               />
-              <div className="absolute top-2 right-2 bg-white rounded-lg shadow p-2 text-xs z-10">
-                <p className="font-semibold text-gray-900">
+              <div className="absolute top-2 right-2 bg-white dark:bg-[#202c33] rounded-lg shadow p-2 text-xs z-10">
+                <p className="font-semibold text-gray-900 dark:text-[#e9edef]">
                   {address.latitude.toFixed(4)}, {address.longitude.toFixed(4)}
                 </p>
               </div>
@@ -592,14 +588,13 @@ export default function DeliveryAddressModal({
                   onChange={(e) =>
                     handleAddressChange("phoneNumber", e.target.value)
                   }
-                  className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                  className={`w-full rounded-full bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0] ${
                     showValidation && !address.phoneNumber
                       ? "border-2 border-red-500"
                       : "border-none"
                   }`}
-                  style={{ backgroundColor: "#f3f4f6" }}
                 />
-                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                   <span className="material-symbols-outlined text-lg">
                     phone
                   </span>
@@ -619,14 +614,13 @@ export default function DeliveryAddressModal({
                         handleSearchManually();
                       }
                     }}
-                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    className={`w-full rounded-full bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0] ${
                       showValidation && !address.street
                         ? "border-2 border-red-500"
                         : "border-none"
                     }`}
-                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                     <span className="material-symbols-outlined text-lg">
                       signpost
                     </span>
@@ -635,8 +629,7 @@ export default function DeliveryAddressModal({
                 <button
                   type="button"
                   onClick={handleSearchManually}
-                  className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full transition-all hover:scale-105"
-                  style={{ backgroundColor: "#8E2653" }}
+                  className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full transition-all hover:scale-105 bg-[#8E2653] dark:bg-[#00a884]"
                   title="Buscar dirección"
                 >
                   <span className="material-symbols-outlined text-white text-xl">
@@ -655,14 +648,13 @@ export default function DeliveryAddressModal({
                     onChange={(e) =>
                       handleAddressChange("streetNumber", e.target.value)
                     }
-                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    className={`w-full rounded-full bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0] ${
                       showValidation && !address.streetNumber
                         ? "border-2 border-red-500"
                         : "border-none"
                     }`}
-                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                     <span className="material-symbols-outlined text-lg">
                       numbers
                     </span>
@@ -677,10 +669,9 @@ export default function DeliveryAddressModal({
                     onChange={(e) =>
                       handleAddressChange("references", e.target.value)
                     }
-                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    style={{ backgroundColor: "#f3f4f6" }}
+                    className="w-full rounded-full border-none bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0]"
                   />
-                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                     <span className="material-symbols-outlined text-lg">
                       apartment
                     </span>
@@ -698,14 +689,13 @@ export default function DeliveryAddressModal({
                     onChange={(e) =>
                       handleAddressChange("state", e.target.value)
                     }
-                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    className={`w-full rounded-full bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0] ${
                       showValidation && !address.state
                         ? "border-2 border-red-500"
                         : "border-none"
                     }`}
-                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                     <span className="material-symbols-outlined text-lg">
                       location_city
                     </span>
@@ -720,14 +710,13 @@ export default function DeliveryAddressModal({
                     onChange={(e) =>
                       handleAddressChange("city", e.target.value)
                     }
-                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    className={`w-full rounded-full bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0] ${
                       showValidation && !address.city
                         ? "border-2 border-red-500"
                         : "border-none"
                     }`}
-                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                     <span className="material-symbols-outlined text-lg">
                       location_city
                     </span>
@@ -742,14 +731,13 @@ export default function DeliveryAddressModal({
                   placeholder="Código Postal *"
                   value={address.zip}
                   onChange={(e) => handleAddressChange("zip", e.target.value)}
-                  className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                  className={`w-full rounded-full bg-[#f3f4f6] dark:bg-[#2a3942] py-3 pl-12 pr-4 text-text-light dark:text-[#e9edef] -inset focus:outline-none focus:ring-2 focus:ring-primary/50 dark:placeholder:text-[#8696a0] ${
                     showValidation && !address.zip
                       ? "border-2 border-red-500"
                       : "border-none"
                   }`}
-                  style={{ backgroundColor: "#f3f4f6" }}
                 />
-                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-[#8696a0]">
                   <span className="material-symbols-outlined text-lg">
                     mail
                   </span>
@@ -760,17 +748,14 @@ export default function DeliveryAddressModal({
         </main>
 
         {/* Footer */}
-        <footer className="shrink-0 p-4">
+        <footer className="shrink-0 p-4 border-t border-transparent dark:border-[#2a3942]">
           {/* Error Message */}
           {errorMessage && (
-            <div
-              className="mb-4 rounded-lg p-3 flex items-start gap-2 soft-shadow"
-              style={{ backgroundColor: "#fee2e2" }}
-            >
-              <span className="material-symbols-outlined text-red-600 text-xl">
+            <div className="mb-4 rounded-lg p-3 flex items-start gap-2  bg-[#fee2e2] dark:bg-[#5c1a1a]">
+              <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-xl">
                 error
               </span>
-              <p className="text-sm text-red-700 font-medium flex-1">
+              <p className="text-sm text-red-700 dark:text-red-300 font-medium flex-1">
                 {errorMessage}
               </p>
             </div>
@@ -779,8 +764,7 @@ export default function DeliveryAddressModal({
           <button
             disabled={findQuoteLoading}
             onClick={handleConfirm}
-            className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            style={{ backgroundColor: "#8E2653" }}
+            className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 bg-[#8E2653] dark:bg-[#00a884]"
           >
             {findQuoteLoading ? (
               <>

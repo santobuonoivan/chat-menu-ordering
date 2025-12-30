@@ -700,26 +700,23 @@ export default function PaymentModal({
         }}
       >
         <div
-          className="absolute inset-0 bg-background-light/90 dark:bg-background-dark/90"
-          style={{
-            backgroundColor: "rgba(243, 244, 246, 0.9)",
-          }}
+          className="absolute inset-0 bg-[#f3f4f6]/90 dark:bg-[#0b141a]/90"
         />
       </div>
 
-      <div className="relative flex h-full w-full max-w-[450px] max-h-[90vh] flex-col overflow-hidden rounded-xl border border-gray-200/50 bg-white/30 shadow-xl dark:border-gray-700/50 dark:bg-black/30">
+      <div className="relative flex h-full w-full max-w-[450px] max-h-[90vh] flex-col overflow-hidden rounded-xl border border-gray-200/50 bg-white/30 shadow-xl dark:border-[#2a3942] dark:bg-[#111b21]/95">
         {/* Header */}
-        <header className="flex shrink-0 items-center justify-between gap-2 px-4 py-3">
+        <header className="flex shrink-0 items-center justify-between gap-2 px-4 py-3 dark:bg-[#202c33] border-b border-transparent dark:border-[#2a3942]">
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8E2653] text-white transition-transform hover:scale-105 dark:bg-black/50 dark:text-slate-200"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8E2653] dark:bg-[#00a884] text-white transition-transform hover:scale-105"
             style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
           >
             <span className="material-symbols-outlined text-2xl">
               arrow_back
             </span>
           </button>
-          <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+          <h1 className="text-xl font-bold text-slate-900 dark:text-[#e9edef]">
             Ingresar Pago
           </h1>
           <div className="w-10"></div>
@@ -756,15 +753,10 @@ export default function PaymentModal({
 
           {/* Email Section */}
           <div
-            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.6)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-            }}
+            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]"
           >
             <label className="flex flex-col">
-              <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
+              <p className="pb-2 text-base font-medium text-slate-900 dark:text-[#e9edef]">
                 Correo Electrónico *
               </p>
               <input
@@ -776,7 +768,7 @@ export default function PaymentModal({
                   // Limpiar errores cuando el usuario empieza a escribir
                   setErrors([]);
                 }}
-                className={`h-14 w-full rounded-lg border bg-white/80 px-4 py-3 text-base font-normal placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors text-slate-900 dark:text-slate-200 ${
+                className={`h-14 w-full rounded-lg border bg-white/80 dark:bg-[#2a3942] px-4 py-3 text-base font-normal placeholder:text-gray-500 dark:placeholder:text-[#8696a0] focus:outline-none focus:ring-2 text-slate-900 dark:text-[#e9edef] transition-colors ${
                   !email
                     ? "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
                     : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -797,14 +789,9 @@ export default function PaymentModal({
 
           {/* Payment Method Section */}
           <div
-            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.6)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-            }}
+            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]"
           >
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-[#e9edef]">
               Método de Pago
             </h3>
 
@@ -813,14 +800,14 @@ export default function PaymentModal({
 
               {/* Cash Option */}
               <label
-                className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 p-3 transition-all hover:border-primary/50 dark:bg-slate-800/80 dark:hover:border-primary/50"
+                className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-white/80 dark:bg-[#2a3942] p-3 transition-all hover:border-primary/50"
                 style={{
                   borderColor:
                     paymentMethod === "cash" ? "#8E2653" : "transparent",
                   backgroundColor:
                     paymentMethod === "cash"
                       ? "rgba(142, 38, 83, 0.2)"
-                      : "rgba(255, 255, 255, 0.8)",
+                      : undefined,
                 }}
               >
                 <input
@@ -833,7 +820,7 @@ export default function PaymentModal({
                   }
                   className="sr-only"
                 />
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-[#1f2c33]">
                   <span
                     className="material-symbols-outlined text-2xl"
                     style={{
@@ -844,20 +831,20 @@ export default function PaymentModal({
                     payments
                   </span>
                 </div>
-                <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
+                <span className="text-xs font-medium text-center text-slate-800 dark:text-[#e9edef]">
                   Efectivo
                 </span>
               </label>
               {/* Credit Card Option */}
               <label
-                className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all"
+                className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all dark:bg-[#2a3942]"
                 style={{
                   borderColor:
                     paymentMethod === "credit_card" ? "#8E2653" : "transparent",
                   backgroundColor:
                     paymentMethod === "credit_card"
                       ? "rgba(142, 38, 83, 0.2)"
-                      : "rgba(255, 255, 255, 0.8)",
+                      : undefined,
                 }}
               >
                 <input
@@ -870,7 +857,7 @@ export default function PaymentModal({
                   }
                   className="sr-only"
                 />
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-slate-800/80">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-[#1f2c33]">
                   <span
                     className="material-symbols-outlined text-2xl"
                     style={{ color: "#8E2653" }}
@@ -878,7 +865,7 @@ export default function PaymentModal({
                     credit_card
                   </span>
                 </div>
-                <span className="text-xs font-medium text-center text-slate-800 dark:text-white">
+                <span className="text-xs font-medium text-center text-slate-800 dark:text-[#e9edef]">
                   Tarjeta
                 </span>
               </label>
@@ -889,7 +876,7 @@ export default function PaymentModal({
               <div className="flex flex-col gap-4 pt-4">
                 {/* Card Number */}
                 <label className="flex flex-col">
-                  <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
+                  <p className="pb-2 text-base font-medium text-slate-900 dark:text-[#e9edef]">
                     Número de Tarjeta
                   </p>
                   <input
@@ -897,7 +884,7 @@ export default function PaymentModal({
                     placeholder="0000 0000 0000 0000"
                     value={cardNumber}
                     onChange={(e) => handleFormatCardNumber(e.target.value)}
-                    className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                    className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 dark:bg-[#2a3942] placeholder:text-gray-500 dark:placeholder:text-[#8696a0] focus:outline-none focus:ring-2 text-slate-900 dark:text-[#e9edef] transition-colors ${
                       cardErrors.cardNumber
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                         : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
@@ -916,7 +903,7 @@ export default function PaymentModal({
                 {/* Expiry and CVV */}
                 <div className="flex flex-row gap-4">
                   <label className="flex flex-col flex-1 min-w-0">
-                    <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
+                    <p className="pb-2 text-base font-medium text-slate-900 dark:text-[#e9edef]">
                       Vencimiento
                     </p>
                     <input
@@ -924,7 +911,7 @@ export default function PaymentModal({
                       placeholder="MM/AA"
                       value={expiryDate}
                       onChange={(e) => handleFormatExpiryDate(e.target.value)}
-                      className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                      className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 dark:bg-[#2a3942] placeholder:text-gray-500 dark:placeholder:text-[#8696a0] focus:outline-none focus:ring-2 text-slate-900 dark:text-[#e9edef] transition-colors ${
                         cardErrors.expiryDate
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                           : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
@@ -941,7 +928,7 @@ export default function PaymentModal({
                   </label>
 
                   <label className="flex flex-col flex-1 min-w-0">
-                    <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
+                    <p className="pb-2 text-base font-medium text-slate-900 dark:text-[#e9edef]">
                       CVV
                     </p>
                     <input
@@ -949,7 +936,7 @@ export default function PaymentModal({
                       placeholder="123"
                       value={cvv}
                       onChange={(e) => handleFormatCvv(e.target.value)}
-                      className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                      className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 dark:bg-[#2a3942] placeholder:text-gray-500 dark:placeholder:text-[#8696a0] focus:outline-none focus:ring-2 text-slate-900 dark:text-[#e9edef] transition-colors ${
                         cardErrors.cvv
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                           : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
@@ -968,7 +955,7 @@ export default function PaymentModal({
 
                 {/* Cardholder Name */}
                 <label className="flex flex-col">
-                  <p className="pb-2 text-base font-medium text-slate-900 dark:text-slate-300">
+                  <p className="pb-2 text-base font-medium text-slate-900 dark:text-[#e9edef]">
                     Nombre del Titular
                   </p>
                   <input
@@ -984,7 +971,7 @@ export default function PaymentModal({
                         });
                       }
                     }}
-                    className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 placeholder:text-gray-500 focus:outline-none focus:ring-2 dark:bg-slate-800/80 dark:text-slate-200 dark:placeholder:text-gray-400 transition-colors ${
+                    className={`h-14 w-full rounded-lg border px-4 py-3 text-base font-normal bg-white/80 dark:bg-[#2a3942] placeholder:text-gray-500 dark:placeholder:text-[#8696a0] focus:outline-none focus:ring-2 text-slate-900 dark:text-[#e9edef] transition-colors ${
                       cardErrors.cardholderName
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
                         : "border-gray-300 focus:border-primary focus:ring-primary/50 dark:border-gray-600"
@@ -1004,8 +991,8 @@ export default function PaymentModal({
 
             {/* Cash Option Message */}
             {paymentMethod === "cash" && (
-              <div className="flex flex-col gap-3 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-900/30 dark:bg-green-950/20">
-                <p className="text-sm font-medium text-green-800 dark:text-green-200">
+              <div className="flex flex-col gap-3 rounded-lg border border-green-200 dark:border-green-900/30 bg-green-50 dark:bg-green-950/20 p-4">
+                <p className="text-sm font-medium text-green-800 dark:text-green-300">
                   Efectivo
                 </p>
                 <p className="text-xs text-green-700 dark:text-green-300">
@@ -1017,39 +1004,34 @@ export default function PaymentModal({
 
           {/* Total Amount Section */}
           <div
-            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.6)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-            }}
+            className="flex flex-col gap-4 rounded-lg p-4 shadow-lg bg-white/60 dark:bg-[#1f2c33] backdrop-blur-[12px] border border-white/20 dark:border-[#2a3942]"
           >
             {/* Row 1: Orden */}
-            <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-gray-600/50">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-[#2a3942]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-slate-600 dark:text-slate-400 text-lg">
+                <span className="material-symbols-outlined text-slate-600 dark:text-[#8696a0] text-lg">
                   shopping_cart
                 </span>
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <span className="text-sm font-medium text-slate-700 dark:text-[#e9edef]">
                   Subtotal
                 </span>
               </div>
-              <span className="text-base font-semibold text-slate-900 dark:text-white">
+              <span className="text-base font-semibold text-slate-900 dark:text-[#e9edef]">
                 ${totalAmount.toFixed(2)}
               </span>
             </div>
 
             {/* Row 2: Delivery */}
-            <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-gray-600/50">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-300/50 dark:border-[#2a3942]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-slate-600 dark:text-slate-400 text-lg">
+                <span className="material-symbols-outlined text-slate-600 dark:text-[#8696a0] text-lg">
                   local_shipping
                 </span>
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <span className="text-sm font-medium text-slate-700 dark:text-[#e9edef]">
                   Envío
                 </span>
               </div>
-              <span className="text-base font-semibold text-slate-900 dark:text-white">
+              <span className="text-base font-semibold text-slate-900 dark:text-[#e9edef]">
                 $
                 {parseFloat(
                   deliveryStore.quoteData?.overloadAmountFee.toString() || "0.0"
@@ -1060,14 +1042,14 @@ export default function PaymentModal({
             {/* Row 3: Total */}
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#8E2653] dark:text-white text-lg">
+                <span className="material-symbols-outlined text-[#8E2653] dark:text-[#00a884] text-lg">
                   account_balance_wallet
                 </span>
-                <span className="text-base font-bold text-slate-900 dark:text-white">
+                <span className="text-base font-bold text-slate-900 dark:text-[#e9edef]">
                   Total a Pagar
                 </span>
               </div>
-              <span className="text-xl font-bold" style={{ color: "#8E2653" }}>
+              <span className="text-xl font-bold text-[#8E2653] dark:text-[#00a884]">
                 $
                 {(
                   (totalAmount || 0) +
@@ -1082,10 +1064,10 @@ export default function PaymentModal({
         </main>
 
         {/* Footer with Confirm Button */}
-        <footer className="shrink-0 border-t border-gray-200/50 bg-white/30 px-2 py-4 dark:border-gray-700/50 dark:bg-black/30 sm:px-4">
+        <footer className="shrink-0 border-t border-gray-200/50 dark:border-[#2a3942] bg-white/30 dark:bg-[#202c33] px-2 py-4 sm:px-4">
           {paymentMethod === "credit_card" &&
             Object.keys(cardErrors).length > 0 && (
-              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 dark:border-red-900/30 dark:bg-red-950/20">
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-950/20 px-4 py-2">
                 <span className="material-symbols-outlined text-red-600 dark:text-red-400">
                   warning
                 </span>
@@ -1103,9 +1085,8 @@ export default function PaymentModal({
               (paymentMethod === "credit_card" &&
                 Object.keys(cardErrors).length > 0)
             }
-            className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="flex h-16 w-full items-center justify-center rounded-lg text-lg font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-[#8E2653] dark:bg-[#00a884]"
             style={{
-              backgroundColor: "#8E2653",
               boxShadow: "0 8px 16px rgba(142, 38, 83, 0.3)",
             }}
           >
