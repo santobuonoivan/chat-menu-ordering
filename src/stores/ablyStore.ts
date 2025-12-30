@@ -104,6 +104,7 @@ export const useAblyStore = create<AblyStore>()(
       },
 
       markMessageAsProcessed: (messageId) => {
+        console.log("✅ Marking message as processed:", messageId);
         set((state) => ({
           messages: state.messages.map((msg) =>
             msg.id === messageId ? { ...msg, processed: true } : msg
@@ -132,9 +133,12 @@ export const useAblyStore = create<AblyStore>()(
       },
 
       getPendingPayment: (transactionId) => {
-        return get().pendingPayments.find(
-          (p) => p.transactionId === transactionId
-        );
+        console.log("🔍 Searching for pending payment:", transactionId);
+        return get().pendingPayments.find((p) => {
+          console.log(p);
+
+          return p.transactionId === transactionId;
+        });
       },
 
       clearExpiredPayments: () => {
@@ -166,7 +170,9 @@ export const useAblyStore = create<AblyStore>()(
             );
 
             const receivedMessage: AblyReceivedMessage = {
-              id: `${channelName}-${message.id || Date.now()}`,
+              id: `${channelName}-${
+                message.data?.transaction_id || generateUUID()
+              }`,
               channelName,
               eventName: message.name || "unknown",
               data: message.data,
@@ -181,11 +187,13 @@ export const useAblyStore = create<AblyStore>()(
               message.name === "payment-response" &&
               message.data?.transaction_id
             ) {
+              console.log("💳 Processing payment response message");
               const pendingPayment = get().getPendingPayment(
                 message.data.transaction_id
               );
-
+              console.log("💳 Pending payment found:", pendingPayment);
               if (pendingPayment) {
+                get().removePendingPayment(message.data.transaction_id);
                 console.log(
                   "💰 Payment response received for:",
                   message.data.transaction_id

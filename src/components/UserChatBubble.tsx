@@ -15,7 +15,7 @@ export default function UserChatBubble({
     <div className="flex items-end gap-3 justify-end">
       <div className="flex flex-1 flex-col gap-2 items-end">
         {(!afterSender || afterSender !== "user") && (
-          <p className="text-text-muted-light dark:text-text-muted-dark text-xs font-medium">
+          <p className="text-text-muted-light dark:text-white text-xs font-medium">
             {senderName}
           </p>
         )}

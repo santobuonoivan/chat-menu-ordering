@@ -82,10 +82,7 @@ export default function PaymentModal({
   );
 
   // Transaction ID único para este pago específico
-  const transactionId = useMemo(
-    () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    []
-  );
+  const transactionId = generateUUID();
 
   // Limpiar estado cuando se cierra el modal
   useEffect(() => {
@@ -298,9 +295,10 @@ export default function PaymentModal({
                 sender: "assistant",
                 timestamp: new Date(),
               });
+              console.log("transactionId", data.data);
               // Guardar pago pendiente en el store de Ably
               addPendingPayment({
-                transactionId,
+                transactionId: data.data.operationResponse.id,
                 cartId,
                 channelName,
                 amount: parseFloat(
