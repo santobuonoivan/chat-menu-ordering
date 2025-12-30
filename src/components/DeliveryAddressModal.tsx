@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback, use } from 'react';
-import { useDeliveryStore } from '@/stores/deliveryStore';
-import { useMenuStore } from '@/stores/menuStore';
-import { ApiCallQuoteByRestId } from '@/handlers/delivery/quotes';
-import { useSessionStore } from '@/stores/sessionStore';
+import { useState, useEffect, useRef, useCallback, use } from "react";
+import { useDeliveryStore } from "@/stores/deliveryStore";
+import { useMenuStore } from "@/stores/menuStore";
+import { ApiCallQuoteByRestId } from "@/handlers/delivery/quotes";
+import { useSessionStore } from "@/stores/sessionStore";
 
 interface DeliveryAddressModalProps {
   isOpen: boolean;
@@ -44,17 +44,17 @@ export default function DeliveryAddressModal({
   const [findQuoteLoading, setFindQuoteLoading] = useState(false);
   const { clientPhone } = useSessionStore();
   const [address, setAddress] = useState<DeliveryAddress>({
-    street: '',
-    streetNumber: '',
-    city: '',
-    state: '',
-    zip: '',
-    references: '',
-    phoneNumber: '',
+    street: "",
+    streetNumber: "",
+    city: "",
+    state: "",
+    zip: "",
+    references: "",
+    phoneNumber: "",
     latitude: 0,
     longitude: 0,
-    neighborhood: '',
-    county: '',
+    neighborhood: "",
+    county: "",
   });
 
   const mapRef = useRef<HTMLDivElement>(null);
@@ -66,6 +66,8 @@ export default function DeliveryAddressModal({
   const [hasQuote, setHasQuote] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isUpdatingFromMap = useRef(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [showValidation, setShowValidation] = useState(false);
 
   // Cargar dirección guardada si existe (solo una vez al abrir)
   useEffect(() => {
@@ -73,24 +75,24 @@ export default function DeliveryAddressModal({
       hasInitialized.current = true;
       // Asegurar que todos los campos tengan valores definidos
       setAddress({
-        street: storedAddress.street || '',
-        streetNumber: storedAddress.streetNumber || '',
-        city: storedAddress.city || '',
-        state: storedAddress.state || '',
-        zip: storedAddress.zip || '',
-        references: storedAddress.references || '',
-        phoneNumber: storedAddress.phoneNumber || clientPhone || '',
+        street: storedAddress.street || "",
+        streetNumber: storedAddress.streetNumber || "",
+        city: storedAddress.city || "",
+        state: storedAddress.state || "",
+        zip: storedAddress.zip || "",
+        references: storedAddress.references || "",
+        phoneNumber: storedAddress.phoneNumber || clientPhone || "",
         latitude: storedAddress.latitude || 0,
         longitude: storedAddress.longitude || 0,
-        neighborhood: storedAddress.neighborhood || '',
-        county: storedAddress.county || '',
+        neighborhood: storedAddress.neighborhood || "",
+        county: storedAddress.county || "",
       });
     } else if (isOpen && !storedAddress && !hasInitialized.current) {
       // Si no hay dirección guardada pero hay clientPhone, usarlo
       hasInitialized.current = true;
       setAddress((prev) => ({
         ...prev,
-        phoneNumber: clientPhone || '',
+        phoneNumber: clientPhone || "",
       }));
     }
 
@@ -133,12 +135,12 @@ export default function DeliveryAddressModal({
       } else {
         const apiKey =
           process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-          'AIzaSyCcdxhPVJVVDZq-rMXtpfa0TmCbxXZPidw' as String;
+          ("AIzaSyCcdxhPVJVVDZq-rMXtpfa0TmCbxXZPidw" as String);
         if (!apiKey) {
-          console.error('API key de Google Maps no configurada');
+          console.error("API key de Google Maps no configurada");
           return;
         }
-        const script = document.createElement('script');
+        const script = document.createElement("script");
         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
         script.async = true;
         script.defer = true;
@@ -146,7 +148,7 @@ export default function DeliveryAddressModal({
           initializeMap();
         };
         script.onerror = () => {
-          console.error('Error al cargar Google Maps API');
+          console.error("Error al cargar Google Maps API");
         };
         document.head.appendChild(script);
       }
@@ -163,7 +165,7 @@ export default function DeliveryAddressModal({
     geocoderInstance.current = new window.google.maps.Geocoder();
 
     // Detectar ubicación actual del usuario
-    if ('geolocation' in navigator) {
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -197,11 +199,11 @@ export default function DeliveryAddressModal({
       position: { lat, lng },
       map: mapInstance.current,
       draggable: true,
-      title: 'Tu ubicación',
+      title: "Tu ubicación",
     });
 
     // Evento cuando se arrastra el marcador
-    markerInstance.current.addListener('dragend', () => {
+    markerInstance.current.addListener("dragend", () => {
       const newPosition = markerInstance.current.getPosition();
       const newLat = newPosition.lat();
       const newLng = newPosition.lng();
@@ -242,16 +244,15 @@ export default function DeliveryAddressModal({
         const result = response.results[0];
         const addressComponents = result.address_components;
 
-        let street = '';
-        let city = '';
-        let state = '';
-        let zip = '';
-        let neighborhood = '';
-        let county = '';
+        let street = "";
+        let city = "";
+        let state = "";
+        let zip = "";
+        let neighborhood = "";
+        let county = "";
 
         // Extraer componentes de dirección
 
-        console.log('Address Components:', addressComponents);
         /*
           [
             { long_name: '425', short_name: '425', types: [ 'street_number' ] },
@@ -280,33 +281,33 @@ export default function DeliveryAddressModal({
           ]
         */
 
-        let streetNumber = '';
+        let streetNumber = "";
 
         addressComponents.forEach((component: any) => {
           const types = component.types;
 
-          if (types.includes('route')) {
+          if (types.includes("route")) {
             street = component.long_name;
           }
-          if (types.includes('street_number')) {
+          if (types.includes("street_number")) {
             streetNumber = component.long_name;
           }
           if (
-            types.includes('locality') ||
-            types.includes('administrative_area_level_2')
+            types.includes("locality") ||
+            types.includes("administrative_area_level_2")
           ) {
             city = component.long_name;
           }
-          if (types.includes('administrative_area_level_1')) {
+          if (types.includes("administrative_area_level_1")) {
             state = component.long_name;
           }
-          if (types.includes('postal_code')) {
+          if (types.includes("postal_code")) {
             zip = component.long_name;
           }
-          if (types.includes('neighborhood')) {
+          if (types.includes("neighborhood")) {
             neighborhood = component.long_name;
           }
-          if (types.includes('country')) {
+          if (types.includes("country")) {
             county = component.long_name;
           }
         });
@@ -315,11 +316,11 @@ export default function DeliveryAddressModal({
           ...prev,
           street: street || result.formatted_address,
           streetNumber: streetNumber || prev.streetNumber,
-          city: city || '',
-          state: state || '',
-          zip: zip || '',
-          neighborhood: neighborhood || '',
-          county: county || '',
+          city: city || "",
+          state: state || "",
+          zip: zip || "",
+          neighborhood: neighborhood || "",
+          county: county || "",
         }));
 
         setTimeout(() => {
@@ -327,7 +328,7 @@ export default function DeliveryAddressModal({
         }, 100);
       }
     } catch (error) {
-      console.error('Error en geocoding inverso:', error);
+      console.error("Error en geocoding inverso:", error);
       isUpdatingFromMap.current = false;
     }
   };
@@ -354,12 +355,11 @@ export default function DeliveryAddressModal({
         locality: data.city,
         administrativeArea: data.province,
         postalCode: data.postalCode,
-        country: 'MX',
+        country: "MX",
       },
     };
 
     try {
-      console.log('🔍 Buscando con restricciones:', request);
       const response = await geocoderInstance.current.geocode(request);
 
       if (response.results && response.results.length > 0) {
@@ -369,48 +369,44 @@ export default function DeliveryAddressModal({
         const lng = location.lng();
         const addressComponents = result.address_components;
 
-        console.log('📍 Resultado encontrado:', result.formatted_address);
-        console.log('🗺️ Coordenadas:', lat, lng);
-
         // Mover marcador y mapa
         markerInstance.current.setPosition({ lat, lng });
         mapInstance.current.setCenter({ lat, lng });
 
         // Procesar componentes de dirección directamente
-        let street = '';
-        let streetNumber = '';
-        let city = '';
-        let state = '';
-        let zip = '';
-        let neighborhood = '';
-        let county = '';
+        let street = "";
+        let streetNumber = "";
+        let city = "";
+        let state = "";
+        let zip = "";
+        let neighborhood = "";
+        let county = "";
 
-        console.log('Address Components:', addressComponents);
         addressComponents.forEach((component: any) => {
           const types = component.types;
 
-          if (types.includes('route')) {
+          if (types.includes("route")) {
             street = component.long_name;
           }
-          if (types.includes('street_number')) {
+          if (types.includes("street_number")) {
             streetNumber = component.long_name;
           }
           if (
-            types.includes('locality') ||
-            types.includes('administrative_area_level_2')
+            types.includes("locality") ||
+            types.includes("administrative_area_level_2")
           ) {
             city = component.long_name;
           }
-          if (types.includes('administrative_area_level_1')) {
+          if (types.includes("administrative_area_level_1")) {
             state = component.long_name;
           }
-          if (types.includes('postal_code')) {
+          if (types.includes("postal_code")) {
             zip = component.long_name;
           }
-          if (types.includes('neighborhood')) {
+          if (types.includes("neighborhood")) {
             neighborhood = component.long_name;
           }
-          if (types.includes('country')) {
+          if (types.includes("country")) {
             county = component.long_name;
           }
         });
@@ -420,25 +416,17 @@ export default function DeliveryAddressModal({
           ...prev,
           street: street || result.formatted_address,
           streetNumber: streetNumber || prev.streetNumber,
-          city: city || '',
-          state: state || '',
-          zip: zip || '',
-          neighborhood: neighborhood || '',
-          county: county || '',
+          city: city || "",
+          state: state || "",
+          zip: zip || "",
+          neighborhood: neighborhood || "",
+          county: county || "",
           latitude: lat,
           longitude: lng,
         }));
-
-        console.log('✅ Dirección actualizada:', {
-          street,
-          streetNumber,
-          city,
-          state,
-          zip,
-        });
       }
     } catch (error) {
-      console.error('Error en búsqueda de dirección:', error);
+      console.error("Error en búsqueda de dirección:", error);
     }
   };
 
@@ -451,7 +439,7 @@ export default function DeliveryAddressModal({
 
   const handleStreetSearch = (value: string) => {
     // Solo actualizar el campo, NO buscar automáticamente
-    handleAddressChange('street', value);
+    handleAddressChange("street", value);
 
     // Cancelar búsqueda anterior
     if (searchTimeoutRef.current) {
@@ -465,7 +453,6 @@ export default function DeliveryAddressModal({
   const handleSearchManually = async () => {
     // Búsqueda manual cuando el usuario lo solicite
     if (address.street.length > 3) {
-      console.log(address);
       await searchAddress({
         street: address.street,
         number: address.streetNumber,
@@ -486,32 +473,31 @@ export default function DeliveryAddressModal({
       !address.zip ||
       !address.phoneNumber
     ) {
-      console.log(address.street);
-      console.log(address.streetNumber);
-      console.log(address.city);
-      console.log(address.state);
-      console.log(address.zip);
-      console.log(address.phoneNumber);
-
-      alert('Por favor completa todos los campos requeridos');
+      setShowValidation(true);
+      setErrorMessage("Por favor completa todos los campos requeridos");
       return;
     }
+    setShowValidation(false);
+    setErrorMessage("");
     setFindQuoteLoading(true);
     getDeliveryQuote()
       .then((result) => {
-        console.log('Delivery quote result:', result);
+        console.log("Delivery quote result:", result);
         if (result) {
           onConfirm(address);
           setFindQuoteLoading(false);
         } else {
-          console.log(
-            'No se pudo obtener una cotización de entrega. Por favor verifica tu dirección.'
+          setErrorMessage(
+            "No se pudo obtener una cotización de entrega. Por favor verifica tu dirección."
           );
           setFindQuoteLoading(false);
         }
       })
       .catch((error) => {
-        console.error('Error obteniendo cotización de entrega:', error);
+        console.error("Error obteniendo cotización de entrega:", error);
+        setErrorMessage(
+          "Error al obtener la cotización. Por favor intenta de nuevo."
+        );
         setFindQuoteLoading(false);
       });
   };
@@ -532,8 +518,6 @@ export default function DeliveryAddressModal({
           if (response.success) {
             const quoteUUID = response.data?.data?.quote?.data?.quoteUUID;
             const summary = response.data?.data?.quote?.data?.summary;
-            console.log('Quote UUID:', quoteUUID);
-            console.log('Summary:', summary);
             const { overloadAmountFee } = summary;
             setQuoteData({
               quoteUUID,
@@ -542,11 +526,11 @@ export default function DeliveryAddressModal({
             setHasQuote(true);
             return true;
           } else {
-            console.error('Error obteniendo costo de entrega', response);
+            console.error("Error obteniendo costo de entrega", response);
           }
         })
         .catch((error) => {
-          console.error('Error en GetDeliveryCost:', error);
+          console.error("Error en GetDeliveryCost:", error);
           return false;
         });
     } else {
@@ -558,134 +542,146 @@ export default function DeliveryAddressModal({
 
   return (
     <div
-      className='fixed inset-0 z-50 flex items-center justify-center p-4'
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
       <div
-        className='relative flex h-full max-h-[900px] w-full max-w-[450px] flex-col overflow-hidden rounded-xl soft-shadow'
-        style={{ backgroundColor: '#f3f4f6' }}
+        className="relative flex h-full max-h-[900px] w-full max-w-[450px] flex-col overflow-hidden rounded-xl soft-shadow"
+        style={{ backgroundColor: "#f3f4f6" }}
       >
         {/* Header */}
-        <header className='flex shrink-0 items-center justify-between gap-2 p-4'>
+        <header className="flex shrink-0 items-center justify-between gap-2 p-4">
           <button
             onClick={onClose}
-            className='flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white soft-shadow transition-all active:soft-shadow-inset'
-            style={{ backgroundColor: '#8E2653' }}
+            className="flex h-12 w-12 items-center justify-center rounded-full text-white dark:text-white soft-shadow transition-all active:soft-shadow-inset"
+            style={{ backgroundColor: "#8E2653" }}
           >
-            <span className='material-symbols-outlined'>arrow_back</span>
+            <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <h1 className='text-xl font-black tracking-tight text-text-light dark:text-text-dark'>
+          <h1 className="text-xl font-black tracking-tight text-text-light dark:text-text-dark">
             Dirección de Entrega
           </h1>
-          <div className='w-12'></div>
+          <div className="w-12"></div>
         </header>
 
         {/* Main Content */}
-        <main className='flex-1 overflow-y-auto p-4 pt-0'>
-          <div className='flex flex-col gap-6'>
+        <main className="flex-1 overflow-y-auto p-4 pt-0">
+          <div className="flex flex-col gap-6">
             {/* Map Container */}
-            <div className='relative h-48 w-full overflow-hidden rounded-lg soft-shadow'>
+            <div className="relative h-48 w-full overflow-hidden rounded-lg soft-shadow">
               <div
                 ref={mapRef}
-                className='h-full w-full'
-                style={{ backgroundColor: '#e5e7eb' }}
+                className="h-full w-full"
+                style={{ backgroundColor: "#e5e7eb" }}
               />
-              <div className='absolute top-2 right-2 bg-white rounded-lg shadow p-2 text-xs z-10'>
-                <p className='font-semibold text-gray-900'>
+              <div className="absolute top-2 right-2 bg-white rounded-lg shadow p-2 text-xs z-10">
+                <p className="font-semibold text-gray-900">
                   {address.latitude.toFixed(4)}, {address.longitude.toFixed(4)}
                 </p>
               </div>
             </div>
 
             {/* Address Form */}
-            <div className='flex flex-col gap-4'>
+            <div className="flex flex-col gap-4">
               {/* Phone Number */}
-              <div className='relative'>
+              <div className="relative">
                 <input
-                  type='tel'
-                  placeholder='Teléfono'
+                  type="tel"
+                  placeholder="Teléfono *"
                   value={address.phoneNumber}
                   onChange={(e) =>
-                    handleAddressChange('phoneNumber', e.target.value)
+                    handleAddressChange("phoneNumber", e.target.value)
                   }
-                  className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                  style={{ backgroundColor: '#f3f4f6' }}
+                  className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    showValidation && !address.phoneNumber
+                      ? "border-2 border-red-500"
+                      : "border-none"
+                  }`}
+                  style={{ backgroundColor: "#f3f4f6" }}
                 />
-                <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                  <span className='material-symbols-outlined text-lg'>
+                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <span className="material-symbols-outlined text-lg">
                     phone
                   </span>
                 </label>
               </div>
 
               {/* Street Input with Search Button */}
-              <div className='relative flex gap-2'>
-                <div className='relative flex-1'>
+              <div className="relative flex gap-2">
+                <div className="relative flex-1">
                   <input
-                    type='text'
-                    placeholder='Escribe la dirección y presiona buscar'
+                    type="text"
+                    placeholder="Escribe la dirección y presiona buscar *"
                     value={address.street}
                     onChange={(e) => handleStreetSearch(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         handleSearchManually();
                       }
                     }}
-                    className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      showValidation && !address.street
+                        ? "border-2 border-red-500"
+                        : "border-none"
+                    }`}
+                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                    <span className='material-symbols-outlined text-lg'>
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
                       signpost
                     </span>
                   </label>
                 </div>
                 <button
-                  type='button'
+                  type="button"
                   onClick={handleSearchManually}
-                  className='flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full transition-all hover:scale-105'
-                  style={{ backgroundColor: '#8E2653' }}
-                  title='Buscar dirección'
+                  className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full transition-all hover:scale-105"
+                  style={{ backgroundColor: "#8E2653" }}
+                  title="Buscar dirección"
                 >
-                  <span className='material-symbols-outlined text-white text-xl'>
+                  <span className="material-symbols-outlined text-white text-xl">
                     search
                   </span>
                 </button>
               </div>
 
               {/* Street Number and Apartment */}
-              <div className='grid grid-cols-2 gap-4'>
-                <div className='relative'>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative">
                   <input
-                    type='text'
-                    placeholder='Número'
+                    type="text"
+                    placeholder="Número *"
                     value={address.streetNumber}
                     onChange={(e) =>
-                      handleAddressChange('streetNumber', e.target.value)
+                      handleAddressChange("streetNumber", e.target.value)
                     }
-                    className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      showValidation && !address.streetNumber
+                        ? "border-2 border-red-500"
+                        : "border-none"
+                    }`}
+                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                    <span className='material-symbols-outlined text-lg'>
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
                       numbers
                     </span>
                   </label>
                 </div>
 
-                <div className='relative'>
+                <div className="relative">
                   <input
-                    type='text'
-                    placeholder='Apto/Depto (opcional)'
+                    type="text"
+                    placeholder="Apto/Depto (opcional)"
                     value={address.references}
                     onChange={(e) =>
-                      handleAddressChange('references', e.target.value)
+                      handleAddressChange("references", e.target.value)
                     }
-                    className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className="w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                    <span className='material-symbols-outlined text-lg'>
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
                       apartment
                     </span>
                   </label>
@@ -693,38 +689,46 @@ export default function DeliveryAddressModal({
               </div>
 
               {/* State and City Grid */}
-              <div className='grid grid-cols-2 gap-4'>
-                <div className='relative'>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative">
                   <input
-                    type='text'
-                    placeholder='Estado'
+                    type="text"
+                    placeholder="Estado *"
                     value={address.state}
                     onChange={(e) =>
-                      handleAddressChange('state', e.target.value)
+                      handleAddressChange("state", e.target.value)
                     }
-                    className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      showValidation && !address.state
+                        ? "border-2 border-red-500"
+                        : "border-none"
+                    }`}
+                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                    <span className='material-symbols-outlined text-lg'>
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
                       location_city
                     </span>
                   </label>
                 </div>
 
-                <div className='relative'>
+                <div className="relative">
                   <input
-                    type='text'
-                    placeholder='Ciudad'
+                    type="text"
+                    placeholder="Ciudad *"
                     value={address.city}
                     onChange={(e) =>
-                      handleAddressChange('city', e.target.value)
+                      handleAddressChange("city", e.target.value)
                     }
-                    className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      showValidation && !address.city
+                        ? "border-2 border-red-500"
+                        : "border-none"
+                    }`}
+                    style={{ backgroundColor: "#f3f4f6" }}
                   />
-                  <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                    <span className='material-symbols-outlined text-lg'>
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                    <span className="material-symbols-outlined text-lg">
                       location_city
                     </span>
                   </label>
@@ -732,17 +736,21 @@ export default function DeliveryAddressModal({
               </div>
 
               {/* Zip Code */}
-              <div className='relative'>
+              <div className="relative">
                 <input
-                  type='text'
-                  placeholder='Código Postal'
+                  type="text"
+                  placeholder="Código Postal *"
                   value={address.zip}
-                  onChange={(e) => handleAddressChange('zip', e.target.value)}
-                  className='w-full rounded-full border-none bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50'
-                  style={{ backgroundColor: '#f3f4f6' }}
+                  onChange={(e) => handleAddressChange("zip", e.target.value)}
+                  className={`w-full rounded-full bg-background-light dark:bg-background-dark py-3 pl-12 pr-4 text-text-light dark:text-text-dark soft-shadow-inset focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    showValidation && !address.zip
+                      ? "border-2 border-red-500"
+                      : "border-none"
+                  }`}
+                  style={{ backgroundColor: "#f3f4f6" }}
                 />
-                <label className='absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark'>
-                  <span className='material-symbols-outlined text-lg'>
+                <label className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+                  <span className="material-symbols-outlined text-lg">
                     mail
                   </span>
                 </label>
@@ -752,22 +760,37 @@ export default function DeliveryAddressModal({
         </main>
 
         {/* Footer */}
-        <footer className='shrink-0 p-4'>
+        <footer className="shrink-0 p-4">
+          {/* Error Message */}
+          {errorMessage && (
+            <div
+              className="mb-4 rounded-lg p-3 flex items-start gap-2 soft-shadow"
+              style={{ backgroundColor: "#fee2e2" }}
+            >
+              <span className="material-symbols-outlined text-red-600 text-xl">
+                error
+              </span>
+              <p className="text-sm text-red-700 font-medium flex-1">
+                {errorMessage}
+              </p>
+            </div>
+          )}
+
           <button
             disabled={findQuoteLoading}
             onClick={handleConfirm}
-            className='h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2'
-            style={{ backgroundColor: '#8E2653' }}
+            className="h-14 w-full rounded-lg text-lg font-bold text-white shadow-[0_4px_14px_0_rgb(101,163,13,0.39)] transition-all hover:shadow-[0_6px_20px_0_rgb(101,163,13,0.23)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            style={{ backgroundColor: "#8E2653" }}
           >
             {findQuoteLoading ? (
               <>
-                <span className='material-symbols-outlined animate-spin text-xl'>
+                <span className="material-symbols-outlined animate-spin text-xl">
                   refresh
                 </span>
                 <span>Buscando cotización...</span>
               </>
             ) : (
-              'Confirmar Dirección'
+              "Confirmar Dirección"
             )}
           </button>
         </footer>
