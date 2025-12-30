@@ -19,7 +19,7 @@ export default function UserChatBubble({
             {senderName}
           </p>
         )}
-        <p className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-br-sm px-4 py-3 bg-[#DFFFD6] text-black shadow-sm">
+        <p className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-br-sm px-4 py-3 bg-[#DFFFD6] dark:bg-[#005c4b] text-black dark:text-[#e9edef] shadow-sm">
           {message}
         </p>
       </div>

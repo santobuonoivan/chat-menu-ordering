@@ -283,14 +283,14 @@ export default function MessageComposer({
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             rows={1}
-            className="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-[20px] text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-slate-200/70 dark:bg-slate-900/50 min-h-[48px] max-h-[120px] placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark pl-12 pr-24 py-3 text-sm font-normal"
+            className="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-[20px] text-text-light dark:text-[#e9edef] focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-slate-200/70 dark:bg-[#2a3942] min-h-[48px] max-h-[120px] placeholder:text-text-muted-light dark:placeholder:text-[#8696a0] pl-12 pr-24 py-3 text-sm font-normal"
             placeholder={placeholder}
             style={{ overflow: message ? "auto" : "hidden" }}
           />
           <div className="absolute left-0 bottom-0 h-12 flex items-center pl-3">
             <button
               onClick={onMicClick}
-              className="flex items-center justify-center p-1.5 rounded-full hover:bg-slate-300/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"
+              className="flex items-center justify-center p-1.5 rounded-full hover:bg-slate-300/50 dark:hover:bg-[#2a3942] text-text-muted-light dark:text-[#e9edef] transition-colors"
             >
               <span className="material-symbols-outlined text-xl">mic</span>
             </button>
@@ -298,7 +298,7 @@ export default function MessageComposer({
           <div className="absolute right-0 bottom-0 h-12 flex items-center pr-12">
             <button
               onClick={onAttachClick}
-              className="flex items-center justify-center p-1.5 rounded-full hover:bg-slate-300/50 dark:hover:bg-slate-600/50 text-text-muted-light dark:text-text-muted-dark transition-colors"
+              className="flex items-center justify-center p-1.5 rounded-full hover:bg-slate-300/50 dark:hover:bg-[#2a3942] text-text-muted-light dark:text-[#e9edef] transition-colors"
             >
               <span className="material-symbols-outlined text-xl">
                 attach_file

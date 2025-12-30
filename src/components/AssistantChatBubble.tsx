@@ -34,14 +34,14 @@ export default function AssistantChatBubble({
       />
       <div className="flex flex-1 flex-col gap-2 items-start">
         {(!afterSender || afterSender !== "assistant") && (
-          <p className="text-text-muted-light dark:text-text-muted-dark text-xs font-medium">
+          <p className="text-text-muted-light dark:text-[#e9edef] text-xs font-medium">
             {senderName}
           </p>
         )}
 
         {/* Mensaje de texto */}
         {!!message && (
-          <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-slate-700 text-text-light dark:text-text-dark shadow-sm">
+          <div className="text-sm font-normal leading-relaxed flex max-w-xs rounded-lg rounded-bl-sm px-4 py-3 bg-slate-100 dark:bg-[#202c33] text-text-light dark:text-[#e9edef] shadow-sm">
             {message}
           </div>
         )}

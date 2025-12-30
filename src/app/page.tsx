@@ -297,10 +297,10 @@ export default function Home() {
           }}
         >
           {/* Backdrop Blur */}
-          <div className="absolute inset-0 bg-background-light/30 dark:bg-background-dark/30 backdrop-blur-md"></div>
+          <div className="absolute inset-0 bg-background-light/30 dark:bg-[#0b141a]/90 backdrop-blur-md"></div>
 
           {/* Chat Container */}
-          <div className="relative flex flex-col w-full max-w-[450px] h-[90vh] max-h-[800px] bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-xl shadow-2xl overflow-hidden">
+          <div className="relative flex flex-col w-full max-w-[450px] h-[90vh] max-h-[800px] bg-surface-light/80 dark:bg-[#111b21]/95 backdrop-blur-xl border border-white/20 dark:border-[#2a3942]/50 rounded-xl shadow-2xl overflow-hidden">
             {/* Top Navigation */}
             <TopNavBar onClose={handleClose} />
             {/* Chat Area */}

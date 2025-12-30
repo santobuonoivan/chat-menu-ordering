@@ -123,15 +123,10 @@ export default function ProductModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-start justify-center p-4 overflow-y-auto"
+      className="h-full fixed inset-0 z-[60] flex items-start justify-center p-4 rounded-xl overflow-auto"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
-      <div
-        className="relative w-full max-w-[450px] rounded-xl pb-20 mt-8 mb-8"
-        style={{
-          backgroundColor: "#f7f8f6",
-        }}
-      >
+      <div className="relative w-full max-w-[450px] rounded-xl pb-20 mt-8 mb-8 bg-[#f7f8f6] dark:bg-[#111b21] ">
         {/* Header Image */}
         <div
           className="w-full h-48 bg-center bg-no-repeat bg-cover"
@@ -143,21 +138,21 @@ export default function ProductModal({
         <div className="p-6">
           {/* Product Info */}
           <div className="mb-6">
-            <h1 className="text-gray-900 text-2xl font-bold mb-2">
+            <h1 className="text-gray-900 dark:text-[#e9edef] text-2xl font-bold mb-2">
               {item.dish_name}
             </h1>
-            <p className="text-gray-600 text-sm leading-relaxed mb-4">
+            <p className="text-gray-600 dark:text-[#8696a0] text-sm leading-relaxed mb-4">
               {item.description}
             </p>
-            <p className="text-gray-900 text-2xl font-bold">
+            <p className="text-gray-900 dark:text-[#00a884] text-2xl font-bold">
               ${parseFloat(item.dish_price).toFixed(2)}
             </p>
           </div>
 
           {/* Modifiers Section */}
           {item.modifiers && item.modifiers.length > 0 && (
-            <div className="mb-6 pb-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="mb-6 pb-6 border-b border-gray-200 dark:border-[#2a3942]">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-[#e9edef] mb-4">
                 Adicionales
               </h2>
 
@@ -166,10 +161,12 @@ export default function ProductModal({
                   <div key={group.group_code} className="flex flex-col gap-3">
                     {/* Group Title */}
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-900">
+                      <h3 className="font-medium text-gray-900 dark:text-[#e9edef]">
                         {group.group_code}
                       </h3>
-                      <span className="text-xs text-gray-500">Opcional</span>
+                      <span className="text-xs text-gray-500 dark:text-[#8696a0]">
+                        Opcional
+                      </span>
                     </div>
 
                     {/* Options */}
@@ -190,8 +187,8 @@ export default function ProductModal({
                               w-full flex items-center justify-between p-3 rounded-lg border-2 transition-all duration-200
                               ${
                                 isSelected
-                                  ? "border-[#65A30D] bg-green-50"
-                                  : "border-gray-200 hover:border-gray-300"
+                                  ? "border-[#65A30D] dark:border-[#00a884] bg-green-50 dark:bg-[#005c4b]/30"
+                                  : "border-gray-200 dark:border-[#2a3942] hover:border-gray-300 dark:hover:border-[#3a4a52] dark:bg-[#202c33]"
                               }
                             `}
                           >
@@ -201,8 +198,8 @@ export default function ProductModal({
                                   w-5 h-5 rounded border-2 flex items-center justify-center
                                   ${
                                     isSelected
-                                      ? "border-[#65A30D] bg-[#65A30D]"
-                                      : "border-gray-300"
+                                      ? "border-[#65A30D] dark:border-[#00a884] bg-[#65A30D] dark:bg-[#00a884]"
+                                      : "border-gray-300 dark:border-[#8696a0]"
                                   }
                                 `}
                               >
@@ -211,17 +208,17 @@ export default function ProductModal({
                                 )}
                               </div>
                               <div className="text-left">
-                                <p className="text-sm font-medium text-gray-900">
+                                <p className="text-sm font-medium text-gray-900 dark:text-[#e9edef]">
                                   {modifier.mod_name}
                                 </p>
                                 {modifier.mod_description && (
-                                  <p className="text-xs text-gray-500">
+                                  <p className="text-xs text-gray-500 dark:text-[#8696a0]">
                                     {modifier.mod_description}
                                   </p>
                                 )}
                               </div>
                             </div>
-                            <span className="text-sm font-semibold text-[#65A30D]">
+                            <span className="text-sm font-semibold text-[#65A30D] dark:text-[#00a884]">
                               {modifier.mod_price > 0
                                 ? `+$${modifier.mod_price.toFixed(2)}`
                                 : "Gratis"}
@@ -238,27 +235,21 @@ export default function ProductModal({
         </div>
 
         {/* Sticky Footer */}
-        <div
-          className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between gap-3"
-          style={{
-            backgroundColor: "#f7f8f6",
-            borderTop: "1px solid #e5e7eb",
-          }}
-        >
+        <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between gap-3 bg-[#f7f8f6] dark:bg-[#111b21] border-t border-gray-200 dark:border-[#2a3942]">
           {/* Quantity Stepper */}
-          <div className="flex items-center gap-1 bg-gray-200 rounded-lg p-1">
+          <div className="flex items-center gap-1 bg-gray-200 dark:bg-[#2a3942] rounded-lg p-1">
             <button
               onClick={decreaseQuantity}
-              className="w-8 h-8 flex items-center justify-center rounded text-gray-600 hover:bg-gray-300"
+              className="w-8 h-8 flex items-center justify-center rounded text-gray-600 dark:text-[#8696a0] hover:bg-gray-300 dark:hover:bg-[#3a4a52]"
             >
               <span className="material-symbols-outlined text-lg">remove</span>
             </button>
-            <span className="w-8 text-center text-sm font-semibold text-gray-900">
+            <span className="w-8 text-center text-sm font-semibold text-gray-900 dark:text-[#e9edef]">
               {quantity}
             </span>
             <button
               onClick={increaseQuantity}
-              className="w-8 h-8 flex items-center justify-center rounded text-gray-600 hover:bg-gray-300"
+              className="w-8 h-8 flex items-center justify-center rounded text-gray-600 dark:text-[#8696a0] hover:bg-gray-300 dark:hover:bg-[#3a4a52]"
             >
               <span className="material-symbols-outlined text-lg">add</span>
             </button>
@@ -267,8 +258,7 @@ export default function ProductModal({
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            className="flex-grow text-white font-semibold py-3 px-4 rounded-lg text-sm"
-            style={{ backgroundColor: "#65A30D" }}
+            className="flex-grow text-white font-semibold py-3 px-4 rounded-lg text-sm bg-[#65A30D] dark:bg-[#00a884] hover:bg-[#5a8f0b] dark:hover:bg-[#06c755]"
           >
             Añadir al Carrito - ${finalPrice.toFixed(2)}
           </button>
@@ -277,7 +267,7 @@ export default function ProductModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full text-white bg-black bg-opacity-50 hover:bg-opacity-70"
+          className="absolute items-center flex justify-center top-3 right-3 w-8 h-8 rounded-full text-white bg-black bg-opacity-50 hover:bg-opacity-70"
         >
           <span className="material-symbols-outlined text-lg">close</span>
         </button>

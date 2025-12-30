@@ -43,8 +43,8 @@ export default function MenuPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-start bg-background-light dark:bg-background-dark py-10 px-4 group/design-root">
-      <div className="flex h-full w-full max-w-[450px] flex-col overflow-hidden rounded-xl bg-white/60 dark:bg-black/30 shadow-2xl shadow-gray-500/10 backdrop-blur-xl ring-1 ring-black/5">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-start bg-background-light dark:bg-[#0b141a] py-10 px-4 group/design-root">
+      <div className="flex h-full w-full max-w-[450px] flex-col overflow-hidden rounded-xl bg-white/60 dark:bg-[#111b21]/95 shadow-2xl shadow-gray-500/10 backdrop-blur-xl ring-1 ring-black/5 dark:ring-[#2a3942]/50">
         {/* Header */}
         <NavigationHeader title="Menú del Día" onBack={handleBack} />
 
@@ -52,7 +52,7 @@ export default function MenuPage() {
         <div className="overflow-y-auto px-4">
           {/* Title */}
           <div className="flex justify-center gap-3 pt-4 pb-2">
-            <p className="text-gray-700 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">
+            <p className="text-gray-700 dark:text-[#e9edef] text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">
               Selección de Productos
             </p>
           </div>
@@ -66,7 +66,7 @@ export default function MenuPage() {
 
           {/* Menu Items */}
           <div className="flex flex-col gap-3 pb-6">
-            <h2 className="text-[#8E2653] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">
+            <h2 className="text-[#8E2653] dark:text-[#e9edef] text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">
               {selectedCategory}
             </h2>
 
