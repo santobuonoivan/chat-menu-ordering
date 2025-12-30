@@ -54,7 +54,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (messages.length === 0) {
+    if (messages.length === 0 && !isLoading) {
       const iniciarChat = async () => {
         const initialMessages = [
           {
@@ -80,7 +80,7 @@ export default function Home() {
       };
       iniciarChat();
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   // Hacer scroll al final
   const scrollToBottom = () => {
