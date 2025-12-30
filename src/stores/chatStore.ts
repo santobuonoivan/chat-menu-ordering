@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { IMessage } from "@/types/chat";
-import { generateUUID } from "@/utils";
 
 interface ChatState {
   messages: IMessage[];
@@ -43,7 +42,13 @@ export const useChatStore = create<ChatState>()(
       },
 
       resetToInitial: () => {
-        set({ messages: [] });
+        set({
+          messages: [],
+          itemListUUID: undefined,
+          modifierListUUID: undefined,
+        });
+        // Limpiar también el localStorage
+        localStorage.removeItem("chat-store");
       },
       showListMenuItems: false,
       setShowListMenuItems: (show: boolean) => {
