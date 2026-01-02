@@ -57,7 +57,7 @@ export default function AssistantChatBubble({
         {data &&
           data.itemSelected &&
           (modifierListUUID == messageId ? (
-            <div className="flex flex-col gap-2 mt-2 max-w-xs">
+            <div className="flex flex-col gap-2 mt-2 w-full">
               <ModifierChatCard
                 items={data.itemSelected}
                 action={data.action || ""}

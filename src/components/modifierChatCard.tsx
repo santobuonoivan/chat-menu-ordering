@@ -202,7 +202,7 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
   };
 
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-3 w-[90%]">
       {items.map((item, itemIndex) => {
         const isExpanded = expandedItemIndex === itemIndex;
         const modifiers = item.modifiers || [];
@@ -215,7 +215,7 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
             {/* Header del item - siempre visible y clickeable */}
             <button
               onClick={() => handleItemClick(itemIndex, item)}
-              className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+              className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors w-full"
             >
               <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-700 shrink-0">
                 <img
@@ -241,9 +241,10 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
             {isExpanded && (
               <div className="flex flex-col gap-3 p-4 pt-0 border-t border-gray-200 dark:border-slate-600">
                 {/* Opción sin modificadores */}
+
                 <button
                   onClick={() => handleSkipModifiers(itemIndex)}
-                  className="w-full py-2 px-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600 text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-[#8E2653] hover:text-[#8E2653] transition-colors"
+                  className="w-full mt-4 py-2 rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600 text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-[#8E2653] hover:text-[#8E2653] transition-colors"
                 >
                   Sin adicionales
                 </button>
@@ -297,7 +298,7 @@ export default function ModifierChatCard({ items, action }: ModifierChatProps) {
                                   : "Gratis"}
                               </span>
                               {isSelected && (
-                                <span className="material-symbols-outlined text-[#8E2653] text-lg">
+                                <span className="material-symbols-outlined text-[#8E2653] text-sm">
                                   check_circle
                                 </span>
                               )}

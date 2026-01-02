@@ -3,7 +3,12 @@
 import { useChatStore } from "@/stores/chatStore";
 import { useCartStore } from "@/stores/cartStore";
 import { IMessage } from "@/types/chat";
-import { generateUUID, rankAndFilterDishes, sleep } from "@/utils";
+import {
+  generateUUID,
+  rankAndFilterDishes,
+  rankAndFilterDishesWithDescription,
+  sleep,
+} from "@/utils";
 import { useState, useRef, useEffect, act } from "react";
 import { useMenuStore } from "@/stores/menuStore";
 import { ApiCallFindDishesByName } from "@/handlers/agentAI/findDishes";
@@ -66,7 +71,11 @@ export default function MessageComposer({
 
     let payload = {};
 
-    if (filteredDishes.length === 0 || isItemInCart.length > 0) {
+    if (
+      (filteredDishes.length === 0 &&
+        filteredDishesWithDescription.length === 0) ||
+      isItemInCart.length > 0
+    ) {
       // Si no hay ninguno, devolver vacío
       payload = { type: "CATEGORIZED", data: { INPUT: input } };
       console.log(
@@ -88,7 +97,18 @@ export default function MessageComposer({
         });
       console.log("Agent Workflow Result:", result);
       /* si pudo categorizarlo el flujo termina acá */
-      if (result) return;
+      if (result) {
+        setIsAssistantTyping(false);
+        return;
+      }
+      /** nuevo por descripción */
+    } else if (filteredDishesWithDescription.length > 0) {
+      handleDishesResponse({
+        success: true,
+        data: filteredDishesWithDescription.map((d) => d.name),
+      });
+      setIsAssistantTyping(false);
+      return;
     }
     // Si solo hay uno, devolver directamente
     if (filteredDishes.length === 1) {
