@@ -49,8 +49,18 @@ export default function MessageComposer({
     const dishList: string[] =
       menuData?.menu.map((item) => item.dish_name) || [];
     console.log("Dish List:", dishList);
+    const dishListWithDescription: { name: string; description: string }[] =
+      menuData?.menu.map((item) => ({
+        name: item.dish_name,
+        description: item.description || "",
+      })) || [];
+    console.log("Dish List with Description:", dishListWithDescription);
     // Filtrar localmente primero
     const filteredDishes = rankAndFilterDishes(dishList, input);
+    const filteredDishesWithDescription = rankAndFilterDishesWithDescription(
+      dishListWithDescription,
+      input
+    );
     const isItemInCart = rankAndFilterDishes(getItemNames(), input);
     console.log("Filtered Dishes:", filteredDishes);
 
@@ -63,20 +73,22 @@ export default function MessageComposer({
         "No dishes found locally, calling Agent Workflow with payload:",
         payload
       );
-      await ApiCallAgentWorkflow(payload)
+      const result = await ApiCallAgentWorkflow(payload)
         .then(async (res) => {
           console.log("Agent Workflow Response Status:", res);
           return { success: res.status === 200, action: res.data?.action };
         })
         .then((response) => {
-          handleCategorizedResponse(response, isItemInCart);
+          return handleCategorizedResponse(response, isItemInCart);
         })
         .catch((error) => {
           console.error("Error calling Agent Workflow:", error);
           setIsAssistantTyping(false);
+          return false;
         });
-
-      return;
+      console.log("Agent Workflow Result:", result);
+      /* si pudo categorizarlo el flujo termina acá */
+      if (result) return;
     }
     // Si solo hay uno, devolver directamente
     if (filteredDishes.length === 1) {
@@ -110,7 +122,8 @@ export default function MessageComposer({
       action: string;
     },
     isItemInCart: string[]
-  ) => {
+  ): boolean => {
+    let result = false;
     if (response.success) {
       console.log("Categorized Action:", response.action);
       let action = response.action.toUpperCase();
@@ -125,6 +138,7 @@ export default function MessageComposer({
         "REMOVE_ITEM_CART",
         "UPDATE_ITEM_CART",
         "HELLO",
+        "N/A",
         "ERROR",
       ];
 
@@ -201,6 +215,7 @@ export default function MessageComposer({
         sleep(500).then(() => {
           setIsCartOpen(true);
         });
+        result = true;
       }
 
       if (action === "USER_LOCATION") {
@@ -210,6 +225,7 @@ export default function MessageComposer({
           "assistant",
           null
         );
+        result = true;
       }
 
       if (action === "CANCEL_ORDER") {
@@ -219,6 +235,7 @@ export default function MessageComposer({
           "assistant",
           null
         );
+        result = true;
       }
 
       if (action === "CONFIRM_ORDER") {
@@ -227,6 +244,7 @@ export default function MessageComposer({
           "assistant",
           null
         );
+        result = true;
       }
 
       if (action === "SELECT_PAYMENT_METHOD") {
@@ -235,6 +253,7 @@ export default function MessageComposer({
           "assistant",
           null
         );
+        result = true;
       }
 
       if (action === "HELLO") {
@@ -252,6 +271,7 @@ export default function MessageComposer({
             null
           );
         }
+        result = true;
       }
 
       if (action === "ERROR") {
@@ -260,8 +280,10 @@ export default function MessageComposer({
           "assistant",
           null
         );
+        result = true;
       }
     }
+    return result;
   };
 
   const handleDishesResponse = (response: {

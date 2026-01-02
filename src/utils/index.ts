@@ -9,6 +9,288 @@ export const generateUUID = () => {
   return uuidv4();
 };
 
+// Lista de palabras comunes e irrelevantes que deben ignorarse en el ranking (Stop Words)
+const STOP_WORDS = new Set([
+  // Artículos
+  "un",
+  "una",
+  "unos",
+  "unas",
+  "el",
+  "la",
+  "los",
+  "las",
+
+  // Preposiciones
+  "de",
+  "del",
+  "al",
+  "a",
+  "en",
+  "con",
+  "sin",
+  "para",
+  "por",
+  "desde",
+  "hasta",
+
+  // Conjunciones
+  "y",
+  "e",
+  "o",
+  "u",
+  "pero",
+  "mas",
+  "ni",
+
+  // Pronombres
+  "mi",
+  "me",
+  "tu",
+  "te",
+  "su",
+  "le",
+  "se",
+  "lo",
+  "les",
+  "nos",
+
+  // Verbos de petición/deseo
+  "quiero",
+  "quisiera",
+  "querer",
+  "dame",
+  "deme",
+  "traeme",
+  "traiga",
+  "trae",
+  "necesito",
+  "ordenar",
+  "pedir",
+  "pidiendo",
+  "solicitar",
+  "deseo",
+  "podria",
+  "puedo",
+  "puede",
+  "pueden",
+  "podrías",
+  "podrias",
+  "favor",
+  "gustaria",
+  "gustaría",
+  "encargo",
+  "solicito",
+  "agrega",
+  "añade",
+  "anade",
+  "pon",
+  "ponle",
+  "ponme",
+  "dame",
+  "deme",
+
+  // Verbos de acción/estado
+  "ver",
+  "mirar",
+  "revisar",
+  "mostrar",
+  "muestra",
+  "muestre",
+  "checando",
+  "checo",
+  "busco",
+  "buscar",
+  "buscando",
+  "querer",
+  "tiene",
+  "tienen",
+  "hay",
+  "esta",
+  "está",
+  "estan",
+  "están",
+  "sea",
+  "ser",
+  "tengo",
+  "tener",
+  "lleva",
+  "llevar",
+  "incluye",
+  "incluir",
+  "viene",
+  "venir",
+
+  // Palabras de cortesía
+  "por",
+  "favor",
+  "porfavor",
+  "gracias",
+  "porfa",
+  "xfa",
+  "xfavor",
+  "please",
+
+  // Adjetivos indefinidos/demostrativos
+  "otro",
+  "otra",
+  "otros",
+  "otras",
+  "ese",
+  "esa",
+  "esos",
+  "esas",
+  "este",
+  "esta",
+  "estos",
+  "estas",
+  "aquel",
+  "aquella",
+  "aquellos",
+  "aquellas",
+  "mismo",
+  "misma",
+  "mismos",
+  "mismas",
+  "algo",
+  "alguno",
+  "alguna",
+  "algunos",
+  "algunas",
+  "todo",
+  "toda",
+  "todos",
+  "todas",
+  "con",
+
+  // Palabras relacionadas con cantidad genérica
+  "mas",
+  "más",
+  "menos",
+  "poco",
+  "poca",
+  "mucho",
+  "mucha",
+  "muchos",
+  "muchas",
+  "varios",
+  "varias",
+  "bastante",
+  "bastantes",
+
+  // Palabras relacionadas con acciones de menú/carrito
+  "menu",
+  "menú",
+  "carta",
+  "carrito",
+  "orden",
+  "pedido",
+  "cuenta",
+  "total",
+  "cancelar",
+  "cancela",
+  "borrar",
+  "borra",
+  "eliminar",
+  "elimina",
+  "quitar",
+  "quita",
+  "vaciar",
+  "vacia",
+  "limpiar",
+  "limpia",
+
+  // Adverbios comunes
+  "si",
+  "sí",
+  "no",
+  "ya",
+  "ahora",
+  "aqui",
+  "aquí",
+  "ahi",
+  "ahí",
+  "alla",
+  "allá",
+  "acá",
+  "aca",
+  "como",
+  "cómo",
+  "cuando",
+  "cuándo",
+  "donde",
+  "dónde",
+  "cual",
+  "cuál",
+  "cuales",
+  "cuáles",
+  "que",
+  "qué",
+  "porque",
+  "porqué",
+  "también",
+  "tambien",
+  "tampoco",
+  "solo",
+  "sólo",
+  "solamente",
+
+  // Palabras de tiempo
+  "hoy",
+  "ayer",
+  "mañana",
+  "luego",
+
+  // Expresiones coloquiales
+  "ok",
+  "okay",
+  "vale",
+  "bien",
+  "bueno",
+  "buena",
+  "si",
+  "sí",
+  "claro",
+  "perfecto",
+  "perfecta",
+  "excelente",
+  "super",
+  "súper",
+  "genial",
+
+  // Palabras que pueden confundir con ingredientes
+  "cosa",
+  "cosas",
+  "tipo",
+  "tipos",
+  "estilo",
+  "modo",
+  "forma",
+  "manera",
+
+  // Conectores
+  "entonces",
+  "pues",
+  "bueno",
+  "así",
+  "asi",
+
+  // Interrogativos
+  "qué",
+  "que",
+  "cuál",
+  "cual",
+  "cuáles",
+  "cuales",
+  "cuánto",
+  "cuanto",
+  "cuánta",
+  "cuanta",
+  "cuántos",
+  "cuantos",
+  "cuántas",
+  "cuantas",
+]);
 // Función auxiliar para agrupar los modificadores
 export const groupModifiers = (
   modifiers: (IModifier | null | undefined)[] // Aceptamos posibles null/undefined
@@ -63,293 +345,71 @@ export const humanizedText = async (text: string) => {
     });
 };
 
+export const rankAndFilterDishesWithDescription = (
+  dishList: { name: string; description: string }[],
+  userInput: string
+): { name: string; description: string }[] => {
+  const rawTokens = userInput
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((token) => token.length > 0 && !STOP_WORDS.has(token)); // Ignorar Stop Words
+  const searchTokens = new Set<string>();
+
+  for (const token of rawTokens) {
+    searchTokens.add(token);
+
+    if (token.endsWith("s") && token.length > 2) {
+      searchTokens.add(token.slice(0, -1));
+    }
+  }
+
+  const tokensToSearch = Array.from(searchTokens);
+
+  if (tokensToSearch.length === 0) {
+    return [];
+  }
+
+  let maxScore = 0;
+  const scoredDishes: { name: string; description: string; score: number }[] =
+    [];
+
+  for (const dish of dishList) {
+    let currentScore = 0;
+    const normalizedDishName = dish.name.toLowerCase();
+    const normalizedDishDescription = dish.description.toLowerCase();
+    const countedTokens = new Set<string>();
+
+    for (const token of tokensToSearch) {
+      if (
+        normalizedDishName.includes(token) ||
+        normalizedDishDescription.includes(token)
+      ) {
+        currentScore++;
+      }
+    }
+
+    if (currentScore > maxScore) {
+      maxScore = currentScore;
+    }
+
+    scoredDishes.push({
+      name: dish.name,
+      description: dish.description,
+      score: currentScore,
+    });
+  }
+
+  const filteredDishes = scoredDishes
+    .filter((item) => item.score === maxScore && item.score > 0)
+    .map((item) => ({ name: item.name, description: item.description }));
+
+  return filteredDishes;
+};
+
 export const rankAndFilterDishes = (
   dishList: string[],
   userInput: string
 ): string[] => {
-  // Lista de palabras comunes e irrelevantes que deben ignorarse en el ranking (Stop Words)
-  const STOP_WORDS = new Set([
-    // Artículos
-    "un",
-    "una",
-    "unos",
-    "unas",
-    "el",
-    "la",
-    "los",
-    "las",
-
-    // Preposiciones
-    "de",
-    "del",
-    "al",
-    "a",
-    "en",
-    "con",
-    "sin",
-    "para",
-    "por",
-    "desde",
-    "hasta",
-
-    // Conjunciones
-    "y",
-    "e",
-    "o",
-    "u",
-    "pero",
-    "mas",
-    "ni",
-
-    // Pronombres
-    "mi",
-    "me",
-    "tu",
-    "te",
-    "su",
-    "le",
-    "se",
-    "lo",
-    "les",
-    "nos",
-
-    // Verbos de petición/deseo
-    "quiero",
-    "quisiera",
-    "querer",
-    "dame",
-    "deme",
-    "traeme",
-    "traiga",
-    "trae",
-    "necesito",
-    "ordenar",
-    "pedir",
-    "pidiendo",
-    "solicitar",
-    "deseo",
-    "podria",
-    "puedo",
-    "puede",
-    "pueden",
-    "podrías",
-    "podrias",
-    "favor",
-    "gustaria",
-    "gustaría",
-    "encargo",
-    "solicito",
-    "agrega",
-    "añade",
-    "anade",
-    "pon",
-    "ponle",
-    "ponme",
-    "dame",
-    "deme",
-
-    // Verbos de acción/estado
-    "ver",
-    "mirar",
-    "revisar",
-    "mostrar",
-    "muestra",
-    "muestre",
-    "checando",
-    "checo",
-    "busco",
-    "buscar",
-    "buscando",
-    "querer",
-    "tiene",
-    "tienen",
-    "hay",
-    "esta",
-    "está",
-    "estan",
-    "están",
-    "sea",
-    "ser",
-    "tengo",
-    "tener",
-    "lleva",
-    "llevar",
-    "incluye",
-    "incluir",
-    "viene",
-    "venir",
-
-    // Palabras de cortesía
-    "por",
-    "favor",
-    "porfavor",
-    "gracias",
-    "porfa",
-    "xfa",
-    "xfavor",
-    "please",
-
-    // Adjetivos indefinidos/demostrativos
-    "otro",
-    "otra",
-    "otros",
-    "otras",
-    "ese",
-    "esa",
-    "esos",
-    "esas",
-    "este",
-    "esta",
-    "estos",
-    "estas",
-    "aquel",
-    "aquella",
-    "aquellos",
-    "aquellas",
-    "mismo",
-    "misma",
-    "mismos",
-    "mismas",
-    "algo",
-    "alguno",
-    "alguna",
-    "algunos",
-    "algunas",
-    "todo",
-    "toda",
-    "todos",
-    "todas",
-    "con",
-
-    // Palabras relacionadas con cantidad genérica
-    "mas",
-    "más",
-    "menos",
-    "poco",
-    "poca",
-    "mucho",
-    "mucha",
-    "muchos",
-    "muchas",
-    "varios",
-    "varias",
-    "bastante",
-    "bastantes",
-
-    // Palabras relacionadas con acciones de menú/carrito
-    "menu",
-    "menú",
-    "carta",
-    "carrito",
-    "orden",
-    "pedido",
-    "cuenta",
-    "total",
-    "cancelar",
-    "cancela",
-    "borrar",
-    "borra",
-    "eliminar",
-    "elimina",
-    "quitar",
-    "quita",
-    "vaciar",
-    "vacia",
-    "limpiar",
-    "limpia",
-
-    // Adverbios comunes
-    "si",
-    "sí",
-    "no",
-    "ya",
-    "ahora",
-    "aqui",
-    "aquí",
-    "ahi",
-    "ahí",
-    "alla",
-    "allá",
-    "acá",
-    "aca",
-    "como",
-    "cómo",
-    "cuando",
-    "cuándo",
-    "donde",
-    "dónde",
-    "cual",
-    "cuál",
-    "cuales",
-    "cuáles",
-    "que",
-    "qué",
-    "porque",
-    "porqué",
-    "también",
-    "tambien",
-    "tampoco",
-    "solo",
-    "sólo",
-    "solamente",
-
-    // Palabras de tiempo
-    "hoy",
-    "ayer",
-    "mañana",
-    "luego",
-
-    // Expresiones coloquiales
-    "ok",
-    "okay",
-    "vale",
-    "bien",
-    "bueno",
-    "buena",
-    "si",
-    "sí",
-    "claro",
-    "perfecto",
-    "perfecta",
-    "excelente",
-    "super",
-    "súper",
-    "genial",
-
-    // Palabras que pueden confundir con ingredientes
-    "cosa",
-    "cosas",
-    "tipo",
-    "tipos",
-    "estilo",
-    "modo",
-    "forma",
-    "manera",
-
-    // Conectores
-    "entonces",
-    "pues",
-    "bueno",
-    "así",
-    "asi",
-
-    // Interrogativos
-    "qué",
-    "que",
-    "cuál",
-    "cual",
-    "cuáles",
-    "cuales",
-    "cuánto",
-    "cuanto",
-    "cuánta",
-    "cuanta",
-    "cuántos",
-    "cuantos",
-    "cuántas",
-    "cuantas",
-  ]);
-
   // --- PASO 1: Tokenizar (Preparar datos) - REFINADO! ---
 
   const rawTokens = userInput

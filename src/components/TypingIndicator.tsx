@@ -11,7 +11,7 @@ export default function TypingIndicator({ isTyping }: TypingIndicatorProps) {
     <div className="flex items-start gap-3 animate-fade-in">
       {/* Avatar placeholder */}
       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-        <span className="material-symbols-outlined text-primary text-sm">
+        <span className="material-symbols-outlined text-primary dark:text-white text-sm">
           restaurant
         </span>
       </div>
