@@ -15,9 +15,11 @@ import { useMenuStore } from "@/stores/menuStore";
 import { IMenuItem } from "@/types/menu";
 import { ApiCallProcessIncomingMessage } from "@/handlers/core/getSessionData";
 import { ApiCallGetMenu } from "@/handlers/standar/orders";
+import { useTracking } from "@/hooks/useTracking";
 
 export default function Home() {
   const router = useRouter();
+  const { trackUserAction, trackChatMessage } = useTracking();
   const {
     messages,
     addMessage,

@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Comfortaa } from "next/font/google";
 import AblyProvider from "@/components/AblyProvider";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${comfortaa.variable} font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased`}
       >
-        <AblyProvider>{children}</AblyProvider>
+        <ErrorBoundary>
+          <AblyProvider>{children}</AblyProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

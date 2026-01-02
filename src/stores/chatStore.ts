@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { IMessage } from "@/types/chat";
+import { eventTracker } from "@/services/eventTracker";
+import { generateUUID } from "@/utils";
 
 interface ChatState {
   messages: IMessage[];
@@ -31,6 +33,26 @@ export const useChatStore = create<ChatState>()(
         set((state) => ({
           messages: [...state.messages, message],
         }));
+
+        // Track chat message
+        eventTracker.track({
+          id: generateUUID(),
+          type: "CHAT_MESSAGE",
+          category: "communication",
+          data: {
+            sender: message.sender,
+            messageId: message.id,
+            messageLength: message.text.length,
+            hasData: !!message.data,
+            dataType: message.data
+              ? message.data.items
+                ? "items"
+                : message.data.itemSelected
+                ? "modifiers"
+                : "other"
+              : undefined,
+          },
+        });
       },
 
       setMessages: (messages: IMessage[]) => {

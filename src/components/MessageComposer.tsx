@@ -102,18 +102,32 @@ export default function MessageComposer({
         return;
       }
       /** nuevo por descripción */
-    } else if (filteredDishesWithDescription.length > 0) {
-      handleDishesResponse({
+    } else if (
+      filteredDishes.length === 0 &&
+      filteredDishesWithDescription.length > 0
+    ) {
+      console.log(
+        "Filtered Dishes with Description:",
+        filteredDishesWithDescription
+      );
+      // Si hay alguno por descripción, devolver esos
+
+      const result = handleDishesResponse({
         success: true,
         data: filteredDishesWithDescription.map((d) => d.name),
       });
-      setIsAssistantTyping(false);
-      return;
+      debugger;
+      if (result) {
+        setIsAssistantTyping(false);
+        return;
+      }
     }
     // Si solo hay uno, devolver directamente
     if (filteredDishes.length === 1) {
+      console.log("Single dish found:", filteredDishes[0]);
       const response = { success: true, data: filteredDishes };
       handleDishesResponse(response);
+      setIsAssistantTyping(false);
       return;
     }
     // Si hay más, consultar al agente AI
@@ -121,17 +135,21 @@ export default function MessageComposer({
       type: "FIND_DISH_BY_NAME",
       data: { DISH_LIST: filteredDishes, INPUT: input },
     };
-
+    console.log("Calling Find Dishes API with payload:", payload);
     ApiCallFindDishesByName(payload)
       .then(async (res) => {
         console.log("Find Dishes Response Status:", res);
         return { success: res.status === 200, data: res.data?.output };
       })
       .then((response) => {
+        console.log("Find Dishes Response Data:", response);
         handleDishesResponse(response);
       })
       .catch((error) => {
         console.error("Error calling Find Dishes API:", error);
+      })
+      .finally(() => {
+        console.log("Finished processing dish search.");
         setIsAssistantTyping(false);
       });
   };
@@ -309,7 +327,7 @@ export default function MessageComposer({
   const handleDishesResponse = (response: {
     success: boolean;
     data: string[];
-  }) => {
+  }): boolean => {
     if (response.success) {
       console.log("Dishes by Input:", response.data);
       const dishesFound = menuData?.menu.filter((item) =>
@@ -332,14 +350,17 @@ export default function MessageComposer({
           "assistant",
           newListDishes
         );
+        return true;
       } else {
         onSendMessage?.(
           `Lo siento, no he encontrado ningún plato que coincida con tu búsqueda. ¿Quieres intentar con otro nombre?`,
           "assistant",
           null
         );
+        return true;
       }
     }
+    return false;
   };
   const handleSend = () => {
     // Mock data temporalmente deshabilitado para compatibilidad v2

@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { ICartStore, ICartItem, ICartModifier } from "@/types/cart";
 import { IMenuItem } from "@/types/menu";
+import { eventTracker } from "@/services/eventTracker";
+import { generateUUID } from "@/utils";
 
 const CART_EXPIRY_MINUTES = 30;
 const STORAGE_KEY = "appio-cart";
@@ -98,6 +100,23 @@ export const useCartStore = create<ICartStore>()(
             lastUpdated: now,
             expiresAt,
           });
+
+          // Track cart action
+          eventTracker.track({
+            id: generateUUID(),
+            type: "CART_ACTION",
+            category: "transaction",
+            data: {
+              action: "update",
+              itemId: menuItem.dish_id.toString(),
+              itemName: menuItem.dish_name,
+              quantity: updatedItems[existingItemIndex].quantity,
+              price: updatedItems[existingItemIndex].totalPrice,
+              modifiers,
+              cartTotal: newTotalPrice,
+              cartItemCount: newTotalItems,
+            },
+          });
         } else {
           // Add new item
           const newItem: ICartItem = {
@@ -126,11 +145,29 @@ export const useCartStore = create<ICartStore>()(
             lastUpdated: now,
             expiresAt,
           });
+
+          // Track cart action
+          eventTracker.track({
+            id: generateUUID(),
+            type: "CART_ACTION",
+            category: "transaction",
+            data: {
+              action: "add",
+              itemId: menuItem.dish_id.toString(),
+              itemName: menuItem.dish_name,
+              quantity,
+              price: totalPrice,
+              modifiers,
+              cartTotal: newTotalPrice,
+              cartItemCount: newTotalItems,
+            },
+          });
         }
       },
 
       removeItem: (cartItemId: string) => {
         const state = get();
+        const itemToRemove = state.items.find((item) => item.id === cartItemId);
         const updatedItems = state.items.filter(
           (item) => item.id !== cartItemId
         );
@@ -149,6 +186,24 @@ export const useCartStore = create<ICartStore>()(
           totalPrice: newTotalPrice,
           lastUpdated: new Date(),
         });
+
+        // Track removal
+        if (itemToRemove) {
+          eventTracker.track({
+            id: generateUUID(),
+            type: "CART_ACTION",
+            category: "transaction",
+            data: {
+              action: "remove",
+              itemId: itemToRemove.menuItem.dish_id.toString(),
+              itemName: itemToRemove.menuItem.dish_name,
+              quantity: itemToRemove.quantity,
+              price: itemToRemove.totalPrice,
+              cartTotal: newTotalPrice,
+              cartItemCount: newTotalItems,
+            },
+          });
+        }
       },
 
       updateQuantity: (cartItemId: string, quantity: number) => {
