@@ -6,7 +6,7 @@ import { eventTracker } from "@/services/eventTracker";
 import { generateUUID } from "@/utils";
 
 const CART_EXPIRY_MINUTES = 30;
-const STORAGE_KEY = "appio-cart";
+const STORAGE_KEY = "pexpo-cart";
 
 const generateCartItemId = (
   menuItem: IMenuItem,

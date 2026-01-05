@@ -13,7 +13,7 @@ const config: Config = {
         comfortaa: ["var(--font-comfortaa)", "sans-serif"],
       },
       colors: {
-        appio: {
+        pexpo: {
           50: "#fdf2f8",
           100: "#fce7f3",
           200: "#fbcfe8",
@@ -24,7 +24,7 @@ const config: Config = {
           700: "#be185d",
           800: "#9d174d",
           900: "#831843",
-          950: "#8E2653", // Color oficial de Appio
+          950: "#8E2653", // Color oficial de Pexpo
         },
       },
       keyframes: {

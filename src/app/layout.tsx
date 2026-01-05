@@ -15,8 +15,8 @@ const comfortaa = Comfortaa({
 });
 
 export const metadata: Metadata = {
-  title: "Chat con Asistente Appio",
-  description: "Asistente digital de Appio",
+  title: "Chat con Asistente Pexpo",
+  description: "Asistente digital de Pexpo",
 };
 
 export default function RootLayout({

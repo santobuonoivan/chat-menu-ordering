@@ -212,7 +212,7 @@ export default function PaymentModal({
           const cartId = sessionData?.cart.id || null;
           const restName = sessionData?.rest.title || null;
           const restId = sessionData?.rest.rest_id || null;
-          const restEmail = sessionData?.rest.email || "operaciones@appio.ai";
+          const restEmail = sessionData?.rest.email || "operaciones@pexpo.ai";
 
           if (!cartId) {
             setErrors((prev) => [...prev, "Error: faltan datos del carrito."]);

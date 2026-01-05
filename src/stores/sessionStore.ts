@@ -2,12 +2,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface RestaurantConfig {
-  deliveryByAppio: boolean;
+  deliveryByPexpo: boolean;
   deliveryByRestaurant: boolean;
   deliveryPickup: boolean;
   cardPaymentEnabled: number;
   cashPaymentEnabled: number;
-  sendToAppio: boolean;
+  sendToPexpo: boolean;
   sendGoogleReviewSurvey: boolean;
   deliveryFlatRatePrice: number;
   cookingTime: number;
