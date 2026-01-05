@@ -7,25 +7,25 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - shared-appio
+      - shared
     environment:
       NODE_ENV: production
-      BACKEND_URL: https://monitorapi.appio.com.mx/api/v1
-      API_KEY: Ir8JdmOWDtt95J7VoFMZgTVgwyceLAADdZm76dGDnqzSm7ej6bk6tBPK6KZJiRO2
+      BACKEND_URL: https://api.example.com/api/v1
+      API_KEY: your-api-key-here
       TIMEOUT: 30000
-      WEBHOOK_URL: https://automate.appio.com.mx
-      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: AIzaSyBnmYmy_u7-0qSsA549Lyd4y12gQ-LwSZo
-      DUCK_API_URL: https://dev-payapi.appio.com.mx
-      DUCK_API_KEY: f34315fc-4b06-4a7d-8200-3a11bf771f29
+      WEBHOOK_URL: https://webhook.example.com
+      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: your-google-maps-api-key
+      DUCK_API_URL: https://payment-api.example.com
+      DUCK_API_KEY: your-payment-api-key
       DUCK_API_TIMEOUT: 10000
-      URL_API_BACKEND: http://dev-deliveryapi.appio.com.mx/api
-      KEY_API_BACKEND: h9AWJdFGJ4oG7Howl0sonc5cFA1di1mj5x0exWw0UmZCYUFLGUKwMSBdZqtd398D
-      URL_CORE_API: https://api.appio.com.mx/api
-      CORE_API_KEY: D33BB8BEF6DA9FCADDB3945739428
-      RECIPE_UUID: c617be30-a2cb-49fe-ac39-cada1459be79
-      TOKEN: f34315fc-4b06-4a7d-8200-3a11bf771f29
-      ABLY_API_KEY: c_CWfg.-uBclg:Q0YfkOFiUaPv47niO0UeZFVNz5CiQaS9WyjkRiQKVLY
+      URL_API_BACKEND: https://backend.example.com/api
+      KEY_API_BACKEND: your-backend-api-key
+      URL_CORE_API: https://core.example.com/api
+      CORE_API_KEY: your-core-api-key
+      RECIPE_UUID: your-recipe-uuid
+      TOKEN: your-jwt-token-here
+      ABLY_API_KEY: your-ably-api-key
 networks:
-  shared-appio:
+  shared:
     external: true
-    name: shared-appio
+    name: shared
